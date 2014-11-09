@@ -10,26 +10,56 @@
 
 class DfErrors
 {
+    /**
+     * Errors Array
+     *
+     * @var array
+     */
     private $errors = array();
 
-    function setErrors($errors)
+    /**
+     * Setter
+     *
+     * @param array $errors
+     */
+    public function setErrors($errors)
     {
         $this->errors = $errors;
     }
 
-    function addError($type, $component, $error)
+    /**
+     * Add Error
+     *
+     * @param string $type
+     * @param string $component
+     * @param string $error
+     */
+    public function addError($type, $component, $error)
     {
         $this->errors[$component][$type][getLogDate()][] = $error;
     }
 
-    function addErrors($component, $errors = array())
+    /**
+     * Add Errors by Component
+     * 
+     * @param string $component
+     * @param array $errors
+     */
+    public function addErrors($component, $errors = array())
     {
         if ($errors) {
             $this->errors[$component] = $errors;
         }
     }
 
-    function getErrorsByType($type)
+    /**
+     * Get Errors By Type
+     * 
+     * @param string $type
+     *
+     * @return array
+     */
+    public function getErrorsByType($type)
     {
         //$return = array();
         foreach ($this->errors as $errorsComponent) {
@@ -39,14 +69,25 @@ class DfErrors
         }
     }
 
-    function getErrorsByComponent($component)
+    /**
+     * Get Errors by Component
+     * 
+     * @param string $component
+     *
+     * @return array
+     */
+    public function getErrorsByComponent($component)
     {
         return $this->errors[$component];
 
     }
 
-
-    function getErrors()
+    /**
+     * Get Records
+     * 
+     * @return array
+     */
+    public function getErrors()
     {
         return $this->errors;
     }
