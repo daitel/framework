@@ -97,7 +97,7 @@ class DfFile extends DfComponent
     /**
      * Get FileWorker
      *
-     * @return mixed
+     * @return resource
      */
     private static function getFile()
     {
