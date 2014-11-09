@@ -14,7 +14,7 @@
  * @param int $min
  * @param int $sec
  *
- * @return mixed
+ * @return float
  */
 function DfConverter_DMStoDEC($deg, $min, $sec)
 {
