@@ -20,7 +20,7 @@ class DfFile extends DfComponent
      */
     static $component_name = 'file';
     /**
-     * @var object
+     * @var resource
      */
     private static $file;
 
@@ -45,15 +45,18 @@ class DfFile extends DfComponent
      * Write some text to file
      * WARNING: Function truncate file before write
      *
-     * @param string $file
+     * @param string $file_path
      * @param string $text
+     * @param bool
      *
      * @return bool
      */
-    public static function write($file, $text)
+    public static function write($file_path, $text, $truncate = false)
     {
-        if (self::initFile($file)) {
-            ftruncate(self::getFile(), 0);
+        if (self::initFile($file_path)) {
+            if($truncate){
+                ftruncate(self::getFile(), 0);
+            }
             fwrite(self::getFile(), $text . "\n");
             fclose(self::getFile());
             return true;
@@ -65,14 +68,14 @@ class DfFile extends DfComponent
     /**
      * Init File(fopen)
      *
-     * @param string $file
+     * @param string $file_path
      * @param string $type
      *
      * @return bool
      */
-    private static function initFile($file, $type = 'a+')
+    private static function initFile($file_path, $type = 'a+')
     {
-        $file_worker = fopen($file, $type);
+        $file_worker = fopen($file_path, $type);
         if ($file_worker) {
             self::setFile($file_worker);
             return true;
@@ -84,7 +87,7 @@ class DfFile extends DfComponent
     /**
      * Set FileWorker
      *
-     * @param string $file
+     * @param resource $file
      */
     private static function setFile($file)
     {
@@ -94,31 +97,10 @@ class DfFile extends DfComponent
     /**
      * Get FileWorker
      *
-     * @return mixed
+     * @return resource
      */
     private static function getFile()
     {
         return self::$file;
-    }
-
-    /**
-     * Write some text to file
-     * Text write's to end of file and have "\n"
-     *
-     * @param string $file
-     * @param string $text
-     *
-     * @return bool
-     */
-    public static function writeLine($file, $text)
-    {
-        if (self::initFile($file)) {
-            fwrite(self::getFile(), $text . "\n");
-            fclose(self::getFile());
-            return true;
-        } else {
-            parent::addError('danger', self::$component_name, "unable to write line($file)");
-            return false;
-        }
     }
 }
