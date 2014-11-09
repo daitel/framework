@@ -11,56 +11,61 @@
 class DfLogger extends DfComponent
 {
 
-    private $file;
+    /**
+     * Log file path
+     * @var string
+     */
+    private $path;
+    /**
+     * Component name
+     *
+     * @see DfComponent
+     * @see DfErrors
+     *
+     * @var string
+     * @var string
+     */
     private $component_name = 'logger';
 
+    /**
+     * Constructor of class
+     *
+     * @param $path
+     */
     function __construct($path)
     {
-        $this->file = $path;
+        $this->$file = $path;
     }
 
-    function read()
-    {
-        if (file_exists($this->file)) {
-            return file_get_contents($this->file);
-        } else {
-            $this->addError('danger', $this->component_name, 'unable tp read file');
-            return false;
-        }
-    }
-
+    /**
+     * Write errors array
+     *
+     * @param array $errors
+     */
     function writeErrors($errors = array())
     {
         foreach ($errors as $type => $errors_type) {
             foreach ($errors_type as $component => $errors_component) {
                 foreach ($errors_component as $time => $errors_time) {
-                    foreach ($errors_time as $error) {
-                        $this->writeLine("[$time][$type][$component] | $error");
+                    foreach ($errors_time as $location => $error) {
+                        $this->writeLine("[$time][$type][$component] | $error [$location]");
                     }
                 }
             }
         }
     }
 
+    /**
+     * Interface for DfFile::writeLine
+     *
+     * @see DfFile
+     *
+     * @param $text
+     */
     function writeLine($text)
     {
-        $fp = fopen($this->file, "a+");
-        if ($fp) {
-            fwrite($fp, $text . "\n");
-        } else {
-            $this->addError('danger', $this->component_name, 'unable to write line');
+        if (!DfFile::writeLine($this->path, $text)) {
+            $this->addError('danger', $this->$component_name, "unable to DfFile::writeLine in log file");
         }
-        fclose($fp);
-    }
-
-    function clear()
-    {
-        $fp = fopen($this->file, "a+");
-        if ($fp) {
-            ftruncate($fp, 0);
-        } else {
-            $this->addError('danger', $this->component_name, 'unable to clear file');
-        }
-        fclose($fp);
     }
 }
