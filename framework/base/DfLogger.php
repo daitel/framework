@@ -64,7 +64,7 @@ class DfLogger extends DfComponent
      */
     function writeLine($text)
     {
-        if (!DfFile::writeLine($this->path, $text)) {
+        if (!DfFile::write($this->path, $text)) {
             $this->addError('danger', $this->$component_name, "unable to DfFile::writeLine in log file");
         }
     }

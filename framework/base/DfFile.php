@@ -47,13 +47,16 @@ class DfFile extends DfComponent
      *
      * @param string $file
      * @param string $text
+     * @param bool
      *
      * @return bool
      */
-    public static function write($file, $text)
+    public static function write($file, $text, $truncate = false)
     {
         if (self::initFile($file)) {
-            ftruncate(self::getFile(), 0);
+            if($truncate){
+                ftruncate(self::getFile(), 0);
+            }
             fwrite(self::getFile(), $text . "\n");
             fclose(self::getFile());
             return true;
@@ -99,26 +102,5 @@ class DfFile extends DfComponent
     private static function getFile()
     {
         return self::$file;
-    }
-
-    /**
-     * Write some text to file
-     * Text write's to end of file and have "\n"
-     *
-     * @param string $file
-     * @param string $text
-     *
-     * @return bool
-     */
-    public static function writeLine($file, $text)
-    {
-        if (self::initFile($file)) {
-            fwrite(self::getFile(), $text . "\n");
-            fclose(self::getFile());
-            return true;
-        } else {
-            parent::addError('danger', self::$component_name, "unable to write line($file)");
-            return false;
-        }
     }
 }
