@@ -20,7 +20,7 @@ class DfFile extends DfComponent
      */
     static $component_name = 'file';
     /**
-     * @var object
+     * @var resource
      */
     private static $file;
 
@@ -45,15 +45,15 @@ class DfFile extends DfComponent
      * Write some text to file
      * WARNING: Function truncate file before write
      *
-     * @param string $file
+     * @param string $file_path
      * @param string $text
      * @param bool
      *
      * @return bool
      */
-    public static function write($file, $text, $truncate = false)
+    public static function write($file_path, $text, $truncate = false)
     {
-        if (self::initFile($file)) {
+        if (self::initFile($file_path)) {
             if($truncate){
                 ftruncate(self::getFile(), 0);
             }
@@ -68,14 +68,14 @@ class DfFile extends DfComponent
     /**
      * Init File(fopen)
      *
-     * @param string $file
+     * @param string $file_path
      * @param string $type
      *
      * @return bool
      */
-    private static function initFile($file, $type = 'a+')
+    private static function initFile($file_path, $type = 'a+')
     {
-        $file_worker = fopen($file, $type);
+        $file_worker = fopen($file_path, $type);
         if ($file_worker) {
             self::setFile($file_worker);
             return true;
