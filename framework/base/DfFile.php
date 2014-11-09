@@ -87,7 +87,7 @@ class DfFile extends DfComponent
     /**
      * Set FileWorker
      *
-     * @param string $file
+     * @param resource $file
      */
     private static function setFile($file)
     {
