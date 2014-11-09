@@ -1,0 +1,14 @@
+{
+    "name": "daitel/framework",
+    "description": "Daitel PHP Framework",
+    "keywords": ["framework", "basic", "mvc template"],
+    "type": "project",
+    "license": "GPL-2.0",
+    "authors": [
+        {
+            "name": "Nikita Fedoseev",
+            "email": "agent.daitel@gmail.com",
+            "homepage": "http://daitel.net",
+            "role": "Administrator"
+        }]
+}
