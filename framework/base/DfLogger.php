@@ -34,7 +34,7 @@ class DfLogger extends DfComponent
      */
     public function __construct($path)
     {
-        $this->$file = $path;
+        $this->file = $path;
     }
 
     /**
@@ -65,7 +65,7 @@ class DfLogger extends DfComponent
     private function writeLine($text)
     {
         if (!DfFile::write($this->path, $text)) {
-            $this->addError('danger', $this->$component_name, "unable to DfFile::writeLine in log file");
+            $this->addError('danger', $this->component_name, "unable to DfFile::writeLine in log file");
         }
     }
 }
