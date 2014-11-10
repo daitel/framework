@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<phpunit bootstrap="framework/DfBase.php" colors="true">
+    <testsuites>
+        <testsuite name="Daitel PHP Framework Tests">
+            <directory>test</directory>
+        </testsuite>
+    </testsuites>
+</phpunit>

@@ -53,6 +53,9 @@ class DfFile extends DfComponent
      */
     public static function write($file_path, $text, $truncate = false)
     {
+        if(!$file_path || !$text){
+            return false;
+        }
         if (self::initFile($file_path)) {
             if($truncate){
                 ftruncate(self::getFile(), 0);
