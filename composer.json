@@ -12,7 +12,6 @@
             "role": "Administrator"
         }],
     "require": {
-        "phpunit/phpunit": "3.7",
-        "codeclimate/php-test-reporter": "dev-master"
+        "phpunit/phpunit": "3.7"
     }
 }
