@@ -34,7 +34,7 @@ class DfLogger extends DfComponent
      */
     public function __construct($path)
     {
-        $this->file = $path;
+        $this->path = $path;
     }
 
     /**
