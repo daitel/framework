@@ -10,5 +10,8 @@
             "email": "agent.daitel@gmail.com",
             "homepage": "http://daitel.net",
             "role": "Administrator"
-        }]
+        }],
+    "require": {
+        "phpunit/phpunit": "3.7"
+    }
 }
