@@ -22,7 +22,7 @@ install:
     - composer global require "fxp/composer-asset-plugin:1.0.0-beta3"
     - travis_retry composer update
 
-script: phpunit --configuration phpunit_standard.xml test
+script: phpunit --bootstrap test/bootstrap.php --configuration phpunit_standard.xml
 
 addons:
   code_climate:

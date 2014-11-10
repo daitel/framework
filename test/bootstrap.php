@@ -1,6 +1,6 @@
 <?php
 
-require_once('../framework/DfBase.php');
+require_once('framework/DfBase.php');
 
 function loader($class)
 {
