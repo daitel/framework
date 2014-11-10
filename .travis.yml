@@ -10,7 +10,6 @@ php:
 before_script:
   - composer self-update
   - composer install --prefer-source --no-interaction --dev
-  - phpunit --coverage-clover=coverage.clover
   - wget https://scrutinizer-ci.com/ocular.phar
   - php ocular.phar code-coverage:upload --access-token=834e5fcad5f0bf67bb485abe95a38555939fd5b88034aa891a48f2c890f9d8e9 --format=php-clover coverage.clover
 
@@ -26,7 +25,7 @@ install:
     - composer global require "fxp/composer-asset-plugin:1.0.0-beta3"
     - travis_retry composer update
 
-script: phpunit --bootstrap test/bootstrap.php --configuration phpunit_standard.xml
+script: phpunit --bootstrap test/bootstrap.php --configuration phpunit_standard.xml --coverage-clover=coverage.clover
 
 addons:
   code_climate:
