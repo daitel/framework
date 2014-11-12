@@ -18,25 +18,28 @@ class DfFile extends DfComponent
      * @see DfErrors
      * @var string
      */
-    static $component_name = 'file';
+    private $component_name = 'file';
     /**
      * @var resource
      */
-    private static $file;
+    private $file;
+
+    public function __construct($file){
+        $this->file = $file;
+    }
 
     /**
      * Get Contents of file
      *
-     * @param string $file
      *
      * @return bool|string
      */
-    public static function read($file)
+    public function read()
     {
-        if (file_exists($file)) {
-            return file_get_contents($file);
+        if (file_exists($this->file)) {
+            return file_get_contents($this->file);
         } else {
-            parent::addError('danger', self::$component_name, "unable to read file($file)");
+            $this->addError('danger', $this->component_name, $this->file, "unable to read file");
             return false;
         }
     }
@@ -45,23 +48,22 @@ class DfFile extends DfComponent
      * Write some text to file
      * WARNING: Function truncate file before write
      *
-     * @param string $file_path
      * @param string $text
      * @param bool
      *
      * @return bool
      */
-    public static function write($file_path, $text, $truncate = false)
+    public function write($text, $truncate = false)
     {
-        if(!$file_path || !$text){
+        if(!$text){
             return false;
         }
-        if (self::initFile($file_path)) {
+        if ($this->initFile($this->file)) {
             if($truncate){
-                ftruncate(self::getFile(), 0);
+                ftruncate($this->getFile(), 0);
             }
-            fwrite(self::getFile(), $text . "\n");
-            fclose(self::getFile());
+            fwrite($this->getFile(), $text . "\n");
+            fclose($this->getFile());
             return true;
         } else {
             return false;
@@ -76,11 +78,13 @@ class DfFile extends DfComponent
      *
      * @return bool
      */
-    private static function initFile($file_path, $type = 'a+')
+    private function initFile($file_path, $type = 'a+')
     {
-        $file_worker = fopen($file_path, $type);
-        if ($file_worker) {
-            self::setFile($file_worker);
+        if(empty($file_path)){
+            return false;
+        }
+        if ($file_worker = fopen($file_path, $type)) {
+            $this->setFile($file_worker);
             return true;
         } else {
             return false;
@@ -92,9 +96,9 @@ class DfFile extends DfComponent
      *
      * @param resource $file
      */
-    private static function setFile($file)
+    private function setFile($file)
     {
-        self::$file = $file;
+        $this->file = $file;
     }
 
     /**
@@ -102,8 +106,8 @@ class DfFile extends DfComponent
      *
      * @return resource
      */
-    private static function getFile()
+    private function getFile()
     {
-        return self::$file;
+        return $this->file;
     }
 }
