@@ -12,10 +12,11 @@ class DfLogger extends DfComponent
 {
 
     /**
-     * Log file path
-     * @var string
+     * Log file
+     * @var DfFile
      */
-    private $path;
+    private $log_file;
+
     /**
      * Component name
      *
@@ -23,18 +24,17 @@ class DfLogger extends DfComponent
      * @see DfErrors
      *
      * @var string
-     * @var string
      */
     private $component_name = 'logger';
 
     /**
      * Constructor of class
      *
-     * @param $path
+     * @param string $path
      */
     public function __construct($path)
     {
-        $this->path = $path;
+        $this->log_file = new DfFile($path);
     }
 
     /**
@@ -56,16 +56,12 @@ class DfLogger extends DfComponent
     }
 
     /**
-     * Interface for DfFile::writeLine
+     * Interface for DfFile write
      *
-     * @see DfFile
-     *
-     * @param $text
+     * @param string $text
      */
     private function writeLine($text)
     {
-        if (!DfFile::write($this->path, $text)) {
-            $this->addError('danger', $this->component_name, "unable to DfFile::writeLine in log file");
-        }
+        $this->log_file->write($text);
     }
 }

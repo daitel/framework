@@ -32,11 +32,12 @@ class DfErrors
      *
      * @param string $type
      * @param string $component
+     * @param string $location
      * @param string $error
      */
-    public function addError($type, $component, $error)
+    public function addError($type, $component, $location, $error)
     {
-        $this->errors[$component][$type][getLogDate()][] = $error;
+        $this->errors[$component][$type][getLogDate()][$location][] = $error;
     }
 
     /**
