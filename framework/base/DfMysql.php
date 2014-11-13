@@ -17,7 +17,7 @@ class DfMysql extends DfComponent
     function __construct($config = array())
     {
         if (!mysql_connect($config['db_host'], $config['db_user'], $config['db_pass']) or !mysql_select_db($config['db_name'])) {
-            DfComponent::addError('danger', $this->component_name, mysql_error());
+            $this->addError('danger', $this->component_name, '', mysql_error());
         }
         mysql_query("SET NAMES 'utf8'");
         mysql_query("SET CHARACTER SET 'utf8'");
@@ -28,7 +28,7 @@ class DfMysql extends DfComponent
         if ($res = mysql_query($query)) {
             return $res;
         } else {
-            DfComponent::addError('danger', $this->component_name, mysql_error());
+            $this->addError('danger', $this->component_name, $query, mysql_error());
             return false;
         }
 
