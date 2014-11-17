@@ -10,24 +10,26 @@
 
 class DfFileTest extends PHPUnit_Framework_TestCase{
 
-    private $file;
-
     public function testWrite()
     {
-        $this->file = new DfFile('');
-        $this->assertEquals(false, $this->file ->write('true'));
+        $file = new DfFile('');
+        $this->assertEquals(false, $file->write('true'));
 
-        $this->file = new DfFile('test.txt');
-        $this->assertEquals(true, $this->file ->write('true'));
+        $file = new DfFile('test.txt');
+        $this->assertEquals(true, $file->write('true'));
 
-        $this->file = new DfFile('test.txt');
-        $this->assertEquals(true, $this->file ->write('true', true));
+        $file = new DfFile('test.txt');
+        $this->assertEquals(true, $file->write('true'));
+
+        $file = new DfFile('test.txt');
+        $this->assertEquals(true, $file->write('true', true));
     }
 
     public function testRead(){
-        $this->assertEquals("true\n", $this->file->read());
+        $file = new DfFile('test.txt');
+        $this->assertEquals("true\n", $file->read());
 
-        $this->file = new DfFile('');
-        $this->assertEquals(false, $this->file->read());
+        $file = new DfFile('');
+        $this->assertEquals(false, $file->read());
     }
 }

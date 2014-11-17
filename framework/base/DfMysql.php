@@ -8,13 +8,12 @@
  *
  */
 
-
 class DfMysql extends DfComponent
 {
 
     private $component_name = 'mysql';
 
-    function __construct($config = array())
+    public function __construct($config = array())
     {
         if (!mysql_connect($config['db_host'], $config['db_user'], $config['db_pass']) or !mysql_select_db($config['db_name'])) {
             $this->addError('danger', $this->component_name, '', mysql_error());
@@ -23,7 +22,7 @@ class DfMysql extends DfComponent
         mysql_query("SET CHARACTER SET 'utf8'");
     }
 
-    function query($query)
+    public function query($query)
     {
         if ($res = mysql_query($query)) {
             return $res;
@@ -33,5 +32,4 @@ class DfMysql extends DfComponent
         }
 
     }
-
 }
