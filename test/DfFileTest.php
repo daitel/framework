@@ -8,7 +8,8 @@
  *
  */
 
-class DfFileTest extends PHPUnit_Framework_TestCase{
+class DfFileTest extends PHPUnit_Framework_TestCase
+{
 
     public function testWrite()
     {
@@ -25,7 +26,8 @@ class DfFileTest extends PHPUnit_Framework_TestCase{
         $this->assertEquals(true, $file->write('true', true));
     }
 
-    public function testRead(){
+    public function testRead()
+    {
         $file = new DfFile('test.txt');
         $this->assertEquals("true\n", $file->read());
 

@@ -24,7 +24,8 @@ class DfFile extends DfComponent
      */
     private $file;
 
-    public function __construct($file){
+    public function __construct($file)
+    {
         $this->file = $file;
     }
 
@@ -46,7 +47,6 @@ class DfFile extends DfComponent
 
     /**
      * Write some text to file
-     * WARNING: Function truncate file before write
      *
      * @param string $text
      * @param bool
@@ -55,11 +55,11 @@ class DfFile extends DfComponent
      */
     public function write($text, $truncate = false)
     {
-        if(!$text){
+        if (!$text) {
             return false;
         }
         if ($this->initFile($this->file)) {
-            if($truncate){
+            if ($truncate) {
                 ftruncate($this->getFile(), 0);
             }
             fwrite($this->getFile(), $text . "\n");
@@ -80,7 +80,7 @@ class DfFile extends DfComponent
      */
     private function initFile($file_path, $type = 'a+')
     {
-        if(empty($file_path)){
+        if (empty($file_path)) {
             return false;
         }
         if ($file_worker = fopen($file_path, $type)) {

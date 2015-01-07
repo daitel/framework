@@ -15,7 +15,10 @@ class DfMysql extends DfComponent
 
     public function __construct($config = array())
     {
-        if (!mysql_connect($config['db_host'], $config['db_user'], $config['db_pass']) or !mysql_select_db($config['db_name'])) {
+        if (!mysql_connect($config['db_host'], $config['db_user'], $config['db_pass']) or !mysql_select_db(
+                $config['db_name']
+            )
+        ) {
             $this->addError('danger', $this->component_name, '', mysql_error());
         }
         mysql_query("SET NAMES 'utf8'");

@@ -42,7 +42,7 @@ class DfErrors
 
     /**
      * Add Errors by Component
-     * 
+     *
      * @param string $component
      * @param array $errors
      */
@@ -55,7 +55,7 @@ class DfErrors
 
     /**
      * Get Errors By Type
-     * 
+     *
      * @param string $type
      *
      * @return array
@@ -72,7 +72,7 @@ class DfErrors
 
     /**
      * Get Errors by Component
-     * 
+     *
      * @param string $component
      *
      * @return array
@@ -85,7 +85,7 @@ class DfErrors
 
     /**
      * Get Records
-     * 
+     *
      * @return array
      */
     public function getErrors()
