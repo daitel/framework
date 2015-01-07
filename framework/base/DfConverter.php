@@ -56,6 +56,6 @@ function DfConverter_MINtoHOURS($min)
 {
     return array(
         'hours' => floor($min / 60),
-        'min'   => floor($min % 60)
+        'min' => floor($min % 60)
     );
 }
