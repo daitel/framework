@@ -7,7 +7,6 @@
  * @link https://github.com/daitel/framework
  *
  */
-
 class DfFile extends DfComponent
 {
 
@@ -40,13 +39,14 @@ class DfFile extends DfComponent
         if (file_exists($this->file)) {
             return file_get_contents($this->file);
         } else {
-            $this->addError('danger', $this->component_name, $this->file, "unable to read file");
+            $this->log('danger', $this->component_name, $this->file, "unable to read file");
             return false;
         }
     }
 
     /**
      * Write some text to file
+     * WARNING: Function truncate file before write
      *
      * @param string $text
      * @param bool

@@ -6,8 +6,6 @@
  * @author Nikita Fedoseev <agent.daitel@gmail.com>
  * @link https://github.com/daitel/framework
  */
-
-error_reporting(0);
 require_once('app/framework/DfBase.php');
 
 $controller = $_GET['controller'];

@@ -6,8 +6,7 @@
  * @author Nikita Fedoseev <agent.daitel@gmail.com>
  * @link https://github.com/daitel/framework
  */
-
-class DfComponent extends DfErrors
+class DfComponent extends DfLogger
 {
 
 }
