@@ -12,14 +12,14 @@ $controller = $_GET['controller'];
 
 if ($controller) {
 
-    if (file_exists("app/controllers/$controller.php")) {
-        include("app/controllers/$controller.php");
-    } else {
-        include("app/controllers/404.php");
-    }
+	if (file_exists("app/controllers/$controller.php")) {
+		include("app/controllers/$controller.php");
+	} else {
+		include("app/controllers/404.php");
+	}
 
 } else {
-    if (file_exists("app/controllers/main.php")) {
-        include("app/controllers/main.php");
-    }
+	if (file_exists("app/controllers/main.php")) {
+		include("app/controllers/main.php");
+	}
 }
