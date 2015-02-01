@@ -6,24 +6,42 @@
  * @link https://github.com/daitel/framework
  *
  */
+if (empty($dir)) {
+	$dir = 'framework';
+}
+$modules = array(
+	'base' => array(
+		'base/DfTimer',
+		'logging/DfLogger',
+		'base/DfComponent',
+		'base/DfFile',
+		'logging/DfLoggerFile'
+	),
+	'db' => array(
+		'db/DfMysql',
+		'db/DfSql'
+	),
+	'utils' => array(
+		'utils/DfConverter'
+	)
+);
 
-require_once('base/DfTimer.php');
-require_once('base/DfErrors.php');
-require_once('base/DfConverter.php');
-require_once('base/DfComponent.php');
-require_once('base/DfLogger.php');
-require_once('base/DfMysql.php');
-require_once('base/DfFile.php');
-
-$errors = new DfErrors();
-$time_start = DfTimer_start();
-
-function getLogDate()
-{
-    return date("d-m-Y H:i:s");
+foreach ($modules as $module) {
+	foreach ($module as $file) {
+		$file_path = $dir . '/' . $file . '.php';
+		if (file_exists($file_path)) {
+			require($file_path);
+		}else{
+			die('Critical Error. Unable to include '.$file_path);
+		}
+	}
 }
 
+if (!$config['error_reporting']) {
+	error_reporting(0);
+}
 
+$time_start = DfTimer_start();
 
-
+$log = new DfLogger();
 

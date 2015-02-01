@@ -1,12 +1,15 @@
 <?php
 /**
  * Daitel Framework
- * Class for standard component
+ * Phone Book db config file
  *
  * @author Nikita Fedoseev <agent.daitel@gmail.com>
  * @link https://github.com/daitel/framework
  */
-class DfComponent extends DfLogger
-{
 
-}
+$db_config = [
+	'db_host' => 'localhost',
+	'db_user' => 'root',
+	'db_pass' => '',
+	'db_name' => 'test'
+];

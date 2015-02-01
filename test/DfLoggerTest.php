@@ -11,13 +11,12 @@
 class DfLoggerTest extends PHPUnit_Framework_TestCase
 {
 
-    public function testWriteErrors()
-    {
-        $logger = new DfLogger('log.txt');
-        $errors['danger']['test']['00-00-00 00:00:00']['test'] = 'test';
-        $logger->writeErrors($errors);
+	public function testSave()
+	{
+		$logger = new DfLogger();
+		$logger->log('log', 'log', 'log', 'log');
+		$logger->save('log.txt');
 
-        $file = new DfFile('log.txt');
-        $this->assertEquals("[00-00-00 00:00:00][danger][test] | test [test]\n", $file->read());
-    }
+		$this->assertEquals(true, file_exists('log.txt'));
+	}
 }
