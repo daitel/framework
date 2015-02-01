@@ -7,9 +7,6 @@
  * @link https://github.com/daitel/framework
  */
 
-ini_set('display_errors',1);
-error_reporting(E_ALL);
-
 //include configs
 require_once('app/config/main.php');
 require_once('app/config/db.php');

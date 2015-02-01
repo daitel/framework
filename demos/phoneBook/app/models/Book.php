@@ -20,11 +20,11 @@ class Book
 
 	/**
 	 * Constructor
-	 * @param array $database
+	 * @param array $config
 	 */
-	public function __constructor($database)
+	public function __construct($config = array())
 	{
-		$this->db = new DfMysql($database);
+		$this->db = new DfMysql($config);
 	}
 
 	/**

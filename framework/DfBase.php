@@ -31,11 +31,16 @@ foreach ($modules as $module) {
 		$file_path = $dir . '/' . $file . '.php';
 		if (file_exists($file_path)) {
 			require($file_path);
+		}else{
+			die('Critical Error. Unable to include '.$file_path);
 		}
 	}
 }
 
-require_once('base/DfTimer.php');
+if (!$config['error_reporting']) {
+	error_reporting(0);
+}
+
 $time_start = DfTimer_start();
 
 $log = new DfLogger();

@@ -8,7 +8,8 @@
  */
 
 $config = [
-	'app_name' => 'Phone Book'
+	'app_name' => 'Phone Book',
+	'error_reporting' => false
 ];
 
 $dir = 'app/framework';
