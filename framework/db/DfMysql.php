@@ -38,6 +38,30 @@ class DfMysql extends DfComponent
 	}
 
 	/**
+	 * Insert Record
+	 * @param string $table
+	 * @param array $values
+	 * @return bool|resource
+	 */
+	public function insert($table, $values){
+		return $this->query(DfSql::insert($table, $values));
+	}
+
+	/**
+	 * Update Query
+	 * @param string $table
+	 * @param array $values
+	 * @param array $where
+	 * @param string $type
+	 * @param string $other
+	 * @return bool|resource
+	 */
+	public function update($table, $values, $where = [], $type = 'AND', $other = ''){
+		return $this->query(DfSql::update($table, $values, $where, $type, $other));
+	}
+
+	/**
+	 * Get All Records
 	 * @param string $table
 	 * @return array|bool
 	 */
@@ -66,7 +90,7 @@ class DfMysql extends DfComponent
 
 	/**
 	 * Simple Query
-	 * @param $query
+	 * @param string $query
 	 * @return bool|resource
 	 */
 	public function query($query)
