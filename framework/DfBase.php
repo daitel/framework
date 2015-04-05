@@ -31,8 +31,8 @@ foreach ($modules as $module) {
 		$file_path = $dir . '/' . $file . '.php';
 		if (file_exists($file_path)) {
 			require($file_path);
-		}else{
-			die('Critical Error. Unable to include '.$file_path);
+		} else {
+			die('Critical Error. Unable to include ' . $file_path);
 		}
 	}
 }

@@ -30,7 +30,7 @@ class DfLogger
 	 * @param string $type
 	 * @param string $level
 	 */
-	public function log($component, $location , $error, $type = 'info', $level = 'log')
+	public function log($component, $location, $error, $type = 'info', $level = 'log')
 	{
 		$this->LogData[] = [
 			'time' => $this->getLogDate(),

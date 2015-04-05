@@ -43,7 +43,8 @@ class DfMysql extends DfComponent
 	 * @param array $values
 	 * @return bool|resource
 	 */
-	public function insert($table, $values){
+	public function insert($table, $values)
+	{
 		return $this->query(DfSql::insert($table, $values));
 	}
 
@@ -56,7 +57,8 @@ class DfMysql extends DfComponent
 	 * @param string $other
 	 * @return bool|resource
 	 */
-	public function update($table, $values, $where = [], $type = 'AND', $other = ''){
+	public function update($table, $values, $where = [], $type = 'AND', $other = '')
+	{
 		return $this->query(DfSql::update($table, $values, $where, $type, $other));
 	}
 
@@ -95,16 +97,17 @@ class DfMysql extends DfComponent
 	 */
 	public function query($query)
 	{
+		$this->log('site_debug', '', $query);
 		if ($res = mysql_query($query)) {
 			if (mysql_num_rows($res)) {
 				return $res;
-			} elseif ($this->rows_count = mysql_affected_rows($res) > 0) {
+			} elseif ($this->rows_count = mysql_affected_rows() > 0) {
 				return $this->rows_count;
 			} else {
 				return false;
 			}
 		} else {
-			$this->log('danger', $this->component_name, $query, mysql_error());
+			$this->log($this->component_name, $query, mysql_error());
 			return false;
 		}
 	}
@@ -120,7 +123,7 @@ class DfMysql extends DfComponent
 	 */
 	public function getValueByParam($table, $key, $where = [], $type = 'AND', $other = '')
 	{
-		return $this->getValueFromQuery($table, DfSql::selectKey($table, $key, $where, $type, $other));
+		return $this->getValueFromQuery(DfSql::selectKey($table, $key, $where, $type, $other), $key);
 	}
 
 	/**

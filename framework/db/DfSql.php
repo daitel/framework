@@ -76,7 +76,7 @@ class DfSql
 	 */
 	public static function writeKey($key)
 	{
-		return '`' . $key . '`';
+		return '' . $key . '';
 	}
 
 	/**
@@ -153,8 +153,44 @@ class DfSql
 	public static function update($table, $values, $where = [], $type = 'AND', $other = '')
 	{
 		return "UPDATE " . self::writeKey($table) .
-		" SET ". self::multiKeyWhere($values, ',') .
+		" SET " . self::multiKeyWhere($values, ',') .
 		(!empty($where) ? " WHERE" : '') . (!empty($where) ? ' ' . self::multiKeyWhere($where, $type) : '') .
 		(!empty($other) ? " " . $other : '');
+	}
+
+	/**
+	 * Return Current date in mysql format
+	 * Example:
+	 *
+	 * 2015-01-01
+	 *
+	 * @return bool|string
+	 */
+	public static function date(){
+		return date("Y-m-d");
+	}
+
+	/**
+	 * Return Current date and time in mysql format
+	 * Example:
+	 *
+	 * 2015-01-01 10:25:30
+	 *
+	 * @return bool|string
+	 */
+	public static function datetime(){
+		return date("Y-m-d H:i:s");
+	}
+
+	/**
+	 * Return Current time in mysql format
+	 * Example:
+	 *
+	 * 10:25:30
+	 *
+	 * @return bool|string
+	 */
+	public static function time(){
+		return date("H:i:s");
 	}
 }
