@@ -9,22 +9,25 @@
 if (empty($dir)) {
 	$dir = 'framework';
 }
-$modules = array(
-	'base' => array(
+
+$modules = [
+	'base' => [
 		'base/DfTimer',
 		'logging/DfLogger',
 		'base/DfComponent',
 		'base/DfFile',
 		'logging/DfLoggerFile'
-	),
-	'db' => array(
+	],
+	'db' => [
 		'db/DfMysql',
-		'db/DfSql'
-	),
-	'utils' => array(
-		'utils/DfConverter'
-	)
-);
+		'db/DfSql',
+		'db/DfActiveRecord'
+	],
+	'utils' => [
+		'utils/DfConverter',
+		'utils/DfResource'
+	]
+];
 
 foreach ($modules as $module) {
 	foreach ($module as $file) {
@@ -37,7 +40,7 @@ foreach ($modules as $module) {
 	}
 }
 
-if (!$config['error_reporting']) {
+if (!empty($config) && !$config['error_reporting']) {
 	error_reporting(0);
 }
 

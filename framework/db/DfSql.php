@@ -1,6 +1,6 @@
 <?php
 /**
- * DfSql is hepler class for preparing query
+ * DfSql is helper class for preparing query
  *
  * DfMysql class provide db functions
  *
@@ -159,38 +159,35 @@ class DfSql
 	}
 
 	/**
-	 * Return Current date in mysql format
-	 * Example:
-	 *
-	 * 2015-01-01
+	 * Return string with current datetime as mysql format
+	 * Format: Y-m-d H:i:s
 	 *
 	 * @return bool|string
 	 */
-	public static function date(){
-		return date("Y-m-d");
-	}
-
-	/**
-	 * Return Current date and time in mysql format
-	 * Example:
-	 *
-	 * 2015-01-01 10:25:30
-	 *
-	 * @return bool|string
-	 */
-	public static function datetime(){
+	public function CurrentDatetime()
+	{
 		return date("Y-m-d H:i:s");
 	}
 
 	/**
-	 * Return Current time in mysql format
-	 * Example:
-	 *
-	 * 10:25:30
+	 * Return string with current date as mysql format
+	 * Format: Y-m-d
 	 *
 	 * @return bool|string
 	 */
-	public static function time(){
+	public function currentDate()
+	{
+		return date("Y-m-d");
+	}
+
+	/**
+	 * Return string with current time as mysql format
+	 * Format: Y-m-d H:i:s
+	 *
+	 * @return bool|string
+	 */
+	public function currentTime()
+	{
 		return date("H:i:s");
 	}
 }

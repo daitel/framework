@@ -16,10 +16,27 @@ class DfMysql extends DfComponent
 	 */
 	public $rows_count = 0;
 	/**
+	 * @var bool
+	 */
+	public $connect;
+	/**
+	 * @var bool
+	 */
+	private $connect_retry;
+	/**
 	 * @see DfComponent
 	 * @var string
 	 */
 	private $component_name = 'mysql';
+	/**
+	 * Links to mysql server
+	 * @var array
+	 */
+	private $links;
+	/**
+	 * @var array
+	 */
+	private $config;
 
 	/**
 	 * Constructor
@@ -27,14 +44,9 @@ class DfMysql extends DfComponent
 	 */
 	public function __construct($config = array())
 	{
-		if (!mysql_connect($config['db_host'], $config['db_user'], $config['db_pass']) or !mysql_select_db(
-				$config['db_name']
-			)
-		) {
-			$this->log('danger', $this->component_name, '', mysql_error());
-		}
-		mysql_query("SET NAMES 'utf8'");
-		mysql_query("SET CHARACTER SET 'utf8'");
+		$this->config = $config;
+		$this->connect_retry = true;
+		$this->connect = false;
 	}
 
 	/**
@@ -46,6 +58,78 @@ class DfMysql extends DfComponent
 	public function insert($table, $values)
 	{
 		return $this->query(DfSql::insert($table, $values));
+	}
+
+	/**
+	 * Simple Query
+	 * @param string $query
+	 * @param int|string $link
+	 * @return bool|resource
+	 */
+	public function query($query, $link = 0)
+	{
+		if (!$link) {
+			$link = $this->config['db_host'];
+		}
+
+		if (!$this->links[$link]) {
+			$this->connect();
+		}
+
+		if ($this->connect) {
+			$time = DfTimer_start();
+
+			if ($res = mysql_query($query, $this->links[$link])) {
+				$this->log($this->component_name, $query, '', 'info', 'log', DfTimer_stop($time));
+				if (mysql_num_rows($res)) {
+					return $res;
+				} else {
+					$this->rows_count = mysql_affected_rows();
+					if ($this->rows_count > 0) {
+						return $this->rows_count;
+					} else {
+						return false;
+					}
+				}
+			} else {
+				$this->log(
+					$this->component_name,
+					$query,
+					mysql_error($this->links[$link]),
+					'warning',
+					'error',
+					DfTimer_stop($time)
+				);
+				return false;
+			}
+		} else {
+			return false;
+		}
+	}
+
+	/**
+	 * Connect
+	 */
+	private function connect()
+	{
+		if ($this->connect_retry) {
+			if ($link = mysql_connect($this->config['db_host'], $this->config['db_user'], $this->config['db_pass'])) {
+				$this->links[$this->config['db_host']] = $link;
+
+				if (!mysql_select_db($this->config['db_name'], $this->links[$this->config['db_host']])) {
+					$this->connect = false;
+					$this->log($this->component_name, '', mysql_error(), 'danger');
+				} else {
+					$this->connect = true;
+					$this->query("SET NAMES 'utf8'");
+					$this->query("SET CHARACTER SET 'utf8'");
+				}
+			} else {
+				$this->connect = false;
+				$this->log($this->component_name, '', mysql_error(), 'danger');
+			}
+			$this->connect_retry = false;
+		}
 	}
 
 	/**
@@ -86,28 +170,6 @@ class DfMysql extends DfComponent
 			}
 			return $return;
 		} else {
-			return false;
-		}
-	}
-
-	/**
-	 * Simple Query
-	 * @param string $query
-	 * @return bool|resource
-	 */
-	public function query($query)
-	{
-		$this->log('site_debug', '', $query);
-		if ($res = mysql_query($query)) {
-			if (mysql_num_rows($res)) {
-				return $res;
-			} elseif ($this->rows_count = mysql_affected_rows() > 0) {
-				return $this->rows_count;
-			} else {
-				return false;
-			}
-		} else {
-			$this->log($this->component_name, $query, mysql_error());
 			return false;
 		}
 	}
