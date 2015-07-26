@@ -15,7 +15,7 @@ class DfLogger
 	 * @see DfComponent
 	 * @var string
 	 */
-	private $component_name = 'Logger';
+	private $component_name = 'logger';
 	/**
 	 * LogData Array
 	 * @var array
@@ -24,21 +24,25 @@ class DfLogger
 
 	/**
 	 * Add Log record
-	 * @param $component
-	 * @param $location
-	 * @param $error
+	 * @param string $component
+	 * @param string $path
+	 * @param string $error
 	 * @param string $type
 	 * @param string $level
+	 * @param int $duration
 	 */
-	public function log($component, $location, $error, $type = 'info', $level = 'log')
+	public function log($component, $path, $error, $type = 'info', $level = 'log', $duration = 0)
 	{
 		$this->LogData[] = [
 			'time' => $this->getLogDate(),
 			'type' => $type,
 			'component' => $component,
-			'location' => (empty($location) ? getenv('REMOTE_ADDR') . ':' . $_SERVER['REQUEST_URI'] : $location),
+			'ip' => getenv('REMOTE_ADDR'),
+			'path' => $path,
+			'location' => (isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : ''),
 			'error' => $error,
-			'level' => $level
+			'level' => $level,
+			'duration' => $duration
 		];
 	}
 
@@ -48,7 +52,7 @@ class DfLogger
 	 */
 	private function getLogDate()
 	{
-		return date("d-m-Y H:i:s");
+		return date("Y-m-d H:i:s");
 	}
 
 	/**

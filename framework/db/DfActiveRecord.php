@@ -11,9 +11,15 @@
 class DfActiveRecord
 {
 	/**
+	 * Attributes
 	 * @var array
 	 */
 	public $attributes = [];
+	/**
+	 * Data Array
+	 * @var array
+	 */
+	protected $data = [];
 
 	/**
 	 * Construct
@@ -30,13 +36,47 @@ class DfActiveRecord
 	 * Set Variables
 	 * @param array $data
 	 */
-	private function setVariables($data = [])
+	protected function setVariables($data = [])
 	{
-		foreach ($data as $name_var => $var) {
-			if (!is_int($name_var)) {
-				$this->$name_var = $var;
-				$this->attributes[] = $name_var;
+		if(!empty($data)){
+			foreach ($data as $name_var => $var) {
+				$this->setVariable($name_var, $var);
 			}
 		}
+	}
+
+	/**
+	 * Set Variable
+	 * @param $name_var
+	 * @param $var
+	 */
+	private function setVariable($name_var, $var)
+	{
+		$this->data[$name_var] = $var;
+		$this->attributes[] = $name_var;
+	}
+
+	/**
+	 * Get magic method
+	 * @param $name
+	 * @return bool
+	 */
+	public function __get($name)
+	{
+		if (isset($this->data[$name])) {
+			return $this->data[$name];
+		} else {
+			return false;
+		}
+	}
+
+	/**
+	 * Set magic method
+	 * @param $name
+	 * @param $val
+	 */
+	public function __set($name, $val)
+	{
+		$this->setVariable($name, $val);
 	}
 }

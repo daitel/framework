@@ -41,7 +41,7 @@ class DfFile extends DfComponent
 		if (file_exists($this->file)) {
 			return file_get_contents($this->file);
 		} else {
-			$this->log('danger', $this->component_name, $this->file, "unable to read file");
+			$this->log($this->component_name, $this->file, "unable to read file");
 			return false;
 		}
 	}
