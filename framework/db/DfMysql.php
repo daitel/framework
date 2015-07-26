@@ -227,4 +227,29 @@ class DfMysql extends DfComponent
 	{
 		return $this->getValuesByParam($table, DfSql::selectKey($table, $key, $where, $type, $other));
 	}
+
+	/**
+	 * Get Record By param
+	 * @param string $table
+	 * @param array $where
+	 * @param string $type
+	 * @param string $other
+	 * @return array|bool
+	 */
+	public function getRecordByParam($table, $where, $type = 'AND', $other = '')
+	{
+		return $this->getRecordFromQuery("SELECT * FROM ".$table." WHERE ".DfSql::multiKeyWhere($where, $type). " ".$other);
+	}
+	/**
+	 * Get Record By param
+	 * @param string $table
+	 * @param array $where
+	 * @param string $type
+	 * @param string $other
+	 * @return array|bool
+	 */
+	public function getRecordsByParam($table, $where, $type = 'AND', $other = '')
+	{
+		return $this->getRecordsFromQuery("SELECT * FROM ".$table." WHERE ".DfSql::multiKeyWhere($where, $type). " ".$other);
+	}
 }

@@ -54,8 +54,11 @@ function DfConverter_DEGtoDIG($degrees)
  */
 function DfConverter_MINtoHOURS($min)
 {
-	return array(
-		'hours' => (floor($min / 60) < 10 ? '0'.floor($min / 60) : floor($min / 60)),
-		'minutes' => (floor($min % 60) < 10 ? '0'.floor($min % 60) : floor($min % 60))
-	);
+	$hours = floor($min / 60);
+	$minutes = floor($min % 60);
+
+	return [
+		'hours' => ($hours < 10 ? '0' . $hours : $hours),
+		'min' => ($minutes < 10 ? '0' . $minutes : $minutes)
+	];
 }

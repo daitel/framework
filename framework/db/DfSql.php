@@ -53,17 +53,21 @@ class DfSql
 		$query = '';
 		$i = 0;
 
-		foreach ($keys as $key) {
-			if ($i > 0) {
-				$query .= ', ';
-			}
-			if ($type == 'key') {
-				$query .= self::writeKey($key);
-			} else {
-				$query .= "'" . $key . "'";
-			}
+		if(is_array($keys)){
+			foreach ($keys as $key) {
+				if ($i > 0) {
+					$query .= ', ';
+				}
+				if ($type == 'key') {
+					$query .= self::writeKey($key);
+				} else {
+					$query .= "'" . $key . "'";
+				}
 
-			$i++;
+				$i++;
+			}
+		}else{
+			$query = $keys;
 		}
 
 		return $query;
@@ -164,7 +168,7 @@ class DfSql
 	 *
 	 * @return bool|string
 	 */
-	public function CurrentDatetime()
+	public static function CurrentDatetime()
 	{
 		return date("Y-m-d H:i:s");
 	}
@@ -175,7 +179,7 @@ class DfSql
 	 *
 	 * @return bool|string
 	 */
-	public function currentDate()
+	public static function currentDate()
 	{
 		return date("Y-m-d");
 	}
@@ -186,7 +190,7 @@ class DfSql
 	 *
 	 * @return bool|string
 	 */
-	public function currentTime()
+	public static function currentTime()
 	{
 		return date("H:i:s");
 	}

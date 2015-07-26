@@ -21,7 +21,8 @@ $modules = [
 	'db' => [
 		'db/DfMysql',
 		'db/DfSql',
-		'db/DfActiveRecord'
+		'db/DfActiveRecord',
+		'db/DfTable'
 	],
 	'utils' => [
 		'utils/DfConverter',
