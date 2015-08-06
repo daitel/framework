@@ -13,7 +13,6 @@ class DfRouterTest extends PHPUnit_Framework_TestCase
 	{
 		DfRouter::$path = 'controller/action/id?a=1&b=c';
 		DfRouter::init();
-		var_dump(DfRouter::$variables);
 		$this->assertEquals(DfRouter::$elements[0], 'controller');
 		$this->assertEquals(DfRouter::$elements[1], 'action');
 		$this->assertEquals(DfRouter::$elements[2], 'id');

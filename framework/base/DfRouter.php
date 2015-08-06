@@ -6,7 +6,7 @@
  *
  * @author Nikita Fedoseev <agent.daitel@gmail.com>
  * @package system.base
- * @since 2.0.1
+ * @since 0.2.1
  */
 class DfRouter
 {
@@ -16,7 +16,7 @@ class DfRouter
 	 */
 	public static $elements = [];
 	/**
-	 * Get Variables
+	 * Variables
 	 * @var array
 	 */
 	public static $variables = [];
@@ -35,7 +35,7 @@ class DfRouter
 			static::setPath((isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : ''));
 		}
 
-		static::setElements();
+		static::decodePath();
 	}
 
 	/**
@@ -48,15 +48,32 @@ class DfRouter
 	}
 
 	/**
-	 * Set Elements and variables
+	 * Decode Path
 	 */
-	private static function setElements()
+	private static function decodePath()
 	{
 		$general_elements = explode("?", static::$path);
+		static::setElements($general_elements);
+		static::setVariables($general_elements);
+	}
+
+	/**
+	 * Set Elements
+	 * @param $general_elements
+	 */
+	private static function setElements($general_elements)
+	{
 		if (isset($general_elements[0])) {
 			static::$elements = explode("/", $general_elements[0]);
 		}
+	}
 
+	/**
+	 * Set Variables
+	 * @param $general_elements
+	 */
+	private static function setVariables($general_elements)
+	{
 		if (isset($general_elements[1])) {
 			$variables = explode("&", $general_elements[1]);
 
