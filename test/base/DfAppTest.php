@@ -9,7 +9,10 @@
  */
 class DfAppTest extends PHPUnit_Framework_TestCase
 {
-
+    /**
+     * Config array
+     * @var array
+     */
     private $config = [];
 
     /**
@@ -26,6 +29,9 @@ class DfAppTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(DfApp::getPath(true), $this->config['app_path'] . "/");
     }
 
+    /**
+     * Example of config file writer
+     */
     private function configWrite()
     {
         $this->config = [

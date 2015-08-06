@@ -5,12 +5,12 @@
  *
  * @author Nikita Fedoseev <agent.daitel@gmail.com>
  * @link https://github.com/daitel/framework
- *
+ * @since 0.2.1
  */
 class DfRouterTest extends PHPUnit_Framework_TestCase
 {
     /**
-     * @covers DfRouter::init
+     * @covers DfRouter
      */
     public function testInit()
     {

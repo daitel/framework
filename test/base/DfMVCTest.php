@@ -10,7 +10,7 @@
 class DfMVCTest extends PHPUnit_Framework_TestCase
 {
     /**
-     * @covers DfMVC::init
+     * @covers DfMVC
      */
     public function testInit()
     {

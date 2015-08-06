@@ -11,7 +11,6 @@ class DfResourceTest extends PHPUnit_Framework_TestCase
 {
     /**
      * @covers DfResource::set
-     * @covers DfResource::get
      */
     public function testSet()
     {
@@ -24,8 +23,13 @@ class DfResourceTest extends PHPUnit_Framework_TestCase
         DfResource::set('js', 'app.js', true);
         DfResource::set('css', $data_css, false, '1');
         DfResource::set('js', $data_js, false, '1');
+    }
 
-
+    /**
+     * @covers DfResource::get
+     */
+    public function testGet()
+    {
         $this->assertEquals(
             '<link href="style.css" rel="stylesheet" type="text/css">' . "\n",
             DfResource::get('css')
