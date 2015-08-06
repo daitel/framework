@@ -10,33 +10,33 @@
  */
 class DfActiveRecord
 {
-	/**
-	 * @var array
-	 */
-	public $attributes = [];
+    /**
+     * @var array
+     */
+    public $attributes = [];
 
-	/**
-	 * Construct
-	 * @param array $data
-	 */
-	public function __construct($data = [])
-	{
-		if (!empty($data)) {
-			$this->setVariables();
-		}
-	}
+    /**
+     * Construct
+     * @param array $data
+     */
+    public function __construct($data = [])
+    {
+        if (!empty($data)) {
+            $this->setVariables();
+        }
+    }
 
-	/**
-	 * Set Variables
-	 * @param array $data
-	 */
-	private function setVariables($data = [])
-	{
-		foreach ($data as $name_var => $var) {
-			if (!is_int($name_var)) {
-				$this->$name_var = $var;
-				$this->attributes[] = $name_var;
-			}
-		}
-	}
+    /**
+     * Set Variables
+     * @param array $data
+     */
+    private function setVariables($data = [])
+    {
+        foreach ($data as $name_var => $var) {
+            if (!is_int($name_var)) {
+                $this->$name_var = $var;
+                $this->attributes[] = $name_var;
+            }
+        }
+    }
 }

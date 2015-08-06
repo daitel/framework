@@ -1,4 +1,4 @@
 Daitel PHP Framework
 ===========================
 
-This is demonstration programs of [framework](https://github.com/daitel/framework).
+This is demonstration apps of [framework](https://github.com/daitel/framework).
