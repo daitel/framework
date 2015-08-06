@@ -7,7 +7,6 @@
  * @link https://github.com/daitel/framework
  * @since 0.1.6
  */
-
 class DfResourceTest extends PHPUnit_Framework_TestCase
 {
 

@@ -7,7 +7,6 @@
  * @link https://github.com/daitel/framework
  *
  */
-
 class DfFileTest extends PHPUnit_Framework_TestCase
 {
 

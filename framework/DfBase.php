@@ -12,6 +12,7 @@ if (empty($dir)) {
 
 $modules = [
 	'base' => [
+		'base/DfRouter',
 		'base/DfTimer',
 		'logging/DfLogger',
 		'base/DfComponent',
