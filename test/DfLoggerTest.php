@@ -7,16 +7,20 @@
  * @link https://github.com/daitel/framework
  *
  */
-
 class DfLoggerTest extends PHPUnit_Framework_TestCase
 {
 
+	public function testLog(){
+		DfApp::app()->log()->log('log', 'log', 'log', 'log');
+
+		$this->assertEquals(true, (!empty(DfApp::app()->log()->getLogData())));
+		$this->assertEquals(true, (!empty(DfApp::app()->log()->getLogDataByComponent('log'))));
+		$this->assertEquals(true, (!empty(DfApp::app()->log()->getLogDataByLevel('log'))));
+		$this->assertEquals(true, (!empty(DfApp::app()->log()->getLogDataByType('log'))));
+	}
 	public function testSave()
 	{
-		$logger = new DfLogger();
-		$logger->log('log', 'log', 'log', 'log');
-		$logger->save('log.txt');
-
-		$this->assertEquals(true, file_exists('log.txt'));
+		DfApp::app()->log()->save('test/log.txt');
+		$this->assertEquals(true, file_exists('test/log.txt'));
 	}
 }

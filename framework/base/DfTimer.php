@@ -1,43 +1,5 @@
 <?php
 /**
- * Daitel Framework
- * Timer Functions
- *
- * @deprecated
- * @author Nikita Fedoseev <agent.daitel@gmail.com>
- * @link https://github.com/daitel/framework
- *
- */
-
-/**
- * Timer Start
- * @deprecated
- * @return float
- */
-function DfTimer_start()
-{
-	$time = microtime();
-	$time = explode(' ', $time);
-	$time = $time[1] + $time[0];
-	return $time;
-}
-
-/**
- * Timer Stop
- * @deprecated
- * @param int $start
- * @return float
- */
-function DfTimer_stop($start)
-{
-	$time = microtime();
-	$time = explode(' ', $time);
-	$time = $time[1] + $time[0];
-	$finish = $time;
-	return round(($finish - $start), 4);
-}
-
-/**
  * DfTimer is base class
  *
  * DfTimer class provide functions for timers operation
@@ -89,7 +51,7 @@ class DfTimer
 	 * @param int $round
 	 * @return bool|float
 	 */
-	function DfTimer_stop($name = 'default', $round = 4)
+	function stop($name = 'default', $round = 4)
 	{
 		if (isset($this->timer[$name])) {
 			$time = round(($this->getTime() - $this->timer[$name]), $round);
