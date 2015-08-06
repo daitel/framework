@@ -96,7 +96,7 @@ class DfLogger
 	 */
 	public function save($path, $key = '', $value = '')
 	{
-		$logger_file = new DFLoggerFIle($path);
+		$logger_file = new DfLoggerFIle($path);
 
 		if ($key && $value) {
 			$logger_array = $this->getLogDataBy($key, $value);
