@@ -63,8 +63,8 @@ class DfMysql extends DfComponent
 	/**
 	 * Simple Query
 	 * @param string $query
-	 * @param int|string $link
-	 * @return bool|resource
+	 * @param integer $link
+	 * @return resource
 	 */
 	public function query($query, $link = 0)
 	{
@@ -158,7 +158,7 @@ class DfMysql extends DfComponent
 
 	/**
 	 * Get Records from query
-	 * @param $query
+	 * @param string $query
 	 * @return bool|array
 	 */
 	public function getRecordsFromQuery($query)

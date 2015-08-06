@@ -24,9 +24,9 @@ class DfLogger
 
 	/**
 	 * Add Log record
-	 * @param $component
-	 * @param $location
-	 * @param $error
+	 * @param string $component
+	 * @param string $location
+	 * @param string $error
 	 * @param string $type
 	 * @param string $level
 	 */
@@ -44,7 +44,7 @@ class DfLogger
 
 	/**
 	 * Return current date for log record
-	 * @return bool|string
+	 * @return string
 	 */
 	private function getLogDate()
 	{
@@ -63,8 +63,8 @@ class DfLogger
 
 	/**
 	 * Get log data by key and value
-	 * @param $key
-	 * @param $value
+	 * @param string $key
+	 * @param string $value
 	 * @return array|bool
 	 */
 	private function getLogDataBy($key, $value)
@@ -90,7 +90,7 @@ class DfLogger
 
 	/**
 	 * Save log to file
-	 * @param $path
+	 * @param string $path
 	 * @param string $key
 	 * @param string $value
 	 */

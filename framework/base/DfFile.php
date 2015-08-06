@@ -25,7 +25,7 @@ class DfFile extends DfComponent
 
 	/**
 	 * Constructor
-	 * @param $file string
+	 * @param string $file
 	 */
 	public function __construct($file)
 	{
@@ -34,7 +34,7 @@ class DfFile extends DfComponent
 
 	/**
 	 * Get Contents of file
-	 * @return bool|string
+	 * @return string|false
 	 */
 	public function read()
 	{
