@@ -90,7 +90,7 @@ class DfSqlTest extends PHPUnit_Framework_TestCase
         );
         $this->assertEquals(
             "UPDATE test SET a = 'b' WHERE (c = 'd' OR e = 'f') AND g = 'h'",
-            DfSql::update($this->table, ['a' => 'b',], '', '', "WHERE (c = 'd' OR e = 'f') AND g = 'h'")
+            DfSql::update($this->table, ['a' => 'b'], '', '', "WHERE (c = 'd' OR e = 'f') AND g = 'h'")
         );
     }
 
