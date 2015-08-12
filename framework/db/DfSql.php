@@ -164,7 +164,7 @@ class DfSql
      *
      * @return bool|string
      */
-    public function CurrentDatetime()
+    public static function datetime()
     {
         return date("Y-m-d H:i:s");
     }
@@ -175,7 +175,7 @@ class DfSql
      *
      * @return bool|string
      */
-    public function currentDate()
+    public static function date()
     {
         return date("Y-m-d");
     }
@@ -186,7 +186,7 @@ class DfSql
      *
      * @return bool|string
      */
-    public function currentTime()
+    public static function time()
     {
         return date("H:i:s");
     }

@@ -10,17 +10,30 @@
  */
 class DfLogger
 {
+    /*
+     * Types
+     */
+    const TYPE_INFO = 'info';
+    const TYPE_WARNING = 'warning';
+    const TYPE_ERROR = 'error';
+    /*
+     * Levels
+     */
+    const LEVEL_LOG = 'log';
+    const LEVEL_DEBUG = 'debug';
+    const LEVEL_USER = 'user';
+    const LEVEL_ADMIN = 'admin';
     /**
      * Component name
      * @see DfComponent
      * @var string
      */
-    private $component_name = 'Logger';
+    private $component_name = 'logger';
     /**
-     * LogData Array
+     * logData Array
      * @var array
      */
-    private $LogData = array();
+    private $logData = array();
 
     /**
      * Add Log record
@@ -30,9 +43,9 @@ class DfLogger
      * @param string $type
      * @param string $level
      */
-    public function log($component, $location, $error, $type = 'info', $level = 'log')
+    public function log($component, $location, $error, $type = DfLogger::TYPE_INFO, $level = DfLogger::LEVEL_LOG)
     {
-        $this->LogData[] = [
+        $this->logData[] = [
             'time' => $this->getLogDate(),
             'type' => $type,
             'component' => $component,
@@ -48,11 +61,15 @@ class DfLogger
      */
     private function getLogDate()
     {
-        return date("d-m-Y H:i:s");
+        return DfSql::datetime();
     }
 
     /**
-     * Get LogData By Type
+     * Get logData By Type
+     * Types:
+     * - TYPE_INFO
+     * - TYPE_WARNING
+     * - TYPE_ERROR
      * @param string $type
      * @return array
      */
@@ -70,7 +87,7 @@ class DfLogger
     private function getLogDataBy($key, $value)
     {
         $return = array();
-        foreach ($this->LogData as $error) {
+        foreach ($this->logData as $error) {
             if ($error[$key] == $value) {
                 $return[] = $error;
             }
@@ -79,7 +96,7 @@ class DfLogger
     }
 
     /**
-     * Get LogData by Component
+     * Get logData by Component
      * @param string $component
      * @return array
      */
@@ -96,22 +113,24 @@ class DfLogger
      */
     public function save($path, $key = '', $value = '')
     {
-        $logger_file = new DfLoggerFIle($path);
+        $logger_file = new DfLoggerFile($path);
 
         if ($key && $value) {
             $logger_array = $this->getLogDataBy($key, $value);
         } else {
-            $logger_array = $this->LogData;
+            $logger_array = $this->logData;
         }
 
         $logger_file->write($logger_array);
     }
 
     /**
-     * Get LogData By level
-     * Level types:
-     * - log
-     * - debug
+     * Get logData By level
+     * Levels:
+     * - LEVEL_LOG
+     * - LEVEL_DEBUG
+     * - LEVEL_USER
+     * - LEVEL_ADMIN
      * @param string $level
      * @return array|bool
      */
@@ -126,17 +145,15 @@ class DfLogger
      */
     public function getLogData()
     {
-        return $this->LogData;
+        return $this->logData;
     }
 
     /**
      * Setter
-     * @param array $LogData
+     * @param array $logData
      */
-    public function setLogData($LogData = array())
+    public function setLogData($logData = array())
     {
-        foreach ($LogData as $error) {
-            $this->LogData[] = $error;
-        }
+        $this->logData = array_merge($this->logData, $logData);
     }
 }
