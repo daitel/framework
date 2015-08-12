@@ -92,15 +92,13 @@ class DfSql
         if (!empty($keys)) {
             $i = 0;
 
-            foreach ($keys as $QKey) {
+            foreach ($keys as $key => $value) {
                 if ($i > 0) {
                     $query .= ' ' . $type . ' ';
                 }
 
-                foreach ($QKey as $key => $value) {
-                    $query .= self::writeKey($key) . " = '" . $value . "'";
-                    $i++;
-                }
+                $query .= self::writeKey($key) . " = '" . $value . "'";
+                $i++;
             }
         }
         return $query;
@@ -118,11 +116,9 @@ class DfSql
         $QKeys = [];
         $QValues = [];
 
-        foreach ($values as $QValue) {
-            foreach ($QValue as $key => $value) {
-                $QKeys[] = $key;
-                $QValues[] = $value;
-            }
+        foreach ($values as $key => $value) {
+            $QKeys[] = $key;
+            $QValues[] = $value;
         }
 
         return "INSERT INTO " . self::writeKey($table) . " (" . self::multiKey($QKeys) . ") VALUES(" . self::multiKey(
