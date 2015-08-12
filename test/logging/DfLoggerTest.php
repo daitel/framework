@@ -38,7 +38,7 @@ class DfLoggerTest extends PHPUnit_Framework_TestCase
      */
     public function testSave()
     {
-        DfApp::app()->log()->save('test/log.txt');
-        $this->assertEquals(true, file_exists('test/log.txt'));
+        DfApp::app()->log()->save(DfTests::$testDir . 'log.txt');
+        $this->assertEquals(true, file_exists(DfTests::$testDir . 'log.txt'));
     }
 }
