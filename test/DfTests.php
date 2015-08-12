@@ -9,8 +9,10 @@
  */
 class DfTests
 {
-    public static $testDir = 'test/res_test/';
+    public static $testDir;
 }
+
+DfTests::$testDir = __DIR__ . '\res_test';
 
 $files = glob(DfTests::$testDir . '*');
 foreach ($files as $file) {

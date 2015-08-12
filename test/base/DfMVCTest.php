@@ -14,12 +14,13 @@ class DfMVCTest extends PHPUnit_Framework_TestCase
      */
     public function testInit()
     {
-        DfMVC::$path = "controller/action/id?a=1&b=c";
-        DfMVC::init();
-        $this->assertEquals(DfMVC::$controller, 'controller');
-        $this->assertEquals(DfMVC::$action, 'action');
-        $this->assertEquals(DfMVC::$id, 'id');
-        $this->assertEquals(DfMVC::$variables['a'], '1');
-        $this->assertEquals(DfMVC::$variables['b'], 'c');
+        $mvc = new DfMVC();
+        $mvc->path = "controller/action/id?a=1&b=c";
+        $mvc->init();
+        $this->assertEquals($mvc->controller, 'controller');
+        $this->assertEquals($mvc->action, 'action');
+        $this->assertEquals($mvc->id, 'id');
+        $this->assertEquals($mvc->variables['a'], '1');
+        $this->assertEquals($mvc->variables['b'], 'c');
     }
 }

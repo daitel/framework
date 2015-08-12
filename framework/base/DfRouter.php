@@ -14,24 +14,24 @@ class DfRouter
      * Elements
      * @var array
      */
-    public static $elements = [];
+    public $elements = [];
     /**
      * Variables
      * @var array
      */
-    public static $variables = [];
+    public $variables = [];
     /**
      * Path
      * @var string
      */
-    public static $path = "";
+    public $path = "";
 
     /**
      * Init
      */
-    public static function init()
+    public function init()
     {
-        if (static::$path == '') {
+        if ($this->path == '') {
             static::setPath((isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : ''));
         }
 
@@ -42,17 +42,17 @@ class DfRouter
      * Set Url path
      * @param $path
      */
-    private static function setPath($path)
+    private function setPath($path)
     {
-        static::$path = ltrim($path, '/');
+        $this->path = ltrim($path, '/');
     }
 
     /**
      * Decode Path
      */
-    private static function decodePath()
+    private function decodePath()
     {
-        $general_elements = explode("?", static::$path);
+        $general_elements = explode("?", $this->path);
         static::setElements($general_elements);
         static::setVariables($general_elements);
     }
@@ -61,10 +61,10 @@ class DfRouter
      * Set Elements
      * @param $general_elements
      */
-    private static function setElements($general_elements)
+    private function setElements($general_elements)
     {
         if (isset($general_elements[0])) {
-            static::$elements = explode("/", $general_elements[0]);
+            $this->elements = explode("/", $general_elements[0]);
         }
     }
 
@@ -72,14 +72,14 @@ class DfRouter
      * Set Variables
      * @param $general_elements
      */
-    private static function setVariables($general_elements)
+    private function setVariables($general_elements)
     {
         if (isset($general_elements[1])) {
             $variables = explode("&", $general_elements[1]);
 
             foreach ($variables as $var) {
                 list($name, $value) = explode("=", $var);
-                static::$variables[$name] = $value;
+                $this->variables[$name] = $value;
             }
         }
     }

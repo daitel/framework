@@ -13,20 +13,20 @@ class DfMVC extends DfRouter
     /**
      * @var string
      */
-    public static $controller;
+    public $controller;
     /**
      * @var string
      */
-    public static $action;
+    public $action;
     /**
      * @var string|int
      */
-    public static $id;
+    public $id;
 
     /**
      * Initialization
      */
-    public static function init()
+    public function init()
     {
         parent::init();
         static::set();
@@ -35,14 +35,14 @@ class DfMVC extends DfRouter
     /**
      * Set Variables
      */
-    private static function set()
+    private function set()
     {
-        if (isset(static::$elements[0])) {
-            static::$controller = static::$elements[0];
-            if (isset(static::$elements[1])) {
-                static::$action = static::$elements[1];
-                if (isset(static::$elements[2])) {
-                    static::$id = static::$elements[2];
+        if (isset($this->elements[0])) {
+            $this->controller = $this->elements[0];
+            if (isset($this->elements[1])) {
+                $this->action = $this->elements[1];
+                if (isset($this->elements[2])) {
+                    $this->id = $this->elements[2];
                 }
             }
         }

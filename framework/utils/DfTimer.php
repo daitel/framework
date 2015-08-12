@@ -14,7 +14,7 @@ class DfTimer
      * Timers array
      * @var array
      */
-    private $timer = [];
+    private $timers = [];
 
     /**
      * Timer start
@@ -25,8 +25,8 @@ class DfTimer
     {
         $time = $this->getTime();
 
-        if (!isset($this->timer[$name])) {
-            $this->timer[$name] = $time;
+        if (!isset($this->timers[$name])) {
+            $this->timers[$name] = $time;
             return true;
         } else {
             return false;
@@ -51,11 +51,11 @@ class DfTimer
      * @param int $round
      * @return bool|float
      */
-    function stop($name = 'default', $round = 4)
+    public function stop($name = 'default', $round = 4)
     {
-        if (isset($this->timer[$name])) {
-            $time = round(($this->getTime() - $this->timer[$name]), $round);
-            unset($this->timer[$name]);
+        if (isset($this->timers[$name])) {
+            $time = round(($this->getTime() - $this->timers[$name]), $round);
+            unset($this->timers[$name]);
             return $time;
         } else {
             return false;

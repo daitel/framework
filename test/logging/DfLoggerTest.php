@@ -18,18 +18,18 @@ class DfLoggerTest extends PHPUnit_Framework_TestCase
      */
     public function testLog()
     {
-        DfApp::app()->log()->log('log', 'log', 'log', 'log');
+        DfApp::app()->logger->log('log', 'log', 'log', 'log');
 
-        $logData = DfApp::app()->log()->getLogData();
+        $logData = DfApp::app()->logger->getLogData();
         $this->assertEquals(true, (!empty($logData)));
 
-        $logData = DfApp::app()->log()->getLogDataByComponent('log');
+        $logData = DfApp::app()->logger->getLogDataByComponent('log');
         $this->assertEquals(true, (!empty($logData)));
 
-        $logData = DfApp::app()->log()->getLogDataByLevel('log');
+        $logData = DfApp::app()->logger->getLogDataByLevel('log');
         $this->assertEquals(true, (!empty($logData)));
 
-        $logData = DfApp::app()->log()->getLogDataByType('log');
+        $logData = DfApp::app()->logger->getLogDataByType('log');
         $this->assertEquals(true, (!empty($logData)));
     }
 
@@ -38,7 +38,7 @@ class DfLoggerTest extends PHPUnit_Framework_TestCase
      */
     public function testSave()
     {
-        DfApp::app()->log()->save(DfTests::$testDir . 'log.txt');
+        DfApp::app()->logger->save(DfTests::$testDir . 'log.txt');
         $this->assertEquals(true, file_exists(DfTests::$testDir . 'log.txt'));
     }
 }

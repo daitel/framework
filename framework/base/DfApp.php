@@ -8,7 +8,7 @@
  * @package system.base
  * @since 0.2.1
  */
-class DfApp extends DfMVC
+class DfApp
 {
     /**
      * Application path
@@ -25,22 +25,28 @@ class DfApp extends DfMVC
      * Logger
      * @var DfLogger
      */
-    private $Logger;
+    private $logger;
     /**
      * Timer
      * @var DfTimer
      */
-    private $Timer;
+    private $timer;
+    /**
+     * Router
+     * @var DfMVC
+     */
+    private $router;
 
     /**
-     * Start App
-     * @param array $config
+     * Initialization process
      */
-    public static function start($config = [])
+    public static function init()
     {
-        static::configRead($config);
-        parent::init();
-        DfApp::app()->timer()->start();
+        DfApp::app()->timer = new DfTimer();
+        DfApp::app()->timer->start();
+
+        DfApp::app()->router = new DfMVC();
+        DfApp::app()->router->init();
     }
 
     /**
@@ -55,13 +61,12 @@ class DfApp extends DfMVC
     }
 
     /**
-     * Returning app path
-     * @param bool $slash
-     * @return string
+     * Start App
+     * @param array $config
      */
-    public static function getPath($slash = false)
+    public static function start($config = [])
     {
-        return ($slash == true ? static::$app_path . "/" : static::$app_path);
+        static::configRead($config);
     }
 
     /**
@@ -78,36 +83,42 @@ class DfApp extends DfMVC
     }
 
     /**
-     * Return DfLogger
-     * @return DfLogger
+     * Returning app path
+     * @param bool $slash
+     * @return string
      */
-    public function log()
+    public static function getPath($slash = false)
     {
-        return $this->getObject('DfLogger');
+        return ($slash == true ? static::$app_path . "/" : static::$app_path);
     }
 
     /**
-     * Return DfTimer
-     * @return DfTimer
+     * Magic Get
+     * @param $name
+     * @return bool
      */
-    public function timer()
+    public function __get($name)
     {
-        return $this->getObject('DfTimer');
+        return $this->getObject($name);
     }
 
     /**
-     * Return copy of class
-     * @param string $name
-     * @return object
+     * Get Object
+     * @param $name
+     * @return bool
      */
     private function getObject($name)
     {
-        $copyName = str_replace("Df", "", $name);
+        $className = "Df" . ucwords($name);
 
-        if ($this->$copyName === null) {
-            $this->$copyName = new $name();
+        if ($this->app()->$name === null) {
+            if (class_exists($className)) {
+                $this->app()->$name = new $className;
+            } else {
+                return false;
+            }
         }
 
-        return $this->$copyName;
+        return $this->app()->$name;
     }
 }
