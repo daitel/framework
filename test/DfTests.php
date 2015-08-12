@@ -12,7 +12,7 @@ class DfTests
     public static $testDir;
 }
 
-DfTests::$testDir = __DIR__ . '\res_test';
+DfTests::$testDir = __DIR__ . '\\res_test\\';
 
 $files = glob(DfTests::$testDir . '*');
 foreach ($files as $file) {
