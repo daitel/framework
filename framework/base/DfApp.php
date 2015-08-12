@@ -36,6 +36,11 @@ class DfApp
      * @var DfMVC
      */
     private $router;
+    /**
+     * Mysql
+     * @var DfMysql
+     */
+    private $mysql;
 
     /**
      * Initialization process
@@ -50,14 +55,16 @@ class DfApp
     }
 
     /**
-     * Config Reading
-     * @param $config
+     * Application copy for non-static call
+     * @return DfApp
      */
-    private static function configRead($config)
+    public static function app()
     {
-        if (isset($config['app_path'])) {
-            static::$app_path = trim($config['app_path'], "/");
+        if (static::$app === null) {
+            static::$app = new DfApp;
         }
+
+        return static::$app;
     }
 
     /**
@@ -70,16 +77,20 @@ class DfApp
     }
 
     /**
-     * Application copy for non-static call
-     * @return DfApp
+     * Config Reading
+     * @param $config
      */
-    public static function app()
+    private static function configRead($config)
     {
-        if (static::$app === null) {
-            static::$app = new DfApp;
+        if (isset($config['app_path'])) {
+            static::$app_path = trim($config['app_path'], "/");
         }
 
-        return static::$app;
+        if (isset($config['components'])) {
+            if (isset($config['components']['mysql'])) {
+                DfApp::app()->mysql = new DfMysql($config['components']['mysql']);
+            }
+        }
     }
 
     /**

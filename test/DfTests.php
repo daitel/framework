@@ -9,16 +9,39 @@
  */
 class DfTests
 {
+    /**
+     * @var string
+     */
     public static $testDir;
-}
 
-DfTests::$testDir = __DIR__ . '\\res_test\\';
+    /**
+     * Start Tests functions
+     * @param $path
+     */
+    public static function start($path)
+    {
+        DfTests::$testDir = $path;
+        DfTests::clearDir();
+    }
 
-$files = glob(DfTests::$testDir . '*');
-foreach ($files as $file) {
-    if (is_file($file)) {
-        unlink($file);
+    /**
+     * Clear resource directory for tests process
+     */
+    private static function clearDir()
+    {
+        if (!file_exists(DfTests::$testDir)) {
+            mkdir(DfTests::$testDir, 0777, true);
+        } else {
+            $files = glob(DfTests::$testDir . '*');
+            foreach ($files as $file) {
+                if (is_file($file)) {
+                    unlink($file);
+                }
+            }
+        }
     }
 }
+
+DfTests::start(__DIR__ . '\\res_test\\');
 
 include('framework/DfBase.php');
