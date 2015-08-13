@@ -29,8 +29,8 @@ install:
     - travis_retry composer update
 
 script:
-  - phpunit --configuration ../phpunit.xml
+  - phpunit --configuration phpunit.xml
 
 after_script:
   - wget https://scrutinizer-ci.com/ocular.phar
-  - php ocular.phar code-coverage:upload --format=php-clover ../build/logs/clover.xml
+  - php ocular.phar code-coverage:upload --format=php-clover build/logs/clover.xml
