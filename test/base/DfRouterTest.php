@@ -14,13 +14,11 @@ class DfRouterTest extends PHPUnit_Framework_TestCase
      */
     public function testInit()
     {
-        $router = new DfRouter();
-        $router->path = 'controller/action/id?a=1&b=c';
-        $router->init();
-        $this->assertEquals($router->elements[0], 'controller');
-        $this->assertEquals($router->elements[1], 'action');
-        $this->assertEquals($router->elements[2], 'id');
-        $this->assertEquals($router->variables['a'], '1');
-        $this->assertEquals($router->variables['b'], 'c');
+        $router = new DfRouter('http://localhost/controller/action/id?a=1&b=c');
+        $this->assertEquals('controller', $router->elements[0]);
+        $this->assertEquals('action', $router->elements[1]);
+        $this->assertEquals('id', $router->elements[2]);
+        $this->assertEquals('1', $router->variables['a']);
+        $this->assertEquals('c', $router->variables['b']);
     }
 }

@@ -24,12 +24,12 @@ class DfMVC extends DfRouter
     public $id;
 
     /**
-     * Initialization
+     * __construct
      */
-    public function init()
+    public function __construct($path = '')
     {
-        parent::init();
-        static::set();
+        $this->processPath($path);
+        $this->set();
     }
 
     /**

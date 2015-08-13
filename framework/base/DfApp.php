@@ -51,7 +51,6 @@ class DfApp
         DfApp::app()->timer->start();
 
         DfApp::app()->router = new DfMVC();
-        DfApp::app()->router->init();
     }
 
     /**

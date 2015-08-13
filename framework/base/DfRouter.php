@@ -11,6 +11,11 @@
 class DfRouter
 {
     /**
+     * Path
+     * @var array
+     */
+    public $path = [];
+    /**
      * Elements
      * @var array
      */
@@ -21,30 +26,38 @@ class DfRouter
      */
     public $variables = [];
     /**
-     * Path
+     * fragment
      * @var string
      */
-    public $path = "";
+    public $fragment;
 
     /**
-     * Init
+     * __construct
+     * @param string $path
      */
-    public function init()
+    public function __construct($path = '')
     {
-        if ($this->path == '') {
-            static::setPath((isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : ''));
-        }
+        $this->processPath($path);
+    }
 
-        static::decodePath();
+    /**
+     * Process Path
+     * @param string $path
+     */
+    protected function processPath($path)
+    {
+        $this->setPath(($path !== '' ? $path : (isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : '')));
+
+        $this->decodePath();
     }
 
     /**
      * Set Url path
-     * @param $path
+     * @param string $path
      */
     private function setPath($path)
     {
-        $this->path = ltrim($path, '/');
+        $this->path = parse_url($path);
     }
 
     /**
@@ -52,35 +65,38 @@ class DfRouter
      */
     private function decodePath()
     {
-        $general_elements = explode("?", $this->path);
-        static::setElements($general_elements);
-        static::setVariables($general_elements);
+        $this->setElements();
+        $this->setVariables();
+        $this->setFragment();
     }
 
     /**
      * Set Elements
-     * @param $general_elements
      */
-    private function setElements($general_elements)
+    private function setElements()
     {
-        if (isset($general_elements[0])) {
-            $this->elements = explode("/", $general_elements[0]);
-        }
+        $this->elements = (isset($this->path['path']) ? explode("/", ltrim($this->path['path'], '/')) : []);
     }
 
     /**
      * Set Variables
-     * @param $general_elements
      */
-    private function setVariables($general_elements)
+    private function setVariables()
     {
-        if (isset($general_elements[1])) {
-            $variables = explode("&", $general_elements[1]);
-
-            foreach ($variables as $var) {
+        if (isset($this->path['query'])) {
+            $query = explode("&", trim($this->path['query']));
+            foreach ($query as $var) {
                 list($name, $value) = explode("=", $var);
                 $this->variables[$name] = $value;
             }
         }
+    }
+
+    /**
+     * Set Fragment
+     */
+    private function setFragment()
+    {
+        $this->fragment = (isset($this->path['fragment']) ? $this->path['fragment'] : '');
     }
 } 
