@@ -1,13 +1,12 @@
 filter:
-    paths: [framework/*, test/*]
-
-checks:
-    php:
-        code_rating: true
-        duplication: true
+    paths: [framework/*]
 
 tools:
-    external_code_coverage: true
+    php_cs_fixer: true
+    php_analyzer: true
     php_mess_detector: true
+    php_changetracking: true
     php_code_sniffer: true
     php_pdepend: true
+    sensiolabs_security_checker: true
+    external_code_coverage: true
