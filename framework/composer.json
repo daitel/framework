@@ -1,6 +1,6 @@
 {
-    "name": "daitel/framework-dev",
-    "description": "Daitel PHP Framework - Development Package",
+    "name": "daitel/framework",
+    "description": "Daitel PHP Framework",
     "keywords": [
         "framework",
         "mvc",
@@ -16,14 +16,7 @@
             "role": "Administrator"
         }
     ],
-    "minimum-stability": "dev",
-    "replace": {
-        "daitel/framework": "self.version"
-    },
     "require": {
         "php": ">=5.4.0"
-    },
-    "require-dev": {
-        "phpunit/phpunit": "3.7"
     }
 }
