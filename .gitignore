@@ -26,3 +26,4 @@ phpunit.phar
 
 #build data
 build
+coverage.clover
