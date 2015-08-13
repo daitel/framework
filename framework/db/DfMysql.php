@@ -201,7 +201,7 @@ class DfMysql extends DfComponent
 
     /**
      * Get Record from query
-     * @param $query
+     * @param string $query
      * @return array|bool
      */
     public function getRecordFromQuery($query)
