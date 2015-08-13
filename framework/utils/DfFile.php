@@ -9,7 +9,6 @@
  */
 class DfFile extends DfComponent
 {
-
     /**
      * Component name
      *
@@ -41,15 +40,15 @@ class DfFile extends DfComponent
         if (file_exists($this->file)) {
             return file_get_contents($this->file);
         } else {
-            $this->log('danger', $this->component_name, $this->file, "unable to read file");
+            $this->log( $this->component_name, $this->file, "unable to read file");
             return false;
         }
     }
 
     /**
-     * Write some text to file
+     * Write text to file
      * @param string $text
-     * @param bool
+     * @param bool $truncate
      * @return bool
      */
     public function write($text, $truncate = false)
@@ -57,52 +56,32 @@ class DfFile extends DfComponent
         if (!$text) {
             return false;
         }
+
         if ($this->initFile($this->file)) {
             if ($truncate) {
-                ftruncate($this->getFile(), 0);
+                ftruncate($this->file, 0);
             }
-            fwrite($this->getFile(), $text . "\n");
-            fclose($this->getFile());
+
+            fwrite($this->file, $text . "\n");
+            fclose($this->file);
             return true;
-        } else {
-            return false;
         }
+
+        return false;
     }
 
     /**
-     * Init File(fopen)
-     * @param string $file_path
+     * Init File
+     * @param string $filePath
      * @param string $type
      * @return bool
      */
-    private function initFile($file_path, $type = 'a+')
+    private function initFile($filePath, $type = 'a+')
     {
-        if (empty($file_path)) {
+        if (empty($filePath)) {
             return false;
         }
-        if ($file_worker = fopen($file_path, $type)) {
-            $this->setFile($file_worker);
-            return true;
-        } else {
-            return false;
-        }
-    }
 
-    /**
-     * Set FileWorker
-     * @param resource $file
-     */
-    private function setFile($file)
-    {
-        $this->file = $file;
-    }
-
-    /**
-     * Get FileWorker
-     * @return resource
-     */
-    private function getFile()
-    {
-        return $this->file;
+        return ($this->file = fopen($filePath, $type)) ? true : false;
     }
 }
