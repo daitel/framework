@@ -1,6 +1,8 @@
-imports:
-    - php
+filter:
+    paths: [framework/*, test/*]
 
 tools:
-    external_code_coverage:
-        timeout: 600
+    external_code_coverage: true
+    php_mess_detector: true
+    php_code_sniffer: true
+    php_pdepend: true
