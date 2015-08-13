@@ -2,7 +2,7 @@
 [![Total Downloads](https://poser.pugx.org/daitel/framework/downloads.svg)](https://packagist.org/packages/daitel/framework)
 [![License](https://poser.pugx.org/daitel/framework/license.svg)](https://packagist.org/packages/daitel/framework)
 [![Reference Status](https://www.versioneye.com/php/daitel:framework/reference_badge.svg?style=flat)](https://www.versioneye.com/php/daitel:framework/references)
-[![Test Coverage](https://codeclimate.com/repos/545f742c6956805fae19c880/badges/ffdc1406935135a876a8/coverage.svg)](https://codeclimate.com/repos/545f742c6956805fae19c880/feed)
+[![Code Coverage](https://scrutinizer-ci.com/g/daitel/framework/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/daitel/framework/?branch=master)
 
 This is the core framework code of [framework](https://github.com/daitel/framework).
 
