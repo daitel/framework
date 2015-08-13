@@ -28,7 +28,7 @@ class DfLogger
      * @see DfComponent
      * @var string
      */
-    private $component_name = 'logger';
+    public $componentName = 'logger';
     /**
      * logData Array
      * @var array

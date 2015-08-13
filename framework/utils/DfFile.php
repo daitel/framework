@@ -16,7 +16,7 @@ class DfFile extends DfComponent
      * @see DfErrors
      * @var string
      */
-    private $component_name = 'file';
+    public $componentName = 'file';
     /**
      * @var resource
      */
@@ -40,7 +40,7 @@ class DfFile extends DfComponent
         if (file_exists($this->file)) {
             return file_get_contents($this->file);
         } else {
-            $this->log( $this->component_name, $this->file, "unable to read file");
+            $this->log($this->componentName, $this->file, "unable to read file");
             return false;
         }
     }

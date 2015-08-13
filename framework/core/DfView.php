@@ -10,25 +10,21 @@
  */
 class DfView
 {
-    //public $template_view; // здесь можно указать общий вид по умолчанию.
+    public $template_view = 'template';
 
-    function generate($content_view, $template_view, $data = null)
+    public function render($view, $data = [])
     {
-        /*
-        if(is_array($data)) {
-            // преобразуем элементы массива в переменные
-            extract($data);
-        }
-        */
-
-        include 'application/views/' . $template_view;
+        $this->renderPage($view, $this->template_view, $data);
     }
 
-    public function render($view, $data = []){
-        if(!empty($data)){
+    private function renderPage($view, $template, $data = [])
+    {
+        if (!empty($data)) {
             extract($data);
         }
 
+        $path = 'app/views/' . $view;
 
+        include $template;
     }
 }

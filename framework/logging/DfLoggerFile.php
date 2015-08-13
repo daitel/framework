@@ -14,26 +14,26 @@ class DfLoggerFile extends DfComponent
      * Log file
      * @var DfFile
      */
-    private $log_file;
-
-    private $errors;
-
+    private $logFile;
     /**
      * Component name
      * @var string
      */
-    private $component_name = 'LoggerFile';
+    public $componentName = 'LoggerFile';
 
     /**
      * Constructor of class
-     *
      * @param string $path
      */
     public function __construct($path)
     {
-        $this->log_file = new DfFile($path);
+        $this->logFile = new DfFile($path);
     }
 
+    /**
+     * Write log data process
+     * @param array $log_data
+     */
     public function write($log_data = array())
     {
         foreach ($log_data as $log) {
@@ -49,11 +49,11 @@ class DfLoggerFile extends DfComponent
     }
 
     /**
-     * Interface for DfFile write
+     * Function for DfFile write
      * @param string $text
      */
     private function writeLine($text)
     {
-        $this->log_file->write($text);
+        $this->logFile->write($text);
     }
 }

@@ -27,7 +27,7 @@ class DfMysql extends DfComponent
      * @see DfComponent
      * @var string
      */
-    private $component_name = 'mysql';
+    public $componentName = 'mysql';
     /**
      * Links to mysql server
      * @var array
@@ -77,10 +77,10 @@ class DfMysql extends DfComponent
         }
 
         if ($this->connect) {
-            $time = DfTimer_start();
+
 
             if ($res = mysql_query($query, $this->links[$link])) {
-                $this->log($this->component_name, $query, '', 'info', 'log', DfTimer_stop($time));
+                $this->log($query, '', DfLogger::TYPE_INFO, DfLogger::LEVEL_LOG);
                 if (mysql_num_rows($res)) {
                     return $res;
                 } else {
@@ -93,12 +93,11 @@ class DfMysql extends DfComponent
                 }
             } else {
                 $this->log(
-                    $this->component_name,
+                    $this->componentName,
                     $query,
                     mysql_error($this->links[$link]),
-                    'warning',
-                    'error',
-                    DfTimer_stop($time)
+                    DfLogger::TYPE_WARNING,
+                    DfLogger::LEVEL_ADMIN
                 );
                 return false;
             }
@@ -118,7 +117,7 @@ class DfMysql extends DfComponent
 
                 if (!mysql_select_db($this->config['db_name'], $this->links[$this->config['db_host']])) {
                     $this->connect = false;
-                    $this->log($this->component_name, '', mysql_error(), 'danger');
+                    $this->log($this->componentName, '', mysql_error(), DfLogger::TYPE_ERROR);
                 } else {
                     $this->connect = true;
                     $this->query("SET NAMES 'utf8'");
@@ -126,7 +125,7 @@ class DfMysql extends DfComponent
                 }
             } else {
                 $this->connect = false;
-                $this->log($this->component_name, '', mysql_error(), 'danger');
+                $this->log($this->componentName, '', mysql_error(), DfLogger::TYPE_ERROR);
             }
             $this->connect_retry = false;
         }
