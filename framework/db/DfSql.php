@@ -13,11 +13,11 @@ class DfSql
     /**
      * Create Query for select key
      * @param string $table
-     * @param array $key
+     * @param string $key
      * @param array $where
      * @param string $type
      * @param string $other
-     * @return mixed
+     * @return string
      */
     public static function selectKey($table, $key = [], $where = [], $type = 'AND', $other = '')
     {
@@ -158,7 +158,7 @@ class DfSql
      * Return string with current datetime as mysql format
      * Format: Y-m-d H:i:s
      *
-     * @return bool|string
+     * @return string
      */
     public static function datetime()
     {
@@ -169,7 +169,7 @@ class DfSql
      * Return string with current date as mysql format
      * Format: Y-m-d
      *
-     * @return bool|string
+     * @return string
      */
     public static function date()
     {
@@ -180,7 +180,7 @@ class DfSql
      * Return string with current time as mysql format
      * Format: Y-m-d H:i:s
      *
-     * @return bool|string
+     * @return string
      */
     public static function time()
     {

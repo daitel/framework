@@ -16,7 +16,7 @@ class DfComponent
 
     /**
      * Log
-     * @param $error
+     * @param string $error
      * @param $location
      * @param string $type
      * @param string $level
