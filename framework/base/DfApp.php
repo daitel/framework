@@ -11,11 +11,17 @@
 class DfApp
 {
     /**
-     * Application path
+     * Application web path
      * Example: localhost
      * @var string
      */
-    private static $app_path;
+    private static $appPath;
+    /**
+     * Runtime path
+     * Example: localhost
+     * @var string
+     */
+    private static $runtimePath;
     /**
      * Application
      * @var DfApp
@@ -45,12 +51,14 @@ class DfApp
     /**
      * Initialization process
      */
-    public static function init()
+    public static function init($runtimePath = __DIR__)
     {
         DfApp::app()->timer = new DfTimer();
         DfApp::app()->timer->start();
 
         DfApp::app()->router = new DfMVC();
+
+        DfApp::$runtimePath = $runtimePath;
     }
 
     /**
@@ -82,7 +90,7 @@ class DfApp
     private static function configRead($config)
     {
         if (isset($config['app_path'])) {
-            static::$app_path = trim($config['app_path'], "/");
+            static::$appPath = trim($config['app_path'], "/");
         }
 
         if (isset($config['components'])) {
@@ -123,7 +131,7 @@ class DfApp
      */
     public static function getPath($slash = false)
     {
-        return ($slash == true ? static::$app_path . "/" : static::$app_path);
+        return ($slash == true ? static::$appPath . "/" : static::$appPath);
     }
 
     /**

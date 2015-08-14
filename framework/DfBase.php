@@ -68,6 +68,7 @@ class DfBase
         }
     }
 }
+define('DF_BASE_PATH', realpath(dirname(__FILE__)));
 
 $DfBase = new DfBase();
-DfApp::init();
+DfApp::init(DF_BASE_PATH);
