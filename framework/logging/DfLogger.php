@@ -25,15 +25,28 @@ class DfLogger
     const LEVEL_ADMIN = 'admin';
     /**
      * Component name
-     * @see DfComponent
      * @var string
      */
     public $componentName = 'logger';
+
+    /**
+     * Component name
+     * @var string
+     */
+    public $path;
     /**
      * logData Array
      * @var array
      */
     private $logData = array();
+
+    /**
+     * __construct
+     * @param string $path
+     */
+    public function __construct($path = 'log.txt'){
+        $this->path = $path;
+    }
 
     /**
      * Add Log record
@@ -107,13 +120,12 @@ class DfLogger
 
     /**
      * Save log to file
-     * @param string $path
      * @param string $key
      * @param string $value
      */
-    public function save($path, $key = '', $value = '')
+    public function save($key = '', $value = '')
     {
-        $logger_file = new DfLoggerFile($path);
+        $logger_file = new DfLoggerFile($this->path);
 
         if ($key && $value) {
             $logger_array = $this->getLogDataBy($key, $value);

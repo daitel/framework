@@ -9,12 +9,18 @@
  */
 class DfTimerTest extends PHPUnit_Framework_TestCase
 {
+    /**
+     * @depends DfAppTest::testStart
+     */
     public function testStart()
     {
         $this->assertEquals(true, DfApp::app()->timer->start('1'));
         $this->assertEquals(false, DfApp::app()->timer->start('1'));
     }
 
+    /**
+     * @depends testStart
+     */
     public function testStop()
     {
         $this->assertEquals(true, is_numeric(DfApp::app()->timer->stop()));

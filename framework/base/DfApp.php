@@ -25,22 +25,22 @@ class DfApp
      * Logger
      * @var DfLogger
      */
-    private $logger;
+    public $logger;
     /**
      * Timer
      * @var DfTimer
      */
-    private $timer;
+    public $timer;
     /**
      * Router
      * @var DfMVC
      */
-    private $router;
+    public $router;
     /**
      * Mysql
      * @var DfMysql
      */
-    private $mysql;
+    public $mysql;
 
     /**
      * Initialization process
@@ -89,6 +89,12 @@ class DfApp
             if (isset($config['components']['mysql'])) {
                 DfApp::app()->mysql = new DfMysql($config['components']['mysql']);
             }
+        }
+
+        if (isset($config['logger']['path'])) {
+            DfApp::app()->logger = new DfLogger($config['logger']['path']);
+        } else {
+            DfApp::app()->logger = new DfLogger();
         }
 
         if (isset($config['errors'])) {
