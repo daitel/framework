@@ -90,6 +90,24 @@ class DfApp
                 DfApp::app()->mysql = new DfMysql($config['components']['mysql']);
             }
         }
+
+        if (isset($config['errors'])) {
+            if (isset($config['errors']['display'])) {
+                switch ($config['errors']['display']) {
+                    case true:
+                        ini_set('display_errors', 1);
+                        ini_set('display_startup_errors', 1);
+                        error_reporting(isset($config['errors']['level']) ? $config['errors']['level'] : -1);
+                        break;
+                    case false:
+                    default:
+                        ini_set('display_errors', 0);
+                        ini_set('display_startup_errors', 1);
+                        error_reporting(0);
+                        break;
+                }
+            }
+        }
     }
 
     /**

@@ -70,10 +70,4 @@ class DfBase
 }
 
 $DfBase = new DfBase();
-
-
-if (!empty($config) && !$config['error_reporting']) {
-    error_reporting(0);
-}
-
 DfApp::init();
