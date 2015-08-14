@@ -9,9 +9,6 @@
  */
 class DfResourceTest extends PHPUnit_Framework_TestCase
 {
-    /**
-     * @covers DfResource::set
-     */
     public function testSet()
     {
         $data_js = "$(document).ready(function () {});";
@@ -25,9 +22,6 @@ class DfResourceTest extends PHPUnit_Framework_TestCase
         DfResource::set('js', $data_js, false, '1');
     }
 
-    /**
-     * @covers DfResource::get
-     */
     public function testGet()
     {
         $this->assertEquals(

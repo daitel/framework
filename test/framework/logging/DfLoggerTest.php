@@ -9,13 +9,6 @@
  */
 class DfLoggerTest extends PHPUnit_Framework_TestCase
 {
-    /**
-     * @covers DfLogger::log
-     * @covers DfLogger::getLogData
-     * @covers DfLogger::getLogDataByComponent
-     * @covers DfLogger::getLogDataByLevel
-     * @covers DfLogger::getLogDataByType
-     */
     public function testLog()
     {
         DfApp::app()->logger->log('log', 'log', 'log', 'log');
@@ -33,9 +26,6 @@ class DfLoggerTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(true, (!empty($logData)));
     }
 
-    /**
-     * @covers DfLogger::save
-     */
     public function testSave()
     {
         DfApp::app()->logger->save(DfTests::$testDir . 'log.txt');

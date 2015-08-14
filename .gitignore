@@ -25,5 +25,4 @@ composer.phar
 phpunit.phar
 
 #build data
-build
 coverage.clover

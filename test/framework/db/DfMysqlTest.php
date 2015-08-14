@@ -9,9 +9,6 @@
  */
 class DfMysqlTest extends PHPUnit_Framework_TestCase
 {
-    /**
-     * @coversNothing
-     */
     public function testConstruct()
     {
         $this->assertEquals(true, is_object(DfApp::app()->mysql));

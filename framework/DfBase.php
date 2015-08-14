@@ -8,41 +8,69 @@
  */
 class DfBase
 {
-    public static $framework_directory;
-    public static $dir;
-}
+    /**
+     * Framework Directory
+     * @var array
+     */
+    public $framework_directory = [];
+    /**
+     * Core directory
+     * @var
+     */
+    public $dir;
 
-if (empty($dir)) {
-    $dir = 'framework';
-}
+    /**
+     * __construct
+     */
+    public function __construct()
+    {
+        $this->dir = __DIR__;
+        $this->registerAutoloader();
+    }
 
-DfBase::$dir = $dir;
+    /**
+     * Register Autoloader
+     */
+    private function registerAutoloader()
+    {
+        spl_autoload_register(
+            [$this, 'autoloader']
+        );
+    }
 
-DfBase::$framework_directory = [];
+    /**
+     * AutoLoader
+     * @param string $class
+     */
+    private function autoloader($class)
+    {
+        if (empty($this->framework_directory)) {
+            $this->scanFrameworkDirectory();
+        }
 
-foreach (scandir(DfBase::$dir) as $directory) {
-    ($directory != "." && $directory != ".." && is_dir(
-        DfBase::$dir . "/" . $directory
-    ) ? DfBase::$framework_directory[] = $directory : "");
-}
+        foreach ($this->framework_directory as $directory) {
+            $path = $this->dir . "/" . $directory . "/" . $class . ".php";
+            if (file_exists($path)) {
+                include($path);
+            }
+        }
+    }
 
-/**
- * Autoloader class
- * @param $class
- */
-function autoloader($class)
-{
-    foreach (DfBase::$framework_directory as $directory) {
-        $path = DfBase::$dir . "/" . $directory . "/" . $class . ".php";
-        if (file_exists($path)) {
-            include($path);
+    /**
+     * Make array of framework directory
+     */
+    private function scanFrameworkDirectory()
+    {
+        foreach (scandir($this->dir) as $directory) {
+            ($directory != "." && $directory != ".." && is_dir(
+                $this->dir . "/" . $directory
+            ) ? $this->framework_directory[] = $directory : "");
         }
     }
 }
 
-spl_autoload_register(
-    'autoloader'
-);
+$DfBase = new DfBase();
+
 
 if (!empty($config) && !$config['error_reporting']) {
     error_reporting(0);

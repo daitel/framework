@@ -94,9 +94,6 @@ class DfSqlTest extends PHPUnit_Framework_TestCase
         );
     }
 
-    /**
-     * @covers DfSql::selectAll
-     */
     public function testSelectAll()
     {
         $this->assertEquals('SELECT * FROM test', DfSql::selectAll($this->table));

@@ -42,6 +42,6 @@ class DfTests
     }
 }
 
-DfTests::start(__DIR__ . '\\res_test\\');
+DfTests::start(__DIR__ . '\\runtime\\');
 
 include('framework/DfBase.php');

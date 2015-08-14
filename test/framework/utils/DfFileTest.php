@@ -9,9 +9,6 @@
  */
 class DfFileTest extends PHPUnit_Framework_TestCase
 {
-    /**
-     * @covers DfFile::write
-     */
     public function testWrite()
     {
         $file = new DfFile('');
@@ -27,9 +24,6 @@ class DfFileTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(true, $file->write('true', true));
     }
 
-    /**
-     * @covers DfFile::read
-     */
     public function testRead()
     {
         $file = new DfFile(DfTests::$testDir . 'DfFileTest.txt');

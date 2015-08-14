@@ -9,9 +9,6 @@
  */
 class DfRouterTest extends PHPUnit_Framework_TestCase
 {
-    /**
-     * @covers DfRouter
-     */
     public function testInit()
     {
         $router = new DfRouter('http://localhost/controller/action/id?a=1&b=c');
