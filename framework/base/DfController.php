@@ -2,13 +2,13 @@
 /**
  * DfController is a controller class
  *
- * DfModel provide functions for work with models and views
+ * DfController provide functions for work with models and views
  *
  * @author Nikita Fedoseev <agent.daitel@gmail.com>
- * @package system.core
+ * @package system.base
  * @since 0.2.1
  */
-class DfController
+abstract class DfController
 {
     /**
      * @var DfView
@@ -29,5 +29,15 @@ class DfController
     function actionIndex()
     {
 
+    }
+
+    /**
+     * Render Page
+     * @param string $view
+     * @param array $data
+     */
+    public function render($view, $data = [])
+    {
+        $this->view->render($view, $data);
     }
 }

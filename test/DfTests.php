@@ -10,9 +10,15 @@
 class DfTests
 {
     /**
+     * Test runtime
      * @var string
      */
     public static $testDir;
+    /**
+     * Data
+     * @var string
+     */
+    public static $dataDir;
 
     /**
      * Start Tests functions
@@ -20,7 +26,8 @@ class DfTests
      */
     public static function start($path)
     {
-        DfTests::$testDir = $path;
+        DfTests::$testDir = $path."/runtime/";
+        DfTests::$dataDir = $path."/data/";
         DfTests::clearDir();
     }
 
@@ -42,6 +49,6 @@ class DfTests
     }
 }
 
-DfTests::start(__DIR__ . '\\runtime\\');
+DfTests::start(__DIR__);
 
 include('framework/DfBase.php');

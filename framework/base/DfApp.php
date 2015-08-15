@@ -18,7 +18,7 @@ class DfApp
     private static $appPath;
     /**
      * Runtime path
-     * Example: localhost
+     * Example: C:\Users\Nikita Fedoseev\Dropbox\Work\Programming\PHP\projects\framework
      * @var string
      */
     private static $runtimePath;
@@ -56,8 +56,6 @@ class DfApp
         DfApp::app()->timer = new DfTimer();
         DfApp::app()->timer->start();
 
-        DfApp::app()->router = new DfMVC();
-
         DfApp::$runtimePath = $runtimePath;
     }
 
@@ -81,6 +79,9 @@ class DfApp
     public static function start($config = [])
     {
         static::configRead($config);
+        set_error_handler(create_function('$c, $m, $f, $l', 'throw new DfPHPException($m, $c, $f, $l);'), E_ALL & ~E_NOTICE);
+        DfApp::app()->router = new DfMVC();
+        DfApp::app()->router->execute();
     }
 
     /**
@@ -90,7 +91,7 @@ class DfApp
     private static function configRead($config)
     {
         if (isset($config['app_path'])) {
-            static::$appPath = trim($config['app_path'], "/");
+            static::$appPath = trim($config['app_path'], '/');
         }
 
         if (isset($config['components'])) {
@@ -105,23 +106,45 @@ class DfApp
             DfApp::app()->logger = new DfLogger();
         }
 
-        if (isset($config['errors'])) {
-            if (isset($config['errors']['display'])) {
-                switch ($config['errors']['display']) {
-                    case true:
-                        ini_set('display_errors', 1);
-                        ini_set('display_startup_errors', 1);
-                        error_reporting(isset($config['errors']['level']) ? $config['errors']['level'] : -1);
-                        break;
-                    case false:
-                    default:
-                        ini_set('display_errors', 0);
-                        ini_set('display_startup_errors', 1);
-                        error_reporting(0);
-                        break;
-                }
+        if (isset($config['errors']['display'])) {
+            switch ($config['errors']['display']) {
+                case true:
+                    ini_set('display_errors', 1);
+                    ini_set('display_startup_errors', 1);
+                    error_reporting(isset($config['errors']['level']) ? $config['errors']['level'] : -1);
+                    break;
+                case false:
+                default:
+                    ini_set('display_errors', 0);
+                    ini_set('display_startup_errors', 1);
+                    error_reporting(0);
+                    break;
             }
         }
+
+        if (isset($config['router']['default'])) {
+            if (isset($config['router']['default']['controller'])) {
+                DfApp::app()->router->controller = $config['router']['default']['controller'];
+            }
+
+            if (isset($config['router']['default']['action'])) {
+                DfApp::app()->router->action = $config['router']['default']['action'];
+            }
+
+            if (isset($config['router']['default']['id'])) {
+                DfApp::app()->router->id = $config['router']['default']['id'];
+            }
+        }
+    }
+
+    /**
+     * Returning app web path
+     * @param bool $slash
+     * @return string
+     */
+    public static function getPath($slash = false)
+    {
+        return ($slash == true ? static::$appPath . '/' : static::$appPath);
     }
 
     /**
@@ -129,38 +152,17 @@ class DfApp
      * @param bool $slash
      * @return string
      */
-    public static function getPath($slash = false)
+    public static function getRuntimePath($slash = false)
     {
-        return ($slash == true ? static::$appPath . "/" : static::$appPath);
+        return ($slash == true ? static::$runtimePath . '/' : static::$runtimePath);
     }
 
     /**
-     * Magic Get
-     * @param $name
-     * @return bool
+     * Return current framework version
+     * @return string
      */
-    public function __get($name)
+    public static function getVersion()
     {
-        return $this->getObject($name);
-    }
-
-    /**
-     * Get Object
-     * @param $name
-     * @return bool
-     */
-    private function getObject($name)
-    {
-        $className = "Df" . ucwords($name);
-
-        if ($this->app()->$name === null) {
-            if (class_exists($className)) {
-                $this->app()->$name = new $className;
-            } else {
-                return false;
-            }
-        }
-
-        return $this->app()->$name;
+        return '0.2.1-dev';
     }
 }

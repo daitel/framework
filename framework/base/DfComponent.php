@@ -5,6 +5,7 @@
  *
  * @author Nikita Fedoseev <agent.daitel@gmail.com>
  * @link https://github.com/daitel/framework
+ * @package system.base
  */
 class DfComponent
 {

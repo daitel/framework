@@ -5,10 +5,10 @@
  * DfModel provide functions for work with data
  *
  * @author Nikita Fedoseev <agent.daitel@gmail.com>
- * @package system.core
+ * @package system.base
  * @since 0.2.1
  */
-class DfModel
+abstract class DfModel
 {
 
 }
