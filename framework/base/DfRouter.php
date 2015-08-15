@@ -47,7 +47,7 @@ class DfRouter
     protected function processPath($path)
     {
         $this->setPath(($path !== '' ? $path : (isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : '')));
-        if (!empty($path)) {
+        if (!empty($this->path)) {
             $this->decodePath();
         }
     }

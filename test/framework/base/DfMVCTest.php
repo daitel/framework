@@ -9,31 +9,43 @@
  */
 class DfMVCTest extends PHPUnit_Framework_TestCase
 {
+    /**
+     * @depends DfAppTest
+     */
     public function testExecute()
     {
-        $mvc = $this->testInit();
+        $this->init();
 
-        $this->assertFalse($mvc->execute());
-        define('DF_APP_PATH', realpath(DfTests::$dataDir));
-        $mvc->execute();
-        $mvc = null;
+        $mvc = new DfMVC("http://localhost/main/main", true);
+        $this->assertEquals('main', $mvc->controller);
+        $this->assertEquals('main', $mvc->action);
+        try {
+            $mvc->execute();
+        } catch (DfSetupException $ex) {
+            $this->assertEquals("DfSetupException", get_class($ex));
+        } finally {
+            define('DF_APP_PATH', realpath(DfTests::$dataDir));
+            $mvc->execute();
+            $mvc = null;
 
-        $mvc = new DfMVC("http://localhost/main/main");
-        $mvc->action = 'main';
-        $this->assertFalse($mvc->execute());
-        $mvc = null;
+            $mvc = new DfMVC("http://localhost/main1/index", true);
+            $this->assertEquals('main1', $mvc->controller);
+            $this->assertEquals('index', $mvc->action);
+            $this->assertFalse($mvc->execute());
 
-        $mvc = new DfMVC("http://localhost/main1/index");
-        $mvc->controller = 'main1';
-        $mvc->action = 'index';
-        $this->assertFalse($mvc->execute());
-        $mvc = null;
+            $mvc = new DfMVC("http://localhost/test/main1", true);
+            $this->assertEquals('test', $mvc->controller);
+            $this->assertEquals('main1', $mvc->action);
+            $this->assertFalse($mvc->execute());
 
+            $this->viewEx();
+        }
     }
 
-    public function testInit()
+    private function init()
     {
         $mvc = new DfMVC();
+        $mvc->process();
         $this->assertEquals('main', $mvc->controller);
         $this->assertEquals('index', $mvc->action);
         $this->assertTrue(empty($mvc->id));
@@ -43,13 +55,21 @@ class DfMVCTest extends PHPUnit_Framework_TestCase
 
         $mvc = null;
 
-        $mvc = new DfMVC('http://localhost/main/index/id?a=1&b=c#123');
+        $mvc = new DfMVC('http://localhost/main/index/id?a=1&b=c#123', true);
         $this->assertEquals('main', $mvc->controller);
         $this->assertEquals('index', $mvc->action);
         $this->assertEquals('id', $mvc->id);
         $this->assertEquals('1', $mvc->variables['a']);
         $this->assertEquals('c', $mvc->variables['b']);
         $this->assertEquals('123', $mvc->fragment);
-        return $mvc;
+    }
+
+    /**
+     * @expectedException DfViewFileException
+     */
+    private function viewEx()
+    {
+        $mvc = new DfMVC("http://localhost/main/test/main123", true);
+        $this->assertFalse($mvc->execute());
     }
 }

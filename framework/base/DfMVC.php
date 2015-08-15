@@ -29,9 +29,19 @@ class DfMVC extends DfRouter
     /**
      * __construct
      */
-    public function __construct($path = '')
+    public function __construct($path = '', $startNow = false)
     {
         $this->processPath($path);
+        if ($startNow === true) {
+            $this->process();
+        }
+    }
+
+    /**
+     * Start processing with elements
+     */
+    public function process()
+    {
         $this->setElements();
     }
 
@@ -56,7 +66,7 @@ class DfMVC extends DfRouter
      */
     private function setElement($key, $num)
     {
-        if (isset($this->$key) && isset($this->elements[$num])) {
+        if (isset($this->$key) && !empty($this->elements[$num])) {
             $this->$key = $this->elements[$num];
         }
     }
@@ -67,7 +77,7 @@ class DfMVC extends DfRouter
     public function execute()
     {
         if (!defined("DF_APP_PATH")) {
-            return false;
+            throw new DfSetupException("No defined DF_APP_PATH");
         }
 
         $controllerName = ucwords($this->controller) . 'Controller';
@@ -75,18 +85,23 @@ class DfMVC extends DfRouter
         $actionName = 'action' . ucwords($this->action);
 
         if (!file_exists($controllerPath)) {
-            return false;
+            throw new DfNotFoundException("Unable to find controller: $controllerName($controllerPath)");
         }
 
-        require_once $controllerPath;
+        if (!class_exists($controllerName)) {
+            require_once $controllerPath;
+        }
 
         $controller = new $controllerName;
 
         if (!method_exists($controller, $actionName)) {
-            return false;
+            throw new DfNotFoundException("Unable to find action: $actionName($controller)");
         }
 
-        call_user_func(array($controller, $actionName), $this->id);
-        return true;
+        if (!empty($this->id)) {
+            call_user_func(array($controller, $actionName), $this->id);
+        } else {
+            call_user_func(array($controller, $actionName));
+        }
     }
 } 

@@ -102,7 +102,7 @@ class DfView
         if (!empty($this->includePath)) {
             include($this->includePath);
         } else {
-            echo "Error with include";
+            throw new DfNotFoundException("Unable to include view: " . $this->includePath);
         }
     }
 }

@@ -18,7 +18,7 @@ abstract class DfController
     /**
      * __construct
      */
-    function __construct()
+    public function __construct()
     {
         $this->view = new DfView();
     }
@@ -26,7 +26,7 @@ abstract class DfController
     /**
      * Action: Index
      */
-    function actionIndex()
+    public function actionIndex()
     {
 
     }

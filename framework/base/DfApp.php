@@ -75,13 +75,34 @@ class DfApp
     /**
      * Start App
      * @param array $config
+     * @throws DfSetupException
      */
     public static function start($config = [])
     {
-        static::configRead($config);
-        set_error_handler(create_function('$c, $m, $f, $l', 'throw new DfPHPException($m, $c, $f, $l);'), E_ALL & ~E_NOTICE);
-        DfApp::app()->router = new DfMVC();
-        DfApp::app()->router->execute();
+        try {
+            if (!defined("DF_APP_PATH")) {
+                throw new DfSetupException("No defined DF_APP_PATH");
+            }
+
+            DfApp::app()->router = new DfMVC();
+            static::configRead($config);
+            DfApp::$app->router->process();
+
+            try {
+                DfApp::app()->router->execute();
+            } catch (DfListExceptions $ex) {
+                foreach ($ex as $e) {
+                    var_dump($e);
+                }
+            } catch (DfException $ex) {
+                var_dump($ex);
+            } finally {
+                var_dump(DfApp::$app);
+            }
+        } catch (DfException $ex) {
+            var_dump($ex);
+        }
+
     }
 
     /**
