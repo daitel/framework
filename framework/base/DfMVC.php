@@ -76,16 +76,16 @@ class DfMVC extends DfRouter
      */
     public function execute()
     {
-        if (!defined("DF_APP_PATH")) {
-            throw new DfSetupException("No defined DF_APP_PATH");
+        if (empty(DfApp::app()->getRuntimePath())) {
+            throw new DfSetupException("No defined RuntimePath");
         }
 
         $controllerName = ucwords($this->controller) . 'Controller';
-        $controllerPath = DF_APP_PATH . "/app/controllers/" . $controllerName . ".php";
+        $controllerPath = DfApp::app()->getRuntimePath(true) . "app/controllers/" . $controllerName . ".php";
         $actionName = 'action' . ucwords($this->action);
 
         if (!file_exists($controllerPath)) {
-            throw new DfNotFoundException("Unable to find controller: $controllerName($controllerPath)");
+            throw new DfNotFoundException("Unable to find controller: {$this->controller}");
         }
 
         if (!class_exists($controllerName)) {
@@ -95,7 +95,7 @@ class DfMVC extends DfRouter
         $controller = new $controllerName;
 
         if (!method_exists($controller, $actionName)) {
-            throw new DfNotFoundException("Unable to find action: $actionName($controller)");
+            throw new DfNotFoundException("Unable to find action: {$this->controller}/{$this->action}");
         }
 
         if (!empty($this->id)) {

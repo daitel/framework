@@ -10,7 +10,7 @@
 class DfLoggerTest extends PHPUnit_Framework_TestCase
 {
     /**
-     * @depends DfAppTest::testStart
+     * @depends DfAppTest::testSetupEx
      */
     public function testLog()
     {

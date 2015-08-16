@@ -51,12 +51,10 @@ class DfApp
     /**
      * Initialization process
      */
-    public static function init($runtimePath = __DIR__)
+    public static function init()
     {
         DfApp::app()->timer = new DfTimer();
         DfApp::app()->timer->start();
-
-        DfApp::$runtimePath = $runtimePath;
     }
 
     /**
@@ -75,13 +73,16 @@ class DfApp
     /**
      * Start App
      * @param array $config
+     * @param string $directory
      * @throws DfSetupException
      */
-    public static function start($config = [])
+    public static function start($config = [], $directory = '')
     {
+        static::prepareRuntimePath($directory);
+
         try {
-            if (!defined("DF_APP_PATH")) {
-                throw new DfSetupException("No defined DF_APP_PATH");
+            if (empty(DfApp::app()->getRuntimePath())) {
+                throw new DfSetupException("No defined RuntimePath");
             }
 
             DfApp::app()->router = new DfMVC();
@@ -96,13 +97,38 @@ class DfApp
                 }
             } catch (DfException $ex) {
                 var_dump($ex);
-            } finally {
-                var_dump(DfApp::$app);
             }
         } catch (DfException $ex) {
             var_dump($ex);
         }
 
+    }
+
+    /**
+     * Prepare runtime path
+     */
+    private static function prepareRuntimePath($subFolder = '')
+    {
+        static::$runtimePath = static::getMainDirectory() . (!empty($subFolder) ? "/$subFolder" : "");
+    }
+
+    /**
+     * Get main directory
+     * @return string
+     */
+    private static function getMainDirectory()
+    {
+        return realpath(dirname(dirname(__DIR__)));
+    }
+
+    /**
+     * Returning app path
+     * @param bool $slash
+     * @return string
+     */
+    public static function getRuntimePath($slash = false)
+    {
+        return ($slash == true ? static::$runtimePath . '/' : static::$runtimePath);
     }
 
     /**
@@ -166,16 +192,6 @@ class DfApp
     public static function getPath($slash = false)
     {
         return ($slash == true ? static::$appPath . '/' : static::$appPath);
-    }
-
-    /**
-     * Returning app path
-     * @param bool $slash
-     * @return string
-     */
-    public static function getRuntimePath($slash = false)
-    {
-        return ($slash == true ? static::$runtimePath . '/' : static::$runtimePath);
     }
 
     /**

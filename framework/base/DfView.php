@@ -38,7 +38,7 @@ class DfView
 
     public function __construct()
     {
-        $this->viewsPath = DF_APP_PATH . '/app/views/';
+        $this->viewsPath = DfApp::app()->getRuntimePath(true) . '/app/views/';
         $this->templatePath = $this->viewsPath . 'templates/';
     }
 
