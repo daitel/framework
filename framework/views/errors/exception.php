@@ -115,33 +115,38 @@
                             </div>
                         </div>
 
+                        <h3>Application dump</h3>
+                        <?php var_dump(DfApp::app()) ?>
+
                         <h3>Stack Trace</h3>
 
                         <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
                             <?php foreach ($ex->getTrace() as $id => $call): ?>
-                                <div class="panel panel-default">
-                                    <div class="panel-heading" role="tab" id="heading<?php echo $id ?>">
-                                        <h4 class="panel-title">
-                                            <a role="button" data-toggle="collapse" data-parent="#accordion"
-                                               href="#accordion<?php echo $id ?>" aria-expanded="true"
-                                               aria-controls="<?php echo $id ?>">
-                                                <?php echo $call['file'] ?>
-                                                <div align="right">Line: <?php echo $call['line'] ?></div>
-                                            </a>
-                                        </h4>
-                                    </div>
-                                    <div id="accordion<?php echo $id ?>" class="panel-collapse collapse"
-                                         role="tabpanel"
-                                         aria-labelledby="heading<?php echo $id ?>">
-                                        <div class="panel-body">
-                                            <table class="table table-borderless table-condensed">
-                                                <?php
-                                                DfErrorHandler::showSources($call['file'], false, $call['line']);
-                                                ?>
-                                            </table>
+                                <?php if (isset($call['file'])): ?>
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading" role="tab" id="heading<?php echo $id ?>">
+                                            <h4 class="panel-title">
+                                                <a role="button" data-toggle="collapse" data-parent="#accordion"
+                                                   href="#accordion<?php echo $id ?>" aria-expanded="true"
+                                                   aria-controls="<?php echo $id ?>">
+                                                    <?php echo $call['file'] ?>
+                                                    <div align="right">Line: <?php echo $call['line'] ?></div>
+                                                </a>
+                                            </h4>
+                                        </div>
+                                        <div id="accordion<?php echo $id ?>" class="panel-collapse collapse"
+                                             role="tabpanel"
+                                             aria-labelledby="heading<?php echo $id ?>">
+                                            <div class="panel-body">
+                                                <table class="table table-borderless table-condensed">
+                                                    <?php
+                                                    DfErrorHandler::showSources($call['file'], false, $call['line']);
+                                                    ?>
+                                                </table>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
+                                <?php endif; ?>
                             <?php endforeach; ?>
                         </div>
                     </div>
