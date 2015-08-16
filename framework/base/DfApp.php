@@ -90,7 +90,7 @@ class DfApp
             DfApp::$app->router->process();
 
             try {
-                DfApp::app()->router->execute();
+                DfApp::app()->router->call();
             } catch (DfListExceptions $ex) {
                 foreach ($ex as $e) {
                     var_dump($e);

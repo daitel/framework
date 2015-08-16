@@ -72,36 +72,51 @@ class DfMVC extends DfRouter
     }
 
     /**
-     *
+     * Call Controller action
+     * @param string $_controller
+     * @param string $_action
+     * @param string $_id
      */
-    public function execute()
+    public function call($_controller = '', $_action = '', $_id = '')
+    {
+        $controller = (!empty($controller)) ? $controller : $this->controller;
+        $action = (!empty($action)) ? $action : $this->action;
+        $id = (!empty($id)) ? $id : $this->id;
+
+        $this->execute($controller, $action, $id);
+    }
+
+    /**
+     * execute
+     */
+    private function execute($controller, $action, $id)
     {
         if (empty(DfApp::app()->getRuntimePath())) {
             throw new DfSetupException("No defined RuntimePath");
         }
 
-        $controllerName = ucwords($this->controller) . 'Controller';
+        $controllerName = ucwords($controller) . 'Controller';
         $controllerPath = DfApp::app()->getRuntimePath(true) . "app/controllers/" . $controllerName . ".php";
-        $actionName = 'action' . ucwords($this->action);
+        $actionName = 'action' . ucwords($action);
 
         if (!file_exists($controllerPath)) {
-            throw new DfNotFoundException("Unable to find controller: {$this->controller}");
+            throw new DfNotFoundException("Unable to find controller: $controller");
         }
 
         if (!class_exists($controllerName)) {
             require_once $controllerPath;
         }
 
-        $controller = new $controllerName;
+        $_controller = new $controllerName;
 
-        if (!method_exists($controller, $actionName)) {
-            throw new DfNotFoundException("Unable to find action: {$this->controller}/{$this->action}");
+        if (!method_exists($_controller, $actionName)) {
+            throw new DfNotFoundException("Unable to find action: $controller/$action");
         }
 
         if (!empty($this->id)) {
-            call_user_func(array($controller, $actionName), $this->id);
+            call_user_func(array($_controller, $actionName), $id);
         } else {
-            call_user_func(array($controller, $actionName));
+            call_user_func(array($_controller, $actionName));
         }
     }
 } 

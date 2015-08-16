@@ -41,7 +41,7 @@ class DfMVCTest extends PHPUnit_Framework_TestCase
     public function viewEx()
     {
         $mvc = new DfMVC("http://localhost/main/test/main123", true);
-        $mvc->execute();
+        $mvc->call();
     }
 
     /**
@@ -53,16 +53,16 @@ class DfMVCTest extends PHPUnit_Framework_TestCase
         $mvc = new DfMVC("http://localhost/main/main", true);
         $this->assertEquals('main', $mvc->controller);
         $this->assertEquals('main', $mvc->action);
-        $mvc->execute();
+        $mvc->call();
 
         $mvc = new DfMVC("http://localhost/main1/index", true);
         $this->assertEquals('main1', $mvc->controller);
         $this->assertEquals('index', $mvc->action);
-        $mvc->execute();
+        $mvc->call();
 
         $mvc = new DfMVC("http://localhost/test/main1", true);
         $this->assertEquals('test', $mvc->controller);
         $this->assertEquals('main1', $mvc->action);
-        $mvc->execute();
+        $mvc->call();
     }
 }
