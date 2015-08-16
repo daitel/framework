@@ -79,6 +79,7 @@ class DfApp
     public static function start($config = [], $directory = '')
     {
         static::prepareRuntimePath($directory);
+        static::configRead($config);
 
         try {
             if (empty(DfApp::app()->getRuntimePath())) {
@@ -86,20 +87,15 @@ class DfApp
             }
 
             DfApp::app()->router = new DfMVC();
-            static::configRead($config);
             DfApp::$app->router->process();
 
             try {
                 DfApp::app()->router->call();
-            } catch (DfListExceptions $ex) {
-                foreach ($ex as $e) {
-                    var_dump($e);
-                }
             } catch (DfException $ex) {
-                var_dump($ex);
+                DfErrorHandler::renderExceptionPage($ex);
             }
         } catch (DfException $ex) {
-            var_dump($ex);
+            DfErrorHandler::renderExceptionPage($ex);
         }
     }
 
@@ -118,16 +114,6 @@ class DfApp
     private static function getMainDirectory()
     {
         return realpath(dirname(dirname(__DIR__)));
-    }
-
-    /**
-     * Returning app path
-     * @param bool $slash
-     * @return string
-     */
-    public static function getRuntimePath($slash = false)
-    {
-        return ($slash == true ? static::$runtimePath . '/' : static::$runtimePath);
     }
 
     /**
@@ -181,6 +167,16 @@ class DfApp
                 DfApp::app()->router->id = $config['router']['default']['id'];
             }
         }
+    }
+
+    /**
+     * Returning app path
+     * @param bool $slash
+     * @return string
+     */
+    public static function getRuntimePath($slash = false)
+    {
+        return ($slash == true ? static::$runtimePath . '/' : static::$runtimePath);
     }
 
     /**
