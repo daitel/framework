@@ -79,7 +79,6 @@ class DfApp
     public static function start($config = [], $directory = '')
     {
         static::prepareRuntimePath($directory);
-        static::configRead($config);
 
         try {
             if (empty(DfApp::app()->getRuntimePath())) {
@@ -87,6 +86,7 @@ class DfApp
             }
 
             DfApp::app()->router = new DfMVC();
+            static::configRead($config);
             DfApp::$app->router->process();
 
             try {
