@@ -101,7 +101,6 @@ class DfApp
         } catch (DfException $ex) {
             var_dump($ex);
         }
-
     }
 
     /**
