@@ -2,6 +2,7 @@
 [![Total Downloads](https://poser.pugx.org/daitel/framework/downloads)](https://packagist.org/packages/daitel/framework)
 [![License](https://poser.pugx.org/daitel/framework/license.svg)](https://packagist.org/packages/daitel/framework)
 [![Reference Status](https://www.versioneye.com/php/daitel:framework/reference_badge.svg?style=flat)](https://www.versioneye.com/php/daitel:framework/references)
+[![Issue](https://img.shields.io/github/issues-raw/iopc/ivaotools.svg)](https://github.com/IOPC/ivaotools/issues)
 [![Code Coverage](https://scrutinizer-ci.com/g/daitel/framework/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/daitel/framework/?branch=master)
 
 This is the core framework code of [framework](https://github.com/daitel/framework).
