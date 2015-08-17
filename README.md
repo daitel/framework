@@ -11,9 +11,9 @@ Repository Structure
 -------------------
 
 ```
-apps/               application example
-framework/           framework code
-test/                tests of the framework code
+apps/               application examples
+framework/          framework code
+test/               tests of the framework code
 ```
 
 Contributing
