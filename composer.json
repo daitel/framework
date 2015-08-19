@@ -7,7 +7,7 @@
         "mvc template"
     ],
     "type": "project",
-    "license": "GPL-2.0",
+    "license": "MIT",
     "authors": [
         {
             "name": "Nikita Fedoseev",
@@ -21,7 +21,7 @@
         "daitel/framework": "self.version"
     },
     "require": {
-        "php": ">=5.4.0"
+        "php": ">=5.5.0"
     },
     "require-dev": {
         "phpunit/phpunit": "4.8"
