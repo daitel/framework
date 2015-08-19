@@ -28,13 +28,19 @@ class DfBase
      * @var bool
      */
     private $scanStatus = false;
+    /**
+     * Runtime Path
+     * @var string
+     */
+    private $runtimePath;
 
     /**
      * __construct
      */
-    public function __construct()
+    public function __construct($runtimePath = '')
     {
         $this->dir = __DIR__;
+        $this->runtimePath = $runtimePath;
         $this->registerAutoloader();
     }
 
@@ -87,11 +93,15 @@ class DfBase
 
     private function scanApplicationDirectory()
     {
-        $this->scan(dirname($this->dir) . '/app', 'applicationDirectory');
+        $this->scan(
+            (!empty($this->runtimePath) ? $this->runtimePath : dirname($this->dir)) . '/' . 'app',
+            'applicationDirectory'
+        );
     }
 }
 
-define('DF_BASE_PATH', realpath(dirname(__FILE__)));
+$DfTestDir = (class_exists('DfTests') ? DfTests::$dataDir : '');
 
-$DfBase = new DfBase();
-DfApp::init(DF_BASE_PATH);
+$DfBase = new DfBase($DfTestDir);
+
+DfApp::init(realpath(dirname(__FILE__)));
