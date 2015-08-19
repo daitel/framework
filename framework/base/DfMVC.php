@@ -72,6 +72,19 @@ class DfMVC extends DfRouter
     }
 
     /**
+     * Call Controller action by array
+     * @param array $array
+     */
+    public function callByArray($array)
+    {
+        $controller = (!empty($array['controller'])) ? $array['controller'] : $this->controller;
+        $action = (!empty($array['action'])) ? $array['action'] : $this->action;
+        $id = (!empty($array['controller'])) ? $array['controller'] : $this->id;
+
+        $this->call($controller, $action, $id);
+    }
+
+    /**
      * Call Controller action
      * @param string $_controller
      * @param string $_action

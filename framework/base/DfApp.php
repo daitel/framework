@@ -92,10 +92,10 @@ class DfApp
             try {
                 DfApp::app()->router->call();
             } catch (DfException $ex) {
-                DfErrorHandler::renderExceptionPage($ex);
+                DfErrorHandler::exception($ex);
             }
         } catch (DfException $ex) {
-            DfErrorHandler::renderExceptionPage($ex);
+            DfErrorHandler::exception($ex);
         }
     }
 
@@ -130,6 +130,10 @@ class DfApp
             if (isset($config['components']['mysql'])) {
                 DfApp::app()->mysql = new DfMysql($config['components']['mysql']);
             }
+        }
+
+        if(isset($config['debug'])){
+            DfErrorHandler::$debug = $config['debug'];
         }
 
         if (isset($config['logger']['path'])) {

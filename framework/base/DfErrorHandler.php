@@ -41,22 +41,23 @@ class DfErrorHandler
      */
     const HIGHLIGHT_CODELINE = "codeLine";
     /**
+     * Debug status
+     * @var bool
+     */
+    public static $debug = false;
+    /**
+     * Error controller call
+     * @var array
+     */
+    public static $errorCall = [];
+    /**
      * Highlight ini setting status
      * @var bool
      */
     private static $highlightSet = false;
 
     /**
-     * renderExceptionPage
-     * @param DfException $ex
-     */
-    public static function renderExceptionPage($ex)
-    {
-        include DfApp::getRuntimePath(true) . "framework/views/errors/exception.php";
-    }
-
-    /**
-     * showSources
+     * Show sources
      * This function make html code from sources
      * @param string $path
      * @param bool $showAll
@@ -104,7 +105,7 @@ class DfErrorHandler
                 $i++;
             }
         }
-        
+
         $buffer .= "</tbody>";
         echo $buffer;
     }
@@ -132,5 +133,40 @@ class DfErrorHandler
     private static function setHtmlClass($class)
     {
         return '" class="' . $class . '"';
+    }
+
+    /**
+     * Exception catch call
+     * @param DfException $ex
+     */
+    public static function exception($ex)
+    {
+        if (self::$debug === true) {
+            self::renderExceptionPage($ex);
+        } else {
+            self::renderErrorPage($ex);
+        }
+    }
+
+    /**
+     * Render Exception Page
+     * @param DfException $ex
+     */
+    public static function renderExceptionPage($ex)
+    {
+        include DfApp::getRuntimePath(true) . "framework/views/errors/exception.php";
+    }
+
+    /**
+     * Render Error Page
+     * @param DfException $ex
+     */
+    private static function renderErrorPage($ex)
+    {
+        if (!empty(self::$errorCall)) {
+            DfApp::app()->router->callByArray(self::$errorCall);
+        } else {
+            include DfApp::getRuntimePath(true) . "framework/views/errors/error.php";
+        }
     }
 }
