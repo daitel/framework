@@ -12,12 +12,22 @@ class DfBase
      * Framework Directory
      * @var array
      */
-    public $framework_directory = [];
+    public $frameworkDirectory = [];
+    /**
+     * Application Directory
+     * @var array
+     */
+    public $applicationDirectory = [];
     /**
      * Core directory
      * @var
      */
     public $dir;
+    /**
+     * Scanning status
+     * @var bool
+     */
+    private $scanStatus = false;
 
     /**
      * __construct
@@ -44,14 +54,16 @@ class DfBase
      */
     private function autoloader($class)
     {
-        if (empty($this->framework_directory)) {
+        if ($this->scanStatus === false) {
             $this->scanFrameworkDirectory();
+            $this->scanApplicationDirectory();
+            $this->scanStatus = true;
         }
 
-        foreach ($this->framework_directory as $directory) {
-            $path = $this->dir . "/" . $directory . "/" . $class . ".php";
+        foreach (array_merge($this->frameworkDirectory, $this->applicationDirectory) as $directory) {
+            $path = $directory . "/" . $class . ".php";
             if (file_exists($path)) {
-                include($path);
+                require($path);
             }
         }
     }
@@ -61,13 +73,24 @@ class DfBase
      */
     private function scanFrameworkDirectory()
     {
-        foreach (scandir($this->dir) as $directory) {
+        $this->scan($this->dir, 'frameworkDirectory');
+    }
+
+    private function scan($_directory, $variable)
+    {
+        foreach (scandir($_directory) as $directory) {
             ($directory != "." && $directory != ".." && is_dir(
-                $this->dir . "/" . $directory
-            ) ? $this->framework_directory[] = $directory : "");
+                $_directory . "/" . $directory
+            ) ? array_push($this->$variable, realpath($_directory . '/' . $directory)) : "");
         }
     }
+
+    private function scanApplicationDirectory()
+    {
+        $this->scan(dirname($this->dir) . '/app', 'applicationDirectory');
+    }
 }
+
 define('DF_BASE_PATH', realpath(dirname(__FILE__)));
 
 $DfBase = new DfBase();

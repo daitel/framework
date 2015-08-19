@@ -81,7 +81,7 @@ class DfApp
         static::prepareRuntimePath($directory);
 
         try {
-            if (empty(DfApp::app()->getRuntimePath())) {
+            if (empty(DfApp::$runtimePath)) {
                 throw new DfSetupException("No defined RuntimePath");
             }
 

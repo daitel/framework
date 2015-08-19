@@ -79,9 +79,9 @@ class DfMVC extends DfRouter
      */
     public function call($_controller = '', $_action = '', $_id = '')
     {
-        $controller = (!empty($controller)) ? $controller : $this->controller;
-        $action = (!empty($action)) ? $action : $this->action;
-        $id = (!empty($id)) ? $id : $this->id;
+        $controller = (!empty($_controller)) ? $_controller : $this->controller;
+        $action = (!empty($_action)) ? $_action : $this->action;
+        $id = (!empty($_id)) ? $_id : $this->id;
 
         $this->execute($controller, $action, $id);
     }
@@ -101,10 +101,6 @@ class DfMVC extends DfRouter
 
         if (!file_exists($controllerPath)) {
             throw new DfNotFoundException("Unable to find controller: $controller");
-        }
-
-        if (!class_exists($controllerName)) {
-            require_once $controllerPath;
         }
 
         $_controller = new $controllerName;
