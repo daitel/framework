@@ -132,31 +132,38 @@ class DfApp
             }
         }
 
-        if(isset($config['debug'])){
-            DfErrorHandler::$debug = $config['debug'];
-        }
-
         if (isset($config['logger']['path'])) {
             DfApp::app()->logger = new DfLogger($config['logger']['path']);
         } else {
             DfApp::app()->logger = new DfLogger();
         }
 
-        if (isset($config['errors']['display'])) {
-            switch ($config['errors']['display']) {
-                case true:
-                    ini_set('display_errors', 1);
-                    ini_set('display_startup_errors', 1);
-                    error_reporting(isset($config['errors']['level']) ? $config['errors']['level'] : -1);
-                    break;
-                case false:
-                default:
-                    ini_set('display_errors', 0);
-                    ini_set('display_startup_errors', 0);
-                    error_reporting(0);
-                    break;
+        if (isset($config['errors'])) {
+            if (isset($config['errors']['display'])) {
+                switch ($config['errors']['display']) {
+                    case true:
+                        ini_set('display_errors', 1);
+                        ini_set('display_startup_errors', 1);
+                        error_reporting(isset($config['errors']['level']) ? $config['errors']['level'] : -1);
+                        break;
+                    case false:
+                    default:
+                        ini_set('display_errors', 0);
+                        ini_set('display_startup_errors', 0);
+                        error_reporting(0);
+                        break;
+                }
+            }
+
+            if (isset($config['errors']['debug'])) {
+                DfErrorHandler::$debug = $config['errors']['debug'];
+            }
+
+            if (isset($config['errors']['error_call'])) {
+                DfErrorHandler::$errorCall = $config['errors']['error_call'];
             }
         }
+
 
         if (isset($config['router']['default'])) {
             if (isset($config['router']['default']['controller'])) {

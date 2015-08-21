@@ -85,7 +85,7 @@ class DfView
 
         foreach ($locations as $id => $location) {
             $viewPath .= ($id == 0 ? '' : '/') . $location;
-            $checkPath = $viewPath . $name . '.php';
+            $checkPath = $viewPath . '/' . $name . '.php';
             if (file_exists($checkPath)) {
                 return $checkPath;
             }

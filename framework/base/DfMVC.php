@@ -77,11 +77,11 @@ class DfMVC extends DfRouter
      */
     public function callByArray($array)
     {
-        $controller = (!empty($array['controller'])) ? $array['controller'] : $this->controller;
-        $action = (!empty($array['action'])) ? $array['action'] : $this->action;
-        $id = (!empty($array['controller'])) ? $array['controller'] : $this->id;
-
-        $this->call($controller, $action, $id);
+        $this->call(
+            (!empty($array['controller']) ? $array['controller'] : ''),
+            (!empty($array['action']) ? $array['action'] : ''),
+            (!empty($array['id']) ? $array['id'] : '')
+        );
     }
 
     /**
@@ -92,38 +92,37 @@ class DfMVC extends DfRouter
      */
     public function call($_controller = '', $_action = '', $_id = '')
     {
-        $controller = (!empty($_controller)) ? $_controller : $this->controller;
-        $action = (!empty($_action)) ? $_action : $this->action;
-        $id = (!empty($_id)) ? $_id : $this->id;
+        $this->controller = (!empty($_controller)) ? $_controller : $this->controller;
+        $this->action = (!empty($_action)) ? $_action : $this->action;
+        $this->id = (!empty($_id)) ? $_id : $this->id;
 
-        $this->execute($controller, $action, $id);
+        $this->execute();
     }
 
     /**
      * execute
      */
-    private function execute($controller, $action, $id)
+    private function execute()
     {
         if (empty(DfApp::app()->getRuntimePath())) {
             throw new DfSetupException("No defined RuntimePath");
         }
 
-        $controllerName = ucwords($controller) . 'Controller';
-        $controllerPath = DfApp::app()->getRuntimePath(true) . "app/controllers/" . $controllerName . ".php";
-        $actionName = 'action' . ucwords($action);
+        $controllerName = ucwords($this->controller) . 'Controller';
+        $actionName = 'action' . ucwords($this->action);
 
-        if (!file_exists($controllerPath)) {
-            throw new DfNotFoundException("Unable to find controller: $controller");
+        if (!class_exists($controllerName)) {
+            throw new DfNotFoundException("Unable to find controller: {$this->controller}");
         }
 
         $_controller = new $controllerName;
 
         if (!method_exists($_controller, $actionName)) {
-            throw new DfNotFoundException("Unable to find action: $controller/$action");
+            throw new DfNotFoundException("Unable to find action: {$this->controller}/{$this->action}");
         }
 
         if (!empty($this->id)) {
-            call_user_func(array($_controller, $actionName), $id);
+            call_user_func(array($_controller, $actionName), $this->id);
         } else {
             call_user_func(array($_controller, $actionName));
         }
