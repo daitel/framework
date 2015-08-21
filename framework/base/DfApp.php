@@ -87,6 +87,7 @@ class DfApp
 
             DfApp::app()->router = new DfMVC();
             static::configRead($config);
+            DfErrorHandler::registerHandlers();
             DfApp::$app->router->process();
 
             try {

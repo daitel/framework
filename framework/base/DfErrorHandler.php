@@ -104,6 +104,8 @@ class DfErrorHandler
 
                 $i++;
             }
+        } else {
+            $buffer .= "<td><tr>File not exist</tr></td>";
         }
 
         $buffer .= "</tbody>";
@@ -115,13 +117,13 @@ class DfErrorHandler
      */
     private static function setHighlightOptions()
     {
-        if (!static::$highlightSet) {
+        if (!self::$highlightSet) {
             ini_set('highlight.default', self::setHtmlClass(self::HIGHLIGHT_DEFAULT));
             ini_set('highlight.keyword', self::setHtmlClass(self::HIGHLIGHT_KEYWORD));
             ini_set('highlight.string', self::setHtmlClass(self::HIGHLIGHT_STRING));
             ini_set('highlight.html', self::setHtmlClass(self::HIGHLIGHT_HTML));
             ini_set('highlight.comment', self::setHtmlClass(self::HIGHLIGHT_COMMENT));
-            static::$highlightSet = true;
+            self::$highlightSet = true;
         }
     }
 
@@ -133,6 +135,26 @@ class DfErrorHandler
     private static function setHtmlClass($class)
     {
         return '" class="' . $class . '"';
+    }
+
+    /**
+     * Register Handlers
+     */
+    public static function registerHandlers()
+    {
+        set_exception_handler("DfErrorHandler::exception");
+        set_error_handler(create_function('$c, $m, $f, $l', 'throw new DfPHPException($m, $c, $f, $l);'), E_ALL);
+        register_shutdown_function('DfErrorHandler::onShutdown');
+    }
+
+    /**
+     * Shutdown action
+     */
+    public static function onShutdown()
+    {
+        if (($error = error_get_last()) !== null) {
+            self::exception(new DfPHPException($error['message'], $error['type'], $error['file'], $error['line']));
+        }
     }
 
     /**
