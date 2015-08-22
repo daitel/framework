@@ -28,7 +28,6 @@ class DfLogger
      * @var string
      */
     public $componentName = 'logger';
-
     /**
      * Component name
      * @var string
@@ -44,7 +43,8 @@ class DfLogger
      * __construct
      * @param string $path
      */
-    public function __construct($path = 'log.txt'){
+    public function __construct($path = 'log.txt')
+    {
         $this->path = $path;
     }
 
@@ -62,7 +62,10 @@ class DfLogger
             'time' => $this->getLogDate(),
             'type' => $type,
             'component' => $component,
-            'location' => (empty($location) ? getenv('REMOTE_ADDR') . ':' . $_SERVER['REQUEST_URI'] : $location),
+            'location' => (empty($location) ? getenv(
+                        'REMOTE_ADDR'
+                    ) . ':' . (isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : '')
+                    : $location),
             'error' => $error,
             'level' => $level
         ];
