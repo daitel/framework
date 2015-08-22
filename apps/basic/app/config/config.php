@@ -9,12 +9,19 @@
  */
 
 $config = [
+    'name' => 'basic',
     'errors' => [
-        'display' => true,
-        'level' => E_ALL
+        //change it to false on production
+        'debug' => true,
+        //call for errors view, works on debug => false
+        'error_call' => [
+            'controller' => 'error',
+            'action' => 'index',
+            'id' => ''
+        ]
     ],
     'logger' => [
-        'path' => DF_APP_PATH . "/app/logs/log.txt"
+        'path' => DfApp::getRuntimePath(true) . "app/logs/log.txt"
     ],
     'router' => [
         'default' => [
