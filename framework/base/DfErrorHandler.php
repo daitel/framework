@@ -163,6 +163,14 @@ class DfErrorHandler
      */
     public static function exception($ex)
     {
+        DfApp::app()->logger->log(
+            'exception',
+            DfApp::app()->router->path['path'],
+            $ex->getMessage(),
+            DfLogger::TYPE_ERROR,
+            DfLogger::LEVEL_DEBUG
+        );
+
         if (self::$debug === true) {
             self::renderExceptionPage($ex);
         } else {
