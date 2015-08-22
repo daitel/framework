@@ -16,10 +16,11 @@ class DfException extends Exception
      * @param int $errorLevel
      * @param string $errorFile
      * @param int $errorLine
+     * @param Exception $previous
      */
-    public function __construct($message, $errorLevel = 0, $errorFile = '', $errorLine = 0)
+    public function __construct($message, $errorLevel = 0, $errorFile = '', $errorLine = 0, $previous = null)
     {
-        parent::__construct($message, $errorLevel);
+        parent::__construct($message, $errorLevel, $previous);
         $this->file = !empty($errorFile) ? $errorFile : $this->getFile();
         $this->line = !empty($line) ? $line : $this->getLine();
     }

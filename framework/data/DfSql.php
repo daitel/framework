@@ -2,10 +2,10 @@
 /**
  * DfSql is helper class for preparing query
  *
- * DfMysql class provide db functions
+ * DfMysql class provide data functions
  *
  * @author Nikita Fedoseev <agent.daitel@gmail.com>
- * @package system.db
+ * @package system.data
  * @since 0.1.3
  */
 class DfSql
@@ -19,7 +19,7 @@ class DfSql
      * @param string $other
      * @return string
      */
-    public static function selectKey($table, $key = [], $where = [], $type = 'AND', $other = '')
+    public static function selectKey($table, $key, $where = [], $type = 'AND', $other = '')
     {
         return self::selectKeys($table, [$key], $where, $type, $other);
     }
@@ -157,7 +157,6 @@ class DfSql
     /**
      * Return string with current datetime as mysql format
      * Format: Y-m-d H:i:s
-     *
      * @return string
      */
     public static function datetime()
@@ -168,7 +167,6 @@ class DfSql
     /**
      * Return string with current date as mysql format
      * Format: Y-m-d
-     *
      * @return string
      */
     public static function date()
@@ -179,7 +177,6 @@ class DfSql
     /**
      * Return string with current time as mysql format
      * Format: Y-m-d H:i:s
-     *
      * @return string
      */
     public static function time()

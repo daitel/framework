@@ -1,11 +1,11 @@
 <?php
 /**
- * DfActiveRecord is db working class
- * Created for work with 1 record from table
+ * DfActiveRecord is data working class
  *
+ * DfActiveRecord created for work with 1 record from table
  *
  * @author Nikita Fedoseev <agent.daitel@gmail.com>
- * @package system.db
+ * @package system.data
  * @since 0.1.6
  */
 class DfActiveRecord

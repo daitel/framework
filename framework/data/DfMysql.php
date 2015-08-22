@@ -1,12 +1,13 @@
 <?php
 /**
- * DfMysql is db working class
+ * DfMysql is data working class
  *
- * DfMysql class provide db functions
+ * DfMysql class provide data functions
  *
  * @author Nikita Fedoseev <agent.daitel@gmail.com>
- * @package system.db
+ * @package system.data
  * @since 0.0.0
+ * @deprecated
  */
 class DfMysql extends DfComponent
 {

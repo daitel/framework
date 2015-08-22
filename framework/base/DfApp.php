@@ -44,9 +44,9 @@ class DfApp
     public $router;
     /**
      * Mysql
-     * @var DfMysql
+     * @var DfDbConnection
      */
-    public $mysql;
+    public $db;
 
     /**
      * Initialization process
@@ -128,8 +128,8 @@ class DfApp
         }
 
         if (isset($config['components'])) {
-            if (isset($config['components']['mysql'])) {
-                DfApp::app()->mysql = new DfMysql($config['components']['mysql']);
+            if (isset($config['components']['db'])) {
+                DfApp::app()->db = new DfDbConnection($config['components']['db']['link'],$config['components']['db']['user'], $config['components']['db']['password']);
             }
         }
 
