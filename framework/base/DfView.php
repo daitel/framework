@@ -38,7 +38,7 @@ class DfView
 
     public function __construct()
     {
-        $this->viewsPath = DfApp::app()->getRuntimePath(true) . '/app/views/';
+        $this->viewsPath = DfApp::app()->getRuntimePath(true) . 'app/views/';
         $this->templatePath = $this->viewsPath . 'templates/';
     }
 
@@ -66,7 +66,7 @@ class DfView
      */
     private function getViewPath($name)
     {
-        $locations = ['/'];
+        $locations = [''];
         !isset(DfApp::app()->router->controller) ? : $locations[] = DfApp::app()->router->controller;
         !isset(DfApp::app()->router->action) ? : $locations[] = DfApp::app()->router->action;
 
@@ -82,12 +82,17 @@ class DfView
     private function findView($locations = [], $name)
     {
         $viewPath = $this->viewsPath;
+        $checks = [];
 
         foreach ($locations as $id => $location) {
-            $viewPath .= ($id == 0 ? '' : '/') . $location;
-            $checkPath = $viewPath . '/' . $name . '.php';
-            if (file_exists($checkPath)) {
-                return $checkPath;
+            $viewPath .= (intval($id) <= 1 ? '' : '/') . $location;
+            $checkPath = $viewPath . (intval($id) == 0 ? '' : '/') . $name . '.php';
+            $checks[] = $checkPath;
+        }
+
+        foreach (array_reverse($checks, true) as $path) {
+            if (file_exists($path)) {
+                return $path;
             }
         }
 
