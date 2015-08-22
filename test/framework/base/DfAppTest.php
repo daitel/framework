@@ -18,7 +18,7 @@ class DfAppTest extends PHPUnit_Framework_TestCase
     public function testSetupEx()
     {
         try {
-            DfApp::start($this->config);
+            DfApp::start($this->config, 'test/data');
         } catch (DfSetupException $ex) {
             $this->assertEquals("DfSetupException", get_class($ex));
         } finally {
@@ -31,11 +31,10 @@ class DfAppTest extends PHPUnit_Framework_TestCase
         if (empty($config)) {
             $this->configWrite();
         }
-        define('DF_APP_PATH', realpath(DfTests::$dataDir));
-        DfApp::start($this->config);
+
+        DfApp::start($this->config, 'test/data');
         $this->assertEquals(DfApp::getPath(), $this->config['app_path']);
         $this->assertEquals(DfApp::getPath(true), $this->config['app_path'] . "/");
-
     }
 
     private function configWrite()

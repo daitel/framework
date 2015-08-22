@@ -51,12 +51,10 @@ class DfApp
     /**
      * Initialization process
      */
-    public static function init($runtimePath = __DIR__)
+    public static function init()
     {
         DfApp::app()->timer = new DfTimer();
         DfApp::app()->timer->start();
-
-        DfApp::$runtimePath = $runtimePath;
     }
 
     /**
@@ -75,34 +73,48 @@ class DfApp
     /**
      * Start App
      * @param array $config
+     * @param string $directory
      * @throws DfSetupException
      */
-    public static function start($config = [])
+    public static function start($config = [], $directory = '')
     {
+        static::prepareRuntimePath($directory);
+
         try {
-            if (!defined("DF_APP_PATH")) {
-                throw new DfSetupException("No defined DF_APP_PATH");
+            if (empty(DfApp::$runtimePath)) {
+                throw new DfSetupException("No defined RuntimePath");
             }
 
             DfApp::app()->router = new DfMVC();
             static::configRead($config);
+            DfErrorHandler::registerHandlers();
             DfApp::$app->router->process();
 
             try {
-                DfApp::app()->router->execute();
-            } catch (DfListExceptions $ex) {
-                foreach ($ex as $e) {
-                    var_dump($e);
-                }
+                DfApp::app()->router->call();
             } catch (DfException $ex) {
-                var_dump($ex);
-            } finally {
-                var_dump(DfApp::$app);
+                DfErrorHandler::exception($ex);
             }
         } catch (DfException $ex) {
-            var_dump($ex);
+            DfErrorHandler::exception($ex);
         }
+    }
 
+    /**
+     * Prepare runtime path
+     */
+    private static function prepareRuntimePath($subFolder = '')
+    {
+        static::$runtimePath = static::getMainDirectory() . (!empty($subFolder) ? "/$subFolder" : "");
+    }
+
+    /**
+     * Get main directory
+     * @return string
+     */
+    private static function getMainDirectory()
+    {
+        return realpath(dirname(dirname(__DIR__)));
     }
 
     /**
@@ -127,21 +139,32 @@ class DfApp
             DfApp::app()->logger = new DfLogger();
         }
 
-        if (isset($config['errors']['display'])) {
-            switch ($config['errors']['display']) {
-                case true:
-                    ini_set('display_errors', 1);
-                    ini_set('display_startup_errors', 1);
-                    error_reporting(isset($config['errors']['level']) ? $config['errors']['level'] : -1);
-                    break;
-                case false:
-                default:
-                    ini_set('display_errors', 0);
-                    ini_set('display_startup_errors', 1);
-                    error_reporting(0);
-                    break;
+        if (isset($config['errors'])) {
+            if (isset($config['errors']['display'])) {
+                switch ($config['errors']['display']) {
+                    case true:
+                        ini_set('display_errors', 1);
+                        ini_set('display_startup_errors', 1);
+                        error_reporting(isset($config['errors']['level']) ? $config['errors']['level'] : -1);
+                        break;
+                    case false:
+                    default:
+                        ini_set('display_errors', 0);
+                        ini_set('display_startup_errors', 0);
+                        error_reporting(0);
+                        break;
+                }
+            }
+
+            if (isset($config['errors']['debug'])) {
+                DfErrorHandler::$debug = $config['errors']['debug'];
+            }
+
+            if (isset($config['errors']['error_call'])) {
+                DfErrorHandler::$errorCall = $config['errors']['error_call'];
             }
         }
+
 
         if (isset($config['router']['default'])) {
             if (isset($config['router']['default']['controller'])) {
@@ -159,16 +182,6 @@ class DfApp
     }
 
     /**
-     * Returning app web path
-     * @param bool $slash
-     * @return string
-     */
-    public static function getPath($slash = false)
-    {
-        return ($slash == true ? static::$appPath . '/' : static::$appPath);
-    }
-
-    /**
      * Returning app path
      * @param bool $slash
      * @return string
@@ -176,6 +189,16 @@ class DfApp
     public static function getRuntimePath($slash = false)
     {
         return ($slash == true ? static::$runtimePath . '/' : static::$runtimePath);
+    }
+
+    /**
+     * Returning app web path
+     * @param bool $slash
+     * @return string
+     */
+    public static function getPath($slash = false)
+    {
+        return ($slash == true ? static::$appPath . '/' : static::$appPath);
     }
 
     /**

@@ -10,39 +10,9 @@
 class DfMVCTest extends PHPUnit_Framework_TestCase
 {
     /**
-     * @depends DfAppTest
+     * @depends DfAppTest::testSetupEx
      */
-    public function testExecute()
-    {
-        $this->init();
-
-        $mvc = new DfMVC("http://localhost/main/main", true);
-        $this->assertEquals('main', $mvc->controller);
-        $this->assertEquals('main', $mvc->action);
-        try {
-            $mvc->execute();
-        } catch (DfSetupException $ex) {
-            $this->assertEquals("DfSetupException", get_class($ex));
-        } finally {
-            define('DF_APP_PATH', realpath(DfTests::$dataDir));
-            $mvc->execute();
-            $mvc = null;
-
-            $mvc = new DfMVC("http://localhost/main1/index", true);
-            $this->assertEquals('main1', $mvc->controller);
-            $this->assertEquals('index', $mvc->action);
-            $this->assertFalse($mvc->execute());
-
-            $mvc = new DfMVC("http://localhost/test/main1", true);
-            $this->assertEquals('test', $mvc->controller);
-            $this->assertEquals('main1', $mvc->action);
-            $this->assertFalse($mvc->execute());
-
-            $this->viewEx();
-        }
-    }
-
-    private function init()
+    public function testInit()
     {
         $mvc = new DfMVC();
         $mvc->process();
@@ -65,11 +35,34 @@ class DfMVCTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @depends testInit
      * @expectedException DfViewFileException
      */
-    private function viewEx()
+    public function viewEx()
     {
         $mvc = new DfMVC("http://localhost/main/test/main123", true);
-        $this->assertFalse($mvc->execute());
+        $mvc->call();
+    }
+
+    /**
+     * @depends testInit
+     * @expectedException DfNotFoundException
+     */
+    public function testIncorrectPaths()
+    {
+        $mvc = new DfMVC("http://localhost/main/main", true);
+        $this->assertEquals('main', $mvc->controller);
+        $this->assertEquals('main', $mvc->action);
+        $mvc->call();
+
+        $mvc = new DfMVC("http://localhost/main1/index", true);
+        $this->assertEquals('main1', $mvc->controller);
+        $this->assertEquals('index', $mvc->action);
+        $mvc->call();
+
+        $mvc = new DfMVC("http://localhost/test/main1", true);
+        $this->assertEquals('test', $mvc->controller);
+        $this->assertEquals('main1', $mvc->action);
+        $mvc->call();
     }
 }

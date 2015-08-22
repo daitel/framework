@@ -12,19 +12,35 @@ class DfBase
      * Framework Directory
      * @var array
      */
-    public $framework_directory = [];
+    public $frameworkDirectory = [];
+    /**
+     * Application Directory
+     * @var array
+     */
+    public $applicationDirectory = [];
     /**
      * Core directory
      * @var
      */
     public $dir;
+    /**
+     * Scanning status
+     * @var bool
+     */
+    private $scanStatus = false;
+    /**
+     * Runtime Path
+     * @var string
+     */
+    private $runtimePath;
 
     /**
      * __construct
      */
-    public function __construct()
+    public function __construct($runtimePath = '')
     {
         $this->dir = __DIR__;
+        $this->runtimePath = $runtimePath;
         $this->registerAutoloader();
     }
 
@@ -44,14 +60,16 @@ class DfBase
      */
     private function autoloader($class)
     {
-        if (empty($this->framework_directory)) {
+        if ($this->scanStatus === false) {
             $this->scanFrameworkDirectory();
+            $this->scanApplicationDirectory();
+            $this->scanStatus = true;
         }
 
-        foreach ($this->framework_directory as $directory) {
-            $path = $this->dir . "/" . $directory . "/" . $class . ".php";
+        foreach (array_merge($this->frameworkDirectory, $this->applicationDirectory) as $directory) {
+            $path = $directory . "/" . $class . ".php";
             if (file_exists($path)) {
-                include($path);
+                require($path);
             }
         }
     }
@@ -61,14 +79,29 @@ class DfBase
      */
     private function scanFrameworkDirectory()
     {
-        foreach (scandir($this->dir) as $directory) {
+        $this->scan($this->dir, 'frameworkDirectory');
+    }
+
+    private function scan($_directory, $variable)
+    {
+        foreach (scandir($_directory) as $directory) {
             ($directory != "." && $directory != ".." && is_dir(
-                $this->dir . "/" . $directory
-            ) ? $this->framework_directory[] = $directory : "");
+                $_directory . "/" . $directory
+            ) ? array_push($this->$variable, realpath($_directory . '/' . $directory)) : "");
         }
     }
-}
-define('DF_BASE_PATH', realpath(dirname(__FILE__)));
 
-$DfBase = new DfBase();
-DfApp::init(DF_BASE_PATH);
+    private function scanApplicationDirectory()
+    {
+        $this->scan(
+            (!empty($this->runtimePath) ? $this->runtimePath : dirname($this->dir)) . '/' . 'app',
+            'applicationDirectory'
+        );
+    }
+}
+
+$DfTestDir = (class_exists('DfTests') ? DfTests::$dataDir : '');
+
+$DfBase = new DfBase($DfTestDir);
+
+DfApp::init(realpath(dirname(__FILE__)));

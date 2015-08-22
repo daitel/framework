@@ -20,7 +20,7 @@ class DfException extends Exception
     public function __construct($message, $errorLevel = 0, $errorFile = '', $errorLine = 0)
     {
         parent::__construct($message, $errorLevel);
-        $this->file = $errorFile;
-        $this->line = $errorLine;
+        $this->file = !empty($errorFile) ? $errorFile : $this->getFile();
+        $this->line = !empty($line) ? $line : $this->getLine();
     }
 }
