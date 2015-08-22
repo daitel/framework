@@ -32,6 +32,22 @@ abstract class DfController
     }
 
     /**
+     * Before action call function
+     */
+    public function beforeAction()
+    {
+
+    }
+
+    /**
+     * After action call function
+     */
+    public function afterAction()
+    {
+
+    }
+
+    /**
      * Render Page
      * @param string $view
      * @param array $data

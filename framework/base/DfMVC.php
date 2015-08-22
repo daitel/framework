@@ -121,10 +121,14 @@ class DfMVC extends DfRouter
             throw new DfNotFoundException("Unable to find action: {$this->controller}/{$this->action}");
         }
 
+        call_user_func([$_controller, 'beforeAction']);
+
         if (!empty($this->id)) {
-            call_user_func(array($_controller, $actionName), $this->id);
+            call_user_func([$_controller, $actionName], $this->id);
         } else {
-            call_user_func(array($_controller, $actionName));
+            call_user_func([$_controller, $actionName]);
         }
+
+        call_user_func([$_controller, 'afterAction']);
     }
 } 
