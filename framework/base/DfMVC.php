@@ -29,9 +29,19 @@ class DfMVC extends DfRouter
     /**
      * __construct
      */
-    public function __construct($path = '')
+    public function __construct($path = '', $startNow = false)
     {
         $this->processPath($path);
+        if ($startNow === true) {
+            $this->process();
+        }
+    }
+
+    /**
+     * Start processing with elements
+     */
+    public function process()
+    {
         $this->setElements();
     }
 
@@ -56,37 +66,65 @@ class DfMVC extends DfRouter
      */
     private function setElement($key, $num)
     {
-        if (isset($this->$key) && isset($this->elements[$num])) {
+        if (isset($this->$key) && !empty($this->elements[$num])) {
             $this->$key = $this->elements[$num];
         }
     }
 
     /**
-     *
+     * Call Controller action by array
+     * @param array $array
      */
-    public function execute()
+    public function callByArray($array)
     {
-        if (!defined("DF_APP_PATH")) {
-            return false;
+        $this->call(
+            (!empty($array['controller']) ? $array['controller'] : ''),
+            (!empty($array['action']) ? $array['action'] : ''),
+            (!empty($array['id']) ? $array['id'] : '')
+        );
+    }
+
+    /**
+     * Call Controller action
+     * @param string $_controller
+     * @param string $_action
+     * @param string $_id
+     */
+    public function call($_controller = '', $_action = '', $_id = '')
+    {
+        $this->controller = (!empty($_controller)) ? $_controller : $this->controller;
+        $this->action = (!empty($_action)) ? $_action : $this->action;
+        $this->id = (!empty($_id)) ? $_id : $this->id;
+
+        $this->execute();
+    }
+
+    /**
+     * execute
+     */
+    private function execute()
+    {
+        if (empty(DfApp::app()->getRuntimePath())) {
+            throw new DfSetupException("No defined RuntimePath");
         }
 
         $controllerName = ucwords($this->controller) . 'Controller';
-        $controllerPath = DF_APP_PATH . "/app/controllers/" . $controllerName . ".php";
         $actionName = 'action' . ucwords($this->action);
 
-        if (!file_exists($controllerPath)) {
-            return false;
+        if (!class_exists($controllerName)) {
+            throw new DfNotFoundException("Unable to find controller: {$this->controller}");
         }
 
-        require_once $controllerPath;
+        $_controller = new $controllerName;
 
-        $controller = new $controllerName;
-
-        if (!method_exists($controller, $actionName)) {
-            return false;
+        if (!method_exists($_controller, $actionName)) {
+            throw new DfNotFoundException("Unable to find action: {$this->controller}/{$this->action}");
         }
 
-        call_user_func(array($controller, $actionName), $this->id);
-        return true;
+        if (!empty($this->id)) {
+            call_user_func(array($_controller, $actionName), $this->id);
+        } else {
+            call_user_func(array($_controller, $actionName));
+        }
     }
 } 

@@ -8,13 +8,21 @@
  * @package system.base
  * @since 0.2.1
  */
-class DfListException extends DfException implements ArrayAccess, Iterator
+class DfListExceptions extends DfException implements ArrayAccess, Iterator
 {
     /**
      * List
      * @var array
      */
-    protected $_list = array();
+    protected $_list = [];
+
+    /**
+     * __construct
+     */
+    public function __construct()
+    {
+
+    }
 
     /**
      * Offset Exists

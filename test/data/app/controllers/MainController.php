@@ -9,8 +9,13 @@
  */
 class MainController extends DfController
 {
-    public function actionIndex($id)
+    public function actionIndex($id = 'default')
     {
         $this->render('main', ['text' => $id]);
+    }
+
+    public function actionTest($id = 'main')
+    {
+        $this->render($id, []);
     }
 }

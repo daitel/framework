@@ -15,13 +15,24 @@ class DfAppTest extends PHPUnit_Framework_TestCase
      */
     private $config = [];
 
-    public function testStart()
+    public function testSetupEx()
+    {
+        try {
+            DfApp::start($this->config, 'test/data');
+        } catch (DfSetupException $ex) {
+            $this->assertEquals("DfSetupException", get_class($ex));
+        } finally {
+            $this->start();
+        }
+    }
+
+    private function start()
     {
         if (empty($config)) {
             $this->configWrite();
         }
 
-        DfApp::start($this->config);
+        DfApp::start($this->config, 'test/data');
         $this->assertEquals(DfApp::getPath(), $this->config['app_path']);
         $this->assertEquals(DfApp::getPath(true), $this->config['app_path'] . "/");
     }

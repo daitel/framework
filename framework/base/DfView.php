@@ -38,7 +38,7 @@ class DfView
 
     public function __construct()
     {
-        $this->viewsPath = DF_APP_PATH . '/app/views/';
+        $this->viewsPath = DfApp::app()->getRuntimePath(true) . '/app/views/';
         $this->templatePath = $this->viewsPath . 'templates/';
     }
 
@@ -85,7 +85,7 @@ class DfView
 
         foreach ($locations as $id => $location) {
             $viewPath .= ($id == 0 ? '' : '/') . $location;
-            $checkPath = $viewPath . $name . '.php';
+            $checkPath = $viewPath . '/' . $name . '.php';
             if (file_exists($checkPath)) {
                 return $checkPath;
             }
@@ -102,7 +102,7 @@ class DfView
         if (!empty($this->includePath)) {
             include($this->includePath);
         } else {
-            echo "Error with include";
+            throw new DfNotFoundException("View path is not defined");
         }
     }
 }
