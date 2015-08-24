@@ -2,7 +2,7 @@
 /**
  * DfDbConnection is data connection class
  *
- * DfMysql class provide connection functions
+ * DfDbConnection class provide db connection functions
  *
  * @author Nikita Fedoseev <agent.daitel@gmail.com>
  * @package system.data
@@ -45,6 +45,7 @@ class DfDbConnection extends DfComponent
     {
         try {
             $this->connection = new PDO($link, $user, $pass, $options);
+            $this->connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         } catch (PDOException $ex) {
             throw new DfSetupException($ex->getMessage(), 0, $ex->getFile(), $ex->getLine(), $ex);
         }
@@ -58,12 +59,17 @@ class DfDbConnection extends DfComponent
      */
     public function query($sql, $data = [])
     {
-        if (!empty($data)) {
-            $query = $this->connection->prepare($sql);
-            $query->execute($data);
-        } else {
-            $query = $this->connection->query($sql);
+        try {
+            if (!empty($data)) {
+                $query = $this->connection->prepare($sql);
+                $query->execute($data);
+            } else {
+                $query = $this->connection->query($sql);
+            }
+            return $query;
+        } catch (Exception $ex) {
+            $this->log($ex->getMessage(), $sql . '|' . serialize($data));
+            return false;
         }
-        return $query;
     }
 }

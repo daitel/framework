@@ -19,12 +19,12 @@ class DfTable extends DfComponent
      * Table Name
      * @var string
      */
-    public $tableName = '';
+    public $table = '';
     /**
      * PDO Connection
-     * @var PDO
+     * @var DfDbConnection
      */
-    protected $connection;
+    protected $db;
 
     /**
      * Create table work class
@@ -35,6 +35,63 @@ class DfTable extends DfComponent
     {
         $this->connection = $db;
         $this->componentName .= ucwords($name);
-        $this->tableName = $name;
+        $this->table = $name;
+    }
+
+    /**
+     * Insert Record in table
+     * @param array $data
+     * @return bool
+     */
+    public function insert($data)
+    {
+        $placeholders = DfSql::makePlaceholders($data);
+        $sqlKeys = $placeholders['keys'];
+        $sqlValues = $placeholders['values'];
+        $sqlData = $placeholders['data'];
+
+        $sql = "INSERT INTO {$this->table} ({$sqlKeys}) VALUES ({$sqlValues})";
+
+        return $this->queryWithRowOneCheck($sql, $sqlData);
+    }
+
+    /**
+     * Make query and check rowCount equals 1
+     * @param string $sql
+     * @param array $sqlData
+     * @return bool
+     */
+    private function queryWithRowOneCheck($sql, $sqlData = [])
+    {
+        $query = $this->connection->query($sql, $sqlData);
+
+        if ($query === false) {
+            return false;
+        }
+
+        return ($query->rowCount() == 1 ? true : false);
+    }
+
+    /**
+     * Update Request
+     * @param array $set
+     * @param array $where
+     * @return bool
+     */
+    public function update($set, $where = [])
+    {
+        $setData = implode(', ', DfSql::makePlaceholders($set, false)['array']);
+
+        $sql = "UPDATE {$this->table} SET {$setData}";
+        $sqlData = DfSql::makePlaceholders($set, false)['data'];
+
+        if (!empty($where)) {
+            $whereData = implode(', ', DfSql::makePlaceholders($where, false)['array']);
+            $sqlData = array_merge($sqlData, DfSql::makePlaceholders($where, false)['data']);
+
+            $sql .= " WHERE {$whereData}";
+        }
+
+        return $this->queryWithRowOneCheck($sql, $sqlData);
     }
 }

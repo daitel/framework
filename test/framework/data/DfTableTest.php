@@ -12,19 +12,26 @@ class DfTableTest extends PHPUnit_Framework_TestCase
     public function testNewTable()
     {
         $db = new DfDbConnection('mysql:host=localhost;dbname=test;charset=utf8', 'root', '');
-        $this->assertTrue(is_object($table = new DfTable($db, 'test')));
+        $table = new DfTable($db, 'users');
+        $this->assertTrue(is_object($table));
+        $this->checkInsert($table);
+        $this->checkUpdate($table);
+    }
 
-        $db->query(
-            "CREATE TABLE `users` (
-                `id` INT(11) NOT NULL AUTO_INCREMENT,
-                `username` VARCHAR(50) NOT NULL,
-                `email` VARCHAR(256) NOT NULL,
-                PRIMARY KEY (`id`)
-            )
-            ENGINE=MyISAM;"
-        );
-        $db->query("TRUNCATE `users`");
+    /**
+     * @param DfTable $table
+     */
+    public function checkInsert($table)
+    {
+        $this->assertTrue($table->insert(['username' => 'daitel', 'email' => 'example@example.com']));
+        $this->assertTrue($table->insert([]));
+    }
 
-        $this->assertEquals(1, $db->query("INSERT INTO users (username, email) VALUES(?, ?)", ['daitel', 'example@example.com'])->rowCount());
+    /**
+     * @param DfTable $table
+     */
+    public function checkUpdate($table)
+    {
+        $this->assertTrue($table->update(['email' => 'example1@example.com'], ['username' => 'daitel']));
     }
 }

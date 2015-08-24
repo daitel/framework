@@ -2,7 +2,7 @@
 /**
  * DfSql is helper class for preparing query
  *
- * DfMysql class provide data functions
+ * DfSql class provide sql query preparing functions
  *
  * @author Nikita Fedoseev <agent.daitel@gmail.com>
  * @package system.data
@@ -11,7 +11,44 @@
 class DfSql
 {
     /**
+     * Make Placeholders
+     * @param array $data
+     * @param bool $unnamed
+     * @return array
+     */
+    public static function makePlaceholders($data, $unnamed = true)
+    {
+        $keys = '';
+        $placeholders = '';
+
+        $sqlArray = [];
+        $sqlData = [];
+
+        if ($unnamed === true) {
+            $placeholders = str_repeat("?, ", count($data));
+        }
+
+        foreach ($data as $key => $value) {
+            if ($unnamed === true) {
+                $sqlData[] = $value;
+            } else {
+                $placeholders .= ':' . $key . ', ';
+                $sqlData[':' . $key] = $value;
+                $sqlArray[] = "$key = :$key";
+            }
+
+            $keys .= "$key, ";
+        }
+
+        $placeholders = trim($placeholders, ", ");
+        $keys = trim($keys, ", ");
+
+        return ['keys' => $keys, 'values' => $placeholders, 'data' => $sqlData, 'array' => $sqlArray];
+    }
+
+    /**
      * Create Query for select key
+     * @deprecated
      * @param string $table
      * @param string $key
      * @param array $where
@@ -26,6 +63,7 @@ class DfSql
 
     /**
      * Create query for select keys
+     * @deprecated
      * @param string $table
      * @param array $keys
      * @param array $where
@@ -44,6 +82,7 @@ class DfSql
 
     /**
      * Multi key array parser
+     * @deprecated
      * @param array $keys
      * @param string $type
      * @return string
@@ -71,6 +110,7 @@ class DfSql
 
     /**
      * Add ' ` ' to key value
+     * @deprecated
      * @param string $key
      * @return string
      */
@@ -81,6 +121,7 @@ class DfSql
 
     /**
      * Keys array parsing, returning string
+     * @deprecated
      * @param array $keys
      * @param string $type
      * @return string
@@ -106,6 +147,7 @@ class DfSql
 
     /**
      * Preparing Insert Query
+     * @deprecated
      * @param string $table
      * @param array $values
      * @return string
@@ -134,11 +176,12 @@ class DfSql
      */
     public static function selectAll($table)
     {
-        return "SELECT * FROM " . self::writeKey($table);
+        return "SELECT * FROM {$table}";
     }
 
     /**
      * Update Request
+     * @deprecated
      * @param string $table
      * @param array $values
      * @param array $where

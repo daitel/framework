@@ -15,9 +15,6 @@ class DfSqlTest extends PHPUnit_Framework_TestCase
      */
     private $table = 'test';
 
-    /**
-     * @covers DfSql::selectKey
-     */
     public function testSelectKey()
     {
         $this->assertEquals("SELECT a FROM test", DfSql::selectKey($this->table, 'a'));
@@ -43,9 +40,6 @@ class DfSqlTest extends PHPUnit_Framework_TestCase
         );
     }
 
-    /**
-     * @covers DfSql::selectKeys
-     */
     public function testSelectKeys()
     {
         $this->assertEquals("SELECT a, b FROM test", DfSql::selectKeys($this->table, ['a', 'b']));
@@ -55,9 +49,6 @@ class DfSqlTest extends PHPUnit_Framework_TestCase
         );
     }
 
-    /**
-     * @covers DfSql::insert
-     */
     public function testInsert()
     {
         $this->assertEquals("INSERT INTO test (a) VALUES('b')", DfSql::insert($this->table, ['a' => 'b']));
@@ -67,9 +58,6 @@ class DfSqlTest extends PHPUnit_Framework_TestCase
         );
     }
 
-    /**
-     * @covers DfSql::update
-     */
     public function testUpdate()
     {
         $this->assertEquals(
@@ -97,5 +85,28 @@ class DfSqlTest extends PHPUnit_Framework_TestCase
     public function testSelectAll()
     {
         $this->assertEquals('SELECT * FROM test', DfSql::selectAll($this->table));
+    }
+
+    public function testMakePlaceholders()
+    {
+        $this->assertEquals(
+            [
+                'keys' => 'username, email',
+                'values' => '?, ?',
+                'data' => ['example', 'example@example.com'],
+                'array' => []
+            ],
+            DfSql::makePlaceholders(['username' => 'example', 'email' => 'example@example.com'])
+        );
+
+        $this->assertEquals(
+            [
+                'keys' => 'username, email',
+                'values' => ':username, :email',
+                'data' => [':username' => 'example', ':email' => 'example@example.com'],
+                'array' => ['username = :username', 'email = :email']
+            ],
+            DfSql::makePlaceholders(['username' => 'example', 'email' => 'example@example.com'], false)
+        );
     }
 }
