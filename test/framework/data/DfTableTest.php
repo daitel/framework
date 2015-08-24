@@ -16,6 +16,7 @@ class DfTableTest extends PHPUnit_Framework_TestCase
         $this->assertTrue(is_object($table));
         $this->checkInsert($table);
         $this->checkUpdate($table);
+        $this->checkSelect($table);
     }
 
     /**
@@ -33,5 +34,26 @@ class DfTableTest extends PHPUnit_Framework_TestCase
     public function checkUpdate($table)
     {
         $this->assertTrue($table->update(['email' => 'example1@example.com'], ['username' => 'daitel']));
+    }
+
+    /**
+     * @param DfTable $table
+     */
+    public function checkSelect($table)
+    {
+        $this->assertEquals(
+            'example1@example.com',
+            $table->selectRecord('email', ['username' => 'daitel'])
+        );
+
+        $this->assertEquals(
+            ['id' => 2, 'email' => 'example1@example.com'],
+            $table->selectRecord(['id', 'email'], ['username' => 'daitel', 'email' => 'example1@example.com'])
+        );
+
+        $this->assertEquals(
+            [['id' => 2, 'email' => 'example1@example.com']],
+            $table->selectRecords(['id', 'email'], ['username' => 'daitel'])
+        );
     }
 }

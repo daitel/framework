@@ -75,7 +75,7 @@ class DfSql
     {
         return "SELECT " .
         self::multiKey($keys) .
-        " FROM " . self::writeKey($table) .
+        " FROM " . $table .
         (!empty($where) ? " WHERE" : '') . (!empty($where) ? ' ' . self::multiKeyWhere($where, $type) : '') .
         (!empty($other) ? " " . $other : '');
     }
@@ -97,7 +97,7 @@ class DfSql
                 $query .= ', ';
             }
             if ($type == 'key') {
-                $query .= self::writeKey($key);
+                $query .= $key;
             } else {
                 $query .= "'" . $key . "'";
             }
@@ -106,17 +106,6 @@ class DfSql
         }
 
         return $query;
-    }
-
-    /**
-     * Add ' ` ' to key value
-     * @deprecated
-     * @param string $key
-     * @return string
-     */
-    public static function writeKey($key)
-    {
-        return '' . $key . '';
     }
 
     /**
@@ -138,11 +127,28 @@ class DfSql
                     $query .= ' ' . $type . ' ';
                 }
 
-                $query .= self::writeKey($key) . " = '" . $value . "'";
+                $query .= $key . " = '" . $value . "'";
                 $i++;
             }
         }
         return $query;
+    }
+
+    /**
+     * Make from array|string key string
+     * @param array|string $_key
+     * @param string $implode
+     * @return string
+     */
+    public static function prepareKeys($_key, $implode = ', ')
+    {
+        if (is_array($_key)) {
+            $key = implode($implode, $_key);
+        } else {
+            $key = $_key;
+        }
+
+        return $key;
     }
 
     /**
@@ -163,7 +169,7 @@ class DfSql
             $QValues[] = $value;
         }
 
-        return "INSERT INTO " . self::writeKey($table) . " (" . self::multiKey($QKeys) . ") VALUES(" . self::multiKey(
+        return "INSERT INTO " . $table . " (" . self::multiKey($QKeys) . ") VALUES(" . self::multiKey(
             $QValues,
             'values'
         ) . ")";
@@ -191,7 +197,7 @@ class DfSql
      */
     public static function update($table, $values, $where = [], $type = 'AND', $other = '')
     {
-        return "UPDATE " . self::writeKey($table) .
+        return "UPDATE " . $table .
         " SET " . self::multiKeyWhere($values, ',') .
         (!empty($where) ? " WHERE" : '') . (!empty($where) ? ' ' . self::multiKeyWhere($where, $type) : '') .
         (!empty($other) ? " " . $other : '');

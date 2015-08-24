@@ -72,4 +72,39 @@ class DfDbConnection extends DfComponent
             return false;
         }
     }
+
+    /**
+     * Get records by sql query
+     * @param string $sql
+     * @param array $data
+     * @return array|mixed
+     */
+    public function getRecordsByQuery($sql, $data = [])
+    {
+        return $this->fetchByQuery($sql, $data, true);
+    }
+
+    /**
+     * Get record by sql query
+     * @param string $sql
+     * @param array $data
+     * @return array|mixed
+     */
+    public function getRecordByQuery($sql, $data = [])
+    {
+        return $this->fetchByQuery($sql, $data);
+    }
+
+    /**
+     * Make PDO query and fetch result
+     * @param string $sql
+     * @param array $data
+     * @param bool $all
+     * @return array|mixed
+     */
+    private function fetchByQuery($sql, $data = [], $all = false)
+    {
+        $query = $this->query($sql, $data);
+        return ($all == true ? $query->fetchAll(PDO::FETCH_NAMED) : $query->fetch(PDO::FETCH_NAMED));
+    }
 }

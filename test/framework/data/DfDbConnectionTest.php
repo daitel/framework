@@ -1,7 +1,7 @@
 <?php
 /**
  * Daitel Framework
- * Test Class for test db PDO connection work
+ * Test Class for test db connection functions
  *
  * @author Nikita Fedoseev <agent.daitel@gmail.com>
  * @link https://github.com/daitel/framework
@@ -27,7 +27,27 @@ class DfDbConnectionTest extends PHPUnit_Framework_TestCase
             )
             ENGINE=MyISAM;"
         );
+
         $db->query("TRUNCATE `users`");
+
+        $db->query("INSERT INTO users (username, email) VALUES (?,?)", ['test', 'example.test@example.com']);
+        $this->check($db);
+    }
+
+    /**
+     * @param DfDbConnection $db
+     */
+    public function check($db)
+    {
+        $this->assertEquals(
+            ['id' => 1, 'username' => 'test', 'email' => 'example.test@example.com'],
+            $db->getRecordByQuery("SELECT * FROM users WHERE id = :id", [':id' => 1])
+        );
+
+        $this->assertEquals(
+            [['id' => 1, 'username' => 'test', 'email' => 'example.test@example.com']],
+            $db->getRecordsByQuery("SELECT * FROM users WHERE id = :id", [':id' => 1])
+        );
     }
 
     /**
