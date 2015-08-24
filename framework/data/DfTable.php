@@ -52,24 +52,32 @@ class DfTable extends DfComponent
 
         $sql = "INSERT INTO {$this->table} ({$sqlKeys}) VALUES ({$sqlValues})";
 
-        return $this->queryWithRowOneCheck($sql, $sqlData);
+        return $this->db->queryWithRowOneCheck($sql, $sqlData);
     }
 
     /**
-     * Make query and check rowCount equals 1
-     * @param string $sql
-     * @param array $sqlData
+     * Delete Record
+     * @param array $where
+     * @param string $type
+     * @param string $afterWhere
      * @return bool
      */
-    private function queryWithRowOneCheck($sql, $sqlData = [])
+    public function delete($where = [], $type = 'AND', $afterWhere = '')
     {
-        $query = $this->db->query($sql, $sqlData);
+        $sqlData = [];
 
-        if ($query === false) {
-            return false;
+        $sql = "DELETE FROM {$this->table}";
+
+        if (!empty($where)) {
+            $whereData = implode(" $type ", DfSql::makePlaceholders($where, false)['array']);
+            $sqlData = DfSql::makePlaceholders($where, false)['data'];
+
+            $sql .= " WHERE {$whereData}";
         }
 
-        return ($query->rowCount() == 1 ? true : false);
+        $sql .= (!empty($where) ? ' ' : ' WHERE ') . $afterWhere;
+
+        return $this->db->queryWithRowOneCheck($sql, $sqlData);
     }
 
     /**
@@ -126,7 +134,7 @@ class DfTable extends DfComponent
             $sql .= " WHERE {$whereData}";
         }
 
-        $sql .= ' ' . $afterWhere;
+        $sql .= (!empty($where) ? ' ' : ' WHERE ') . $afterWhere;
 
         return ($many === true ?
             $this->db->getRecordsByQuery($sql, $sqlData) :
@@ -178,6 +186,6 @@ class DfTable extends DfComponent
             $sql .= " WHERE {$whereData}";
         }
 
-        return $this->queryWithRowOneCheck($sql, $sqlData);
+        return $this->db->queryWithRowOneCheck($sql, $sqlData);
     }
 }

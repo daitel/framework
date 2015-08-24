@@ -17,12 +17,13 @@ class DfTableTest extends PHPUnit_Framework_TestCase
         $this->checkInsert($table);
         $this->checkUpdate($table);
         $this->checkSelect($table);
+        $this->checkDelete($table);
     }
 
     /**
      * @param DfTable $table
      */
-    public function checkInsert($table)
+    private function checkInsert($table)
     {
         $this->assertTrue($table->insert(['username' => 'daitel', 'email' => 'example@example.com']));
         $this->assertTrue($table->insert([]));
@@ -31,7 +32,7 @@ class DfTableTest extends PHPUnit_Framework_TestCase
     /**
      * @param DfTable $table
      */
-    public function checkUpdate($table)
+    private function checkUpdate($table)
     {
         $this->assertTrue($table->update(['email' => 'example1@example.com'], ['username' => 'daitel']));
     }
@@ -39,7 +40,7 @@ class DfTableTest extends PHPUnit_Framework_TestCase
     /**
      * @param DfTable $table
      */
-    public function checkSelect($table)
+    private function checkSelect($table)
     {
         $this->assertEquals(
             'example1@example.com',
@@ -55,5 +56,15 @@ class DfTableTest extends PHPUnit_Framework_TestCase
             [['id' => 2, 'email' => 'example1@example.com']],
             $table->selectRecords(['id', 'email'], ['username' => 'daitel'])
         );
+    }
+
+    /**
+     * @param DfTable $table
+     */
+    private function checkDelete($table)
+    {
+        $this->assertTrue($table->delete(['id' => 2]));
+        $this->assertTrue($table->delete([], '', 'id <= 2'));
+        $this->assertFalse($table->delete(['id' => 100]));
     }
 }

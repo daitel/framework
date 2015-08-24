@@ -85,6 +85,23 @@ class DfDbConnection extends DfComponent
     }
 
     /**
+     * Make query and check rowCount equals 1
+     * @param string $sql
+     * @param array $sqlData
+     * @return bool
+     */
+    public function queryWithRowOneCheck($sql, $sqlData = [])
+    {
+        $query = $this->query($sql, $sqlData);
+
+        if ($query === false) {
+            return false;
+        }
+
+        return ($query->rowCount() == 1 ? true : false);
+    }
+
+    /**
      * Get record by sql query
      * @param string $sql
      * @param array $data
