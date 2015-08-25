@@ -24,7 +24,7 @@ class DfTable extends DfComponent
      * Db Connection
      * @var DfDbConnection
      */
-    protected $db;
+    public $db;
 
     /**
      * Create table work class
@@ -160,7 +160,7 @@ class DfTable extends DfComponent
         $beforeWhere = '',
         $afterWhere = ''
     ) {
-        return (is_array($_key) ?
+        return (is_array($_key) || $_key == '*' ?
             $this->select(false, $_key, $where, $type, $beforeFrom, $beforeWhere, $afterWhere) :
             $this->select(false, $_key, $where, $type, $beforeFrom, $beforeWhere, $afterWhere)[$_key]
         );

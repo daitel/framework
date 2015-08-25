@@ -27,6 +27,7 @@ class DfTableTest extends PHPUnit_Framework_TestCase
     {
         $this->assertTrue($table->insert(['username' => 'daitel', 'email' => 'example@example.com']));
         $this->assertTrue($table->insert([]));
+        $this->assertTrue($table->insert(['username' => 'example123', 'email' => 'example12345@example.com']));
     }
 
     /**
@@ -66,5 +67,45 @@ class DfTableTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($table->delete(['id' => 2]));
         $this->assertTrue($table->delete([], '', 'id <= 2'));
         $this->assertFalse($table->delete(['id' => 100]));
+    }
+
+    /**
+     * @depends testNewTable
+     */
+    public function testRecordSet()
+    {
+        $record = Users::record()->getByQuery("SELECT * FROM users WHERE id = :id", [':id' => 4]);
+        $this->assertEquals('example123', $record->username);
+        $this->assertEquals('example12345@example.com', $record->email);
+
+        $record1 = Users::record()->getByQuery("SELECT * FROM users WHERE id = :id", [':id' => 4]);
+        $this->assertEquals('example123', $record1->username);
+        $this->assertEquals('example12345@example.com', $record1->email);
+
+        $record2 = Users::record()->getRecord(['id' => 4]);
+        $this->assertEquals('example123', $record2->username);
+        $this->assertEquals('example12345@example.com', $record2->email);
+
+        $record3 = Users::record()->getByPk(4);
+        $this->assertEquals('example123', $record3->username);
+        $this->assertEquals('example12345@example.com', $record3->email);
+
+        foreach (Users::record()->getArrayByQuery("SELECT * FROM users WHERE id = :id", [':id' => 4]) as $qRecord) {
+            $this->assertEquals('example123', $qRecord->username);
+            $this->assertEquals('example12345@example.com', $qRecord->email);
+        }
+
+        $record4 = Users::record()->getByPk(3);
+        $record4->username = 'test';
+        $record4->save();
+
+        $record5 = Users::record()->getByPk(3);
+        $this->assertEquals('test', $record5->username);
+
+        $record6 = Users::record()->create(['username' => 'test1', 'email' => 'test@example.com']);
+        $record6->save();
+
+        $record7 = Users::record()->getByQuery("SELECT * FROM users ORDER BY id DESC LIMIT 1");
+        $this->assertEquals('test1', $record7->username);
     }
 }

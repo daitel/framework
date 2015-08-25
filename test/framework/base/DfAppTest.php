@@ -40,7 +40,14 @@ class DfAppTest extends PHPUnit_Framework_TestCase
     private function configWrite()
     {
         $this->config = [
-            'app_path' => 'localhost'
+            'app_path' => 'localhost',
+            'components' => [
+                'db' => [
+                    'link' => 'mysql:host=localhost;dbname=test;charset=utf8',
+                    'user' => 'root',
+                    'password' => ''
+                ]
+            ]
         ];
     }
 }

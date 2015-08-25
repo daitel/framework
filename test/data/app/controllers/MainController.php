@@ -11,7 +11,9 @@ class MainController extends DfController
 {
     public function actionIndex($id = 'default')
     {
-        $this->render('main', ['text' => $id]);
+        $data = Users::record()->create(['username' => 'daitel', 'email' => 'example321@example.com']);
+
+        $this->render('main', ['data' => $data]);
     }
 
     public function actionTest($id = 'main')
