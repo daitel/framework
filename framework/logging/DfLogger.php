@@ -10,137 +10,165 @@
  */
 class DfLogger
 {
-	/**
-	 * Component name
-	 * @see DfComponent
-	 * @var string
-	 */
-	private $component_name = 'logger';
-	/**
-	 * LogData Array
-	 * @var array
-	 */
-	private $LogData = array();
+    /*
+     * Types
+     */
+    const TYPE_INFO = 'info';
+    const TYPE_WARNING = 'warning';
+    const TYPE_ERROR = 'error';
+    /*
+     * Levels
+     */
+    const LEVEL_LOG = 'log';
+    const LEVEL_DEBUG = 'debug';
+    const LEVEL_USER = 'user';
+    const LEVEL_ADMIN = 'admin';
+    /**
+     * Component name
+     * @var string
+     */
+    public $componentName = 'logger';
+    /**
+     * Component name
+     * @var string
+     */
+    public $path;
+    /**
+     * logData Array
+     * @var array
+     */
+    private $logData = array();
 
-	/**
-	 * Add Log record
-	 * @param string $component
-	 * @param string $path
-	 * @param string $error
-	 * @param string $type
-	 * @param string $level
-	 * @param int $duration
-	 */
-	public function log($component, $path, $error, $type = 'info', $level = 'log', $duration = 0)
-	{
-		$this->LogData[] = [
-			'time' => $this->getLogDate(),
-			'type' => $type,
-			'component' => $component,
-			'ip' => getenv('REMOTE_ADDR'),
-			'path' => $path,
-			'location' => (isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : ''),
-			'error' => $error,
-			'level' => $level,
-			'duration' => $duration
-		];
-	}
+    /**
+     * __construct
+     * @param string $path
+     */
+    public function __construct($path = 'log.txt')
+    {
+        $this->path = $path;
+    }
 
-	/**
-	 * Return current date for log record
-	 * @return bool|string
-	 */
-	private function getLogDate()
-	{
-		return date("Y-m-d H:i:s");
-	}
+    /**
+     * Add Log record
+     * @param string $component
+     * @param string $location
+     * @param string $error
+     * @param string $type
+     * @param string $level
+     */
+    public function log($component, $location, $error, $type = DfLogger::TYPE_INFO, $level = DfLogger::LEVEL_LOG)
+    {
+        $this->logData[] = [
+            'time' => $this->getLogDate(),
+            'type' => $type,
+            'component' => $component,
+            'location' => (empty($location) ? getenv(
+                        'REMOTE_ADDR'
+                    ) . ':' . (isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : '')
+                    : $location),
+            'error' => $error,
+            'level' => $level
+        ];
+    }
 
-	/**
-	 * Get LogData By Type
-	 * @param string $type
-	 * @return array
-	 */
-	public function getLogDataByType($type)
-	{
-		return $this->getLogDataBy('type', $type);
-	}
+    /**
+     * Return current date for log record
+     * @return string
+     */
+    private function getLogDate()
+    {
+        return DfSql::datetime();
+    }
 
-	/**
-	 * Get log data by key and value
-	 * @param $key
-	 * @param $value
-	 * @return array|bool
-	 */
-	private function getLogDataBy($key, $value)
-	{
-		$return = array();
-		foreach ($this->LogData as $error) {
-			if ($error[$key] == $value) {
-				$return[] = $error;
-			}
-		}
-		return (!empty($return) ? $return : false);
-	}
+    /**
+     * Get logData By Type
+     * Types:
+     * - TYPE_INFO
+     * - TYPE_WARNING
+     * - TYPE_ERROR
+     * @param string $type
+     * @return array
+     */
+    public function getLogDataByType($type)
+    {
+        return $this->getLogDataBy('type', $type);
+    }
 
-	/**
-	 * Get LogData by Component
-	 * @param string $component
-	 * @return array
-	 */
-	public function getLogDataByComponent($component)
-	{
-		return $this->getLogDataBy('component', $component);
-	}
+    /**
+     * Get log data by key and value
+     * @param string $key
+     * @param string $value
+     * @return array|bool
+     */
+    private function getLogDataBy($key, $value)
+    {
+        $return = array();
+        foreach ($this->logData as $error) {
+            if ($error[$key] == $value) {
+                $return[] = $error;
+            }
+        }
+        return (!empty($return) ? $return : false);
+    }
 
-	/**
-	 * Save log to file
-	 * @param $path
-	 * @param string $key
-	 * @param string $value
-	 */
-	public function save($path, $key = '', $value = '')
-	{
-		$logger_file = new DFLoggerFIle($path);
+    /**
+     * Get logData by Component
+     * @param string $component
+     * @return array
+     */
+    public function getLogDataByComponent($component)
+    {
+        return $this->getLogDataBy('component', $component);
+    }
 
-		if ($key && $value) {
-			$logger_array = $this->getLogDataBy($key, $value);
-		} else {
-			$logger_array = $this->LogData;
-		}
+    /**
+     * Save log to file
+     * @param string $key
+     * @param string $value
+     */
+    public function save($key = '', $value = '')
+    {
+        $logger_file = new DfLoggerFile($this->path);
 
-		$logger_file->write($logger_array);
-	}
+        if ($key && $value) {
+            $logger_array = $this->getLogDataBy($key, $value);
+        } else {
+            $logger_array = $this->logData;
+        }
 
-	/**
-	 * Get LogData By level
-	 * Level types:
-	 * - log
-	 * - debug
-	 * @param string $level
-	 * @return array|bool
-	 */
-	public function getLogDataByLevel($level)
-	{
-		return $this->getLogDataBy('type', $level);
-	}
+        $logger_file->write($logger_array);
+    }
 
-	/**
-	 * Get Records
-	 * @return array
-	 */
-	public function getLogData()
-	{
-		return $this->LogData;
-	}
+    /**
+     * Get logData By level
+     * Levels:
+     * - LEVEL_LOG
+     * - LEVEL_DEBUG
+     * - LEVEL_USER
+     * - LEVEL_ADMIN
+     * @param string $level
+     * @return array|bool
+     */
+    public function getLogDataByLevel($level)
+    {
+        return $this->getLogDataBy('type', $level);
+    }
 
-	/**
-	 * Setter
-	 * @param array $LogData
-	 */
-	public function setLogData($LogData = array())
-	{
-		foreach ($LogData as $error) {
-			$this->LogData[] = $error;
-		}
-	}
+    /**
+     * Get Records
+     * @return array
+     */
+    public function getLogData()
+    {
+        return $this->logData;
+    }
+
+    /**
+     * Setter
+     * @param array $logData
+     */
+    public function setLogData($logData = array())
+    {
+        $this->logData = array_merge($this->logData, $logData);
+    }
 }

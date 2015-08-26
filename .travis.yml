@@ -1,21 +1,23 @@
 language: php
 
 php:
-    - 5.4
     - 5.5
     - 5.6
     - hhvm
     - hhvm-nightly
 
+cache:
+    directories:
+        - vendor
+        - $HOME/.composer/cache
+
 before_script:
   - composer self-update
   - composer install --prefer-source --no-interaction --dev
-  - wget https://scrutinizer-ci.com/ocular.phar
-  - php ocular.phar code-coverage:upload --access-token=834e5fcad5f0bf67bb485abe95a38555939fd5b88034aa891a48f2c890f9d8e9 --format=php-clover coverage.clover
+  - mysql -e "create database IF NOT EXISTS test;" -uroot
 
 matrix:
   allow_failures:
-    - php: 5.6
     - php: hhvm
     - php: hhvm-nightly
   fast_finish: true
@@ -25,8 +27,9 @@ install:
     - composer global require "fxp/composer-asset-plugin:1.0.0-beta3"
     - travis_retry composer update
 
-script: phpunit --configuration phpunit_standard.xml test --coverage-clover=coverage.clover
+script:
+  - phpunit --configuration phpunit.xml
 
-addons:
-  code_climate:
-    repo_token: e08ed8d4ba46c32394c98d4b321fb118621e8cf947ae17037606dd6a1d643b6e
+after_script:
+  - wget https://scrutinizer-ci.com/ocular.phar
+  - php ocular.phar code-coverage:upload --format=php-clover test/build/logs/clover.xml

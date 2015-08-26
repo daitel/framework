@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<phpunit bootstrap="test/DfTests.php"
+         colors="true"
+         convertErrorsToExceptions="true"
+         convertNoticesToExceptions="true"
+         convertWarningsToExceptions="true"
+         stopOnFailure="false">
+    <testsuites>
+        <testsuite name="Daitel PHP Framework Tests">
+            <directory>test</directory>
+        </testsuite>
+    </testsuites>
+    <filter>
+        <blacklist>
+            <directory suffix=".php">test</directory>
+        </blacklist>
+        <whitelist>
+            <directory suffix=".php">framework</directory>
+        </whitelist>
+    </filter>
+    <logging>
+        <log type="coverage-text" target="php://stdout" showUncoveredFiles="true"/>
+        <log type="coverage-clover" target="test/build/logs/clover.xml"/>
+        <log type="coverage-html" target="test/build/logs/report" charset="UTF-8"
+             yui="true" highlight="true"
+             lowUpperBound="50" highLowerBound="80"/>
+        <log type="junit" target="test/build/logs/junit.xml" logIncompleteSkipped="false"/>
+    </logging>
+</phpunit>

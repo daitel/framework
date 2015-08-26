@@ -18,7 +18,7 @@
  */
 function DfConverter_DMStoDEC($deg, $min, $sec)
 {
-	return $deg + ((($min * 60) + ($sec)) / 3600);
+    return $deg + ((($min * 60) + ($sec)) / 3600);
 }
 
 /**
@@ -35,14 +35,14 @@ function DfConverter_DMStoDEC($deg, $min, $sec)
 function DfConverter_DEGtoDIG($degrees)
 {
 
-	$prefix = substr($degrees, 0, 1);
-	$dig = substr($degrees, 1, 3);
+    $prefix = substr($degrees, 0, 1);
+    $dig = substr($degrees, 1, 3);
 
-	if ($prefix == !'N' or $prefix == !'E') {
-		return '-' . $dig;
-	} else {
-		return $dig;
-	}
+    if ($prefix == !'N' or $prefix == !'E') {
+        return '-' . $dig;
+    } else {
+        return $dig;
+    }
 }
 
 /**
@@ -54,11 +54,8 @@ function DfConverter_DEGtoDIG($degrees)
  */
 function DfConverter_MINtoHOURS($min)
 {
-	$hours = floor($min / 60);
-	$minutes = floor($min % 60);
-
-	return [
-		'hours' => ($hours < 10 ? '0' . $hours : $hours),
-		'min' => ($minutes < 10 ? '0' . $minutes : $minutes)
-	];
+    return array(
+        'hours' => (floor($min / 60) < 10 ? '0' . floor($min / 60) : floor($min / 60)),
+        'minutes' => (floor($min % 60) < 10 ? '0' . floor($min % 60) : floor($min % 60))
+    );
 }
