@@ -207,6 +207,6 @@ class DfApp
      */
     public static function getVersion()
     {
-        return '0.2.1-dev';
+        return '0.2.1';
     }
 }
