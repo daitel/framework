@@ -184,7 +184,26 @@ class DfErrorHandler
      */
     public static function renderExceptionPage($ex)
     {
-        include DfApp::getRuntimePath(true) . "framework/views/errors/exception.php";
+        self::includePage($ex, 'exception');
+    }
+
+    /**
+     * @param DfException $ex
+     * @param string $page
+     * @throws Exception
+     */
+    private static function includePage($ex, $page = 'error')
+    {
+        $path = DfApp::getRuntimePath(true) . "framework/views/errors/$page.php";
+        if (file_exists($path)) {
+            include $path;
+        } else {
+            if (self::$debug) {
+                throw new Exception($ex->getMessage(), 0, $ex);
+            } else {
+                exit("Unable to include error page. Try to reinstall framework");
+            }
+        }
     }
 
     /**
@@ -196,7 +215,7 @@ class DfErrorHandler
         if (!empty(self::$errorCall)) {
             DfApp::app()->router->callByArray(self::$errorCall);
         } else {
-            include DfApp::getRuntimePath(true) . "framework/views/errors/error.php";
+            self::includePage($ex);
         }
     }
 }
