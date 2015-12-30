@@ -36,26 +36,53 @@ class DfView
      */
     public $viewData = [];
 
+    /**
+     * Construct
+     */
     public function __construct()
     {
         $this->viewsPath = DfApp::app()->getRuntimePath(true) . 'app/views/';
         $this->templatePath = $this->viewsPath . 'templates/';
     }
 
-    public function render($view, $data = [])
+    /**
+     * Render view with template
+     * @param string $view
+     * @param array $data
+     * @param string $templateView
+     */
+    public function render($view, $data = [], $templateView = '')
     {
-        $this->renderPage($view, $this->templateView, $data);
+        $this->renderPage($view, (empty($templateView) ? $this->templateView : $templateView), $data);
     }
 
-    private function renderPage($viewName, $template, $data = [])
+    /**
+     * Render view without template
+     * @param $view
+     * @param $data
+     */
+    public function renderView($view, $data)
+    {
+        $this->renderPage($view, '', $data);
+    }
+
+    /**
+     * Render Page
+     * @param string $viewName
+     * @param string $template
+     * @param array $data
+     */
+    private function renderPage($viewName, $template = '', $data = [])
     {
         $this->viewData = $data;
-
         $this->includePath = $this->getViewPath($viewName);
-        $templatePath = $this->templatePath . $template . '.php';
 
-        if (isset($templatePath)) {
+        if (!empty($template)) {
+            $templatePath = $this->templatePath . $template . '.php';
+
             include($templatePath);
+        } else {
+            include($this->includePath);
         }
     }
 
