@@ -201,7 +201,7 @@ class DfErrorHandler
             if (self::$debug) {
                 throw new Exception($ex->getMessage(), 0, $ex);
             } else {
-                exit("Unable to include error page. Try to reinstall framework");
+                echo "Unable to include error page. Try to reinstall framework";
             }
         }
     }

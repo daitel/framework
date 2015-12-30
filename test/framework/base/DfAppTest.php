@@ -47,7 +47,10 @@ class DfAppTest extends PHPUnit_Framework_TestCase
                     'user' => 'root',
                     'password' => ''
                 ]
-            ]
+            ],
+            'errors' => [
+                'debug' => true,
+            ],
         ];
     }
 }
