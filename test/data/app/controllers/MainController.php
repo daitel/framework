@@ -1,5 +1,14 @@
 <?php
 /**
+ * @link https://github.com/daitel/framework
+ */
+
+namespace test\controllers;
+
+use df\base\Controller;
+use test\data\models\Users;
+
+/**
  * Daitel Framework
  * Controller for test process
  *
@@ -7,7 +16,7 @@
  * @link https://github.com/daitel/framework
  * @since 0.2.1
  */
-class MainController extends DfController
+class MainController extends Controller
 {
     public function actionIndex($id = 'default')
     {

@@ -1,10 +1,12 @@
 <?php
 /**
- * Daitel Framework
+ * @link https://github.com/daitel/framework
+ */
+
+/**
  * Main Test Class
  *
  * @author Nikita Fedoseev <agent.daitel@gmail.com>
- * @link https://github.com/daitel/framework
  * @since 0.2.1
  */
 class DfTests
@@ -26,9 +28,9 @@ class DfTests
      */
     public static function start($path)
     {
-        DfTests::$testDir = $path."/runtime/";
-        DfTests::$dataDir = $path."/data/";
-        DfTests::clearDir();
+        self::$testDir = $path."/runtime/";
+        self::$dataDir = $path."/data/";
+        self::clearDir();
     }
 
     /**
@@ -36,10 +38,10 @@ class DfTests
      */
     private static function clearDir()
     {
-        if (!file_exists(DfTests::$testDir)) {
-            mkdir(DfTests::$testDir, 0777, true);
+        if (!file_exists(self::$testDir)) {
+            mkdir(self::$testDir, 0777, true);
         } else {
-            $files = glob(DfTests::$testDir . '*');
+            $files = glob(self::$testDir . '*');
             foreach ($files as $file) {
                 if (is_file($file)) {
                     unlink($file);
@@ -47,8 +49,9 @@ class DfTests
             }
         }
     }
+
+
 }
 
 DfTests::start(__DIR__);
-
-include('framework/DfBase.php');
+require dirname(__DIR__).'/framework/Df.php';

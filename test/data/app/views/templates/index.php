@@ -1,11 +1,15 @@
 <?php
 /**
- * Daitel Framework
+ * @link https://github.com/daitel/framework
+ */
+
+/**
  * Template for test process
  *
  * @author Nikita Fedoseev <agent.daitel@gmail.com>
- * @link https://github.com/daitel/framework
  * @since 0.2.1
+ *
+ * @var $this df\base\View
  */
 ?>
 <!DOCTYPE html>
