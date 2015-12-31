@@ -1,13 +1,14 @@
 <?php
 /**
- * Daitel Framework
+ * @link https://github.com/daitel/framework
+ */
+
+/**
  * Errors View
  *
  * @author Nikita Fedoseev <agent.daitel@gmail.com>
- * @link https://github.com/daitel/framework
  * @since 0.2.1
- *
- * @var DfException $ex
+ * @var Exception $ex
  */
 ?>
 <html>

@@ -1,107 +1,78 @@
 <?php
 /**
+ * @link https://github.com/daitel/framework
+ */
+
+namespace df;
+
+/**
  * Daitel Framework | Base File
  *
  * @author Nikita Fedoseev <agent.daitel@gmail.com>
- * @link https://github.com/daitel/framework
  * @since 0.2.1
  */
 class DfBase
 {
     /**
-     * Framework Directory
+     * Array with namespace => root directories
+     * TODO: add functions to work with that array
      * @var array
      */
-    public $frameworkDirectory = [];
-    /**
-     * Application Directory
-     * @var array
-     */
-    public $applicationDirectory = [];
+    private static $classes = [
+        'df\\' => 'framework',
+        'application\\' => 'app',
+        'test\\' => 'test/data/app'
+    ];
+
     /**
      * Core directory
-     * @var
-     */
-    public $dir;
-    /**
-     * Scanning status
-     * @var bool
-     */
-    private $scanStatus = false;
-    /**
-     * Runtime Path
      * @var string
      */
-    private $runtimePath;
-
-    /**
-     * __construct
-     */
-    public function __construct($runtimePath = '')
-    {
-        $this->dir = __DIR__;
-        $this->runtimePath = $runtimePath;
-        $this->registerAutoloader();
-    }
-
-    /**
-     * Register Autoloader
-     */
-    private function registerAutoloader()
-    {
-        spl_autoload_register(
-            [$this, 'autoloader']
-        );
-    }
+    private static $dir;
 
     /**
      * AutoLoader
      * @param string $class
      */
-    private function autoloader($class)
+    public static function autoloader($class)
     {
-        if ($this->scanStatus === false) {
-            $this->scanFrameworkDirectory();
-            $this->scanApplicationDirectory();
-            $this->scanStatus = true;
-        }
+        foreach (self::$classes as $prefix => $base_dir) {
+            $base_dir = self::getRoot().$base_dir.'/';
 
-        foreach (array_merge($this->frameworkDirectory, $this->applicationDirectory) as $directory) {
-            $path = $directory . "/" . $class . ".php";
-            if (file_exists($path)) {
-                require($path);
+            $len = strlen($prefix);
+            if (strncmp($prefix, $class, $len) !== 0) {
+
+            }else{
+                $relative_class = substr($class, $len);
+
+
+                $file = $base_dir . str_replace('\\', '/', $relative_class) . '.php';
+
+                if (file_exists($file)) {
+                    require $file;
+                }
             }
         }
     }
 
     /**
-     * Make array of framework directory
+     * Get root directory of framework
+     * @return string
      */
-    private function scanFrameworkDirectory()
+    public static function getFramework()
     {
-        $this->scan($this->dir, 'frameworkDirectory');
-    }
-
-    private function scan($_directory, $variable)
-    {
-        foreach (scandir($_directory) as $directory) {
-            ($directory != "." && $directory != ".." && is_dir(
-                $_directory . "/" . $directory
-            ) ? array_push($this->$variable, realpath($_directory . '/' . $directory)) : "");
+        if (empty(self::$dir)) {
+            self::$dir = __DIR__ . '/';
         }
+
+        return self::$dir;
     }
 
-    private function scanApplicationDirectory()
-    {
-        $this->scan(
-            (!empty($this->runtimePath) ? $this->runtimePath : dirname($this->dir)) . '/' . 'app',
-            'applicationDirectory'
-        );
+    /**
+     * Get root directory of application
+     * @return string
+     */
+    public static function getRoot(){
+        return dirname(self::getFramework()).'/';
     }
 }
-
-$DfTestDir = (class_exists('DfTests') ? DfTests::$dataDir : '');
-
-$DfBase = new DfBase($DfTestDir);
-
-DfApp::init(realpath(dirname(__FILE__)));

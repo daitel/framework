@@ -1,13 +1,18 @@
 <?php
 /**
- * Daitel Framework
+ * @link https://github.com/daitel/framework
+ */
+
+use DfApp;
+use df\base\ErrorHandler;
+
+/**
  * Errors View
  *
  * @author Nikita Fedoseev <agent.daitel@gmail.com>
- * @link https://github.com/daitel/framework
  * @since 0.2.1
  *
- * @var DfException $ex
+ * @var Exception $ex
  */
 ?>
 <html>
@@ -109,7 +114,7 @@
                             <div class="panel-body">
                                 <table class="table table-borderless table-condensed">
                                     <?php
-                                    DfErrorHandler::showSources($ex->getFile(), false, $ex->getLine());
+                                    ErrorHandler::showSources($ex->getFile(), false, $ex->getLine());
                                     ?>
                                 </table>
                             </div>
@@ -140,7 +145,7 @@
                                             <div class="panel-body">
                                                 <table class="table table-borderless table-condensed">
                                                     <?php
-                                                    DfErrorHandler::showSources($call['file'], false, $call['line']);
+                                                    ErrorHandler::showSources($call['file'], false, $call['line']);
                                                     ?>
                                                 </table>
                                             </div>
