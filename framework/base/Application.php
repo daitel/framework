@@ -219,6 +219,6 @@ class Application
      */
     public static function getVersion()
     {
-        return 'dev-0.2.2';
+        return '0.3.0-dev';
     }
 }
