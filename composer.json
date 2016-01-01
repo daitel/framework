@@ -16,6 +16,11 @@
             "role": "Administrator"
         }
     ],
+    "extra": {
+        "branch-alias": {
+            "dev-master": "0.3.0-dev"
+        }
+    },
     "minimum-stability": "dev",
     "require": {
         "php": ">=5.5.0"
