@@ -31,16 +31,23 @@ class MVC extends Router
      * @var string|int
      */
     public $id = '';
+    /**
+     * Result of controller work
+     * @var string
+     */
+    public $result = '';
 
     /**
      * __construct
      */
-    public function __construct($path = '', $startNow = false)
+    public function __construct($config = [], $path = '', $startNow = false)
     {
         $this->processPath($path);
         if ($startNow === true) {
             $this->process();
         }
+
+        parent::setConfigValues($config);
     }
 
     /**
@@ -131,9 +138,9 @@ class MVC extends Router
         call_user_func([$_controller, 'beforeAction']);
 
         if (!empty($this->id)) {
-            call_user_func([$_controller, $actionName], $this->id);
+            $this->result = call_user_func([$_controller, $actionName], $this->id);
         } else {
-            call_user_func([$_controller, $actionName]);
+            $this->result = call_user_func([$_controller, $actionName]);
         }
 
         call_user_func([$_controller, 'afterAction']);

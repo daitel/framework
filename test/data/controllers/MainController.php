@@ -22,11 +22,11 @@ class MainController extends Controller
     {
         $data = Users::record()->create(['username' => 'daitel', 'email' => 'example321@example.com']);
 
-        $this->render('main', ['data' => $data]);
+        return $this->render('main', ['data' => $data]);
     }
 
     public function actionTest($id = 'main')
     {
-        $this->render($id, []);
+        return $this->render($id, []);
     }
 }

@@ -55,9 +55,10 @@ abstract class Controller
      * Render Page
      * @param string $view
      * @param array $data
+     * @return string
      */
     public function render($view, $data = [])
     {
-        $this->view->render($view, $data);
+        return $this->view->render($view, $data);
     }
 }

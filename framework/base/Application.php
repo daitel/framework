@@ -102,16 +102,14 @@ class Application extends Component
 
         self::prepareRuntimePath(DfBaseApp::getFramework());
 
-        try {
-            self::app()->router = new MVC();
-            ErrorHandler::registerHandlers();
-            self::app()->router->process();
+        ErrorHandler::registerHandlers();
 
-            try {
-                self::app()->router->call();
-            } catch (Exception $ex) {
-                ErrorHandler::exception($ex);
-            }
+        try {
+            self::app()->router->process();
+            self::app()->router->call();
+
+            echo self::app()->router->result;
+
         } catch (Exception $ex) {
             ErrorHandler::exception($ex);
         }
@@ -179,20 +177,6 @@ class Application extends Component
             }
         }
 
-
-        if (isset($config['router']['default'])) {
-            if (isset($config['router']['default']['controller'])) {
-                self::app()->router->controller = $config['router']['default']['controller'];
-            }
-
-            if (isset($config['router']['default']['action'])) {
-                self::app()->router->action = $config['router']['default']['action'];
-            }
-
-            if (isset($config['router']['default']['id'])) {
-                self::app()->router->id = $config['router']['default']['id'];
-            }
-        }
     }
 
     /**

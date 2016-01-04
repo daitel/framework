@@ -12,7 +12,7 @@ namespace daitel\framework\base;
  * @author Nikita Fedoseev <agent.daitel@gmail.com>
  * @since 0.2.1
  */
-class Router
+class Router extends Component
 {
     /**
      * Path

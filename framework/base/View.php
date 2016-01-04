@@ -59,7 +59,7 @@ class View
      */
     public function render($view, $data = [], $templateView = '')
     {
-        $this->renderPage($view, (empty($templateView) ? $this->templateView : $templateView), $data);
+        return $this->renderPage($view, (empty($templateView) ? $this->templateView : $templateView), $data);
     }
 
     /**
@@ -69,7 +69,7 @@ class View
      */
     public function renderView($view, $data)
     {
-        $this->renderPage($view, '', $data);
+        return $this->renderPage($view, '', $data);
     }
 
     /**
@@ -77,19 +77,25 @@ class View
      * @param string $viewName
      * @param string $template
      * @param array $data
+     * @return string
      */
     private function renderPage($viewName, $template = '', $data = [])
     {
+        ob_start();
+
         $this->viewData = $data;
         $this->includePath = $this->getViewPath($viewName);
 
         if (!empty($template)) {
             $templatePath = $this->templatePath . $template . '.php';
-
             include($templatePath);
         } else {
             include($this->includePath);
         }
+
+        $data = ob_get_contents();
+        ob_end_clean();
+        return $data;
     }
 
     /**
