@@ -2,7 +2,7 @@
 /**
  * @link https://github.com/daitel/framework
  */
-namespace df\utils;
+namespace daitel\framework\utils;
 
 /**
  * Timer is base class

@@ -2,10 +2,10 @@
 /**
  * @link https://github.com/daitel/framework
  */
-namespace df\logging;
+namespace daitel\framework\logging;
 
-use df\base\Component;
-use df\utils\File;
+use daitel\framework\base\Component;
+use daitel\framework\utils\File;
 
 /**
  * LoggerFile is logging class

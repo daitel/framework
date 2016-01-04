@@ -3,7 +3,7 @@
  * @link https://github.com/daitel/framework
  */
 
-use test\models\Users;
+use application\models\Users as Users;
 
 /**
  * Test Class for test work with db active record

@@ -21,16 +21,24 @@ class DfTests
      * @var string
      */
     public static $dataDir;
+    /**
+     * Config array
+     * @var array
+     */
+    public static $config;
 
     /**
      * Start Tests functions
      * @param $path
+     * @param $config
      */
-    public static function start($path)
+    public static function start($path, $config = [])
     {
         self::$testDir = $path."/runtime/";
         self::$dataDir = $path."/data/";
         self::clearDir();
+
+        self::$config = $config;
     }
 
     /**
@@ -49,9 +57,4 @@ class DfTests
             }
         }
     }
-
-
 }
-
-DfTests::start(__DIR__);
-require dirname(__DIR__).'/framework/Df.php';

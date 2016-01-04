@@ -9,7 +9,7 @@
  * @author Nikita Fedoseev <agent.daitel@gmail.com>
  * @since 0.2.1
  *
- * @var $this df\base\View
+ * @var $this daitel\framework\base\View
  */
 ?>
 <!DOCTYPE html>

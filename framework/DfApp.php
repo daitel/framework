@@ -3,6 +3,11 @@
  * @link https://github.com/daitel/framework
  */
 
-class DfApp extends df\base\Application{
-
+/**
+ * Class DfApp
+ *
+ * @author Nikita Fedoseev <agent.daitel@gmail.com>
+ */
+class DfApp extends daitel\framework\base\Application
+{
 } 

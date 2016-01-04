@@ -2,7 +2,7 @@
 /**
  * @link https://github.com/daitel/framework
  */
-use df\utils\File;
+use daitel\framework\utils\File;
 
 /**
  * Daitel Framework

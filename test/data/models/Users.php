@@ -3,9 +3,9 @@
  * @link https://github.com/daitel/framework
  */
 
-namespace test\models;
+namespace application\models;
 
-use df\data\ActiveRecord;
+use daitel\framework\data\ActiveRecord;
 
 /**
  * Model for test process

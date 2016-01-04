@@ -2,7 +2,7 @@
 /**
  * @link https://github.com/daitel/framework
  */
-namespace df\base;
+namespace daitel\framework\base;
 
 /**
  * PHPException is class for handling PHP Errors

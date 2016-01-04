@@ -3,7 +3,7 @@
  * @link https://github.com/daitel/framework
  */
 
-use df\data\Record;
+use daitel\framework\data\Record;
 
 /**
  * Daitel Framework

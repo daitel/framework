@@ -2,7 +2,7 @@
 /**
  * @link https://github.com/daitel/framework
  */
-namespace df\data;
+namespace daitel\framework\data;
 
 /**
  * Sql is helper class for preparing query

@@ -3,7 +3,7 @@
  * @link https://github.com/daitel/framework
  */
 
-use df\data\DbConnection;
+use daitel\framework\data\DbConnection;
 
 /**
  * Test Class for test db connection functions
@@ -18,7 +18,7 @@ class ConnectionTest extends PHPUnit_Framework_TestCase
      */
     public function testConstruct()
     {
-        $db = new DbConnection('mysql:host=localhost;dbname=test;charset=utf8', 'root', '');
+        $db = new DbConnection(DfTests::$config['db']);
         $this->assertTrue(is_object($db));
 
         $db->query(
@@ -55,10 +55,13 @@ class ConnectionTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException df\base\SetupException
+     * @expectedException daitel\framework\base\SetupException
      */
     public function testIncorrectLink()
     {
-        $db = new DbConnection('mysql:host=localhost;dbname=test1;charset=utf8', 'root', '');
+        $db = new DbConnection([
+            'link' => 'mysql:host=localhost;dbname=test1;charset=utf8',
+            'user' => 'root'
+        ]);
     }
 }

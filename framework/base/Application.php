@@ -2,12 +2,12 @@
 /**
  * @link https://github.com/daitel/framework
  */
-namespace df\base;
+namespace daitel\framework\base;
 
 use DfBaseApp;
-use df\logging\Logger;
-use df\data\DbConnection;
-use df\utils\Timer;
+use daitel\framework\logging\Logger;
+use daitel\framework\data\DbConnection;
+use daitel\framework\utils\Timer;
 
 /**
  * Application is base class
@@ -17,20 +17,8 @@ use df\utils\Timer;
  * @author Nikita Fedoseev <agent.daitel@gmail.com>
  * @since 0.2.1
  */
-class Application
+class Application extends Component
 {
-    /**
-     * Application web path
-     * Example: localhost
-     * @var string
-     */
-    private static $applicationPath;
-    /**
-     * Runtime path
-     * Example: C:\Users\Nikita Fedoseev\Dropbox\Work\Programming\PHP\projects\framework
-     * @var string
-     */
-    private static $runtimePath;
     /**
      * Application
      * @var Application
@@ -56,6 +44,24 @@ class Application
      * @var DbConnection
      */
     public $db;
+    /**
+     * @var string
+     */
+    public $applicationClass = 'application\\';
+    /**
+     * @var array
+     */
+    public $applicationPath = ['', 3];
+    /**
+     * Application web path
+     * @var string
+     */
+    public $applicationUrl = '';
+    /**
+     * Runtime path
+     * @var string
+     */
+    private $runtimePath;
 
     /**
      * Initialization process
@@ -82,22 +88,22 @@ class Application
     /**
      * Start Application
      * @param array $config
-     * @param string $directory
      * @throws SetupException
      */
-    public static function start($config = [], $directory = '')
+    public static function start($config)
     {
         self::init();
 
-        self::prepareRuntimePath($directory);
+        if (empty($config)) {
+            throw new SetupException("Empty config");
+        }
+
+        self::configRead($config);
+
+        self::prepareRuntimePath(DfBaseApp::getFramework());
 
         try {
-            if (empty(self::$runtimePath)) {
-                throw new SetupException("No defined RuntimePath");
-            }
-
             self::app()->router = new MVC();
-            self::configRead($config);
             ErrorHandler::registerHandlers();
             self::app()->router->process();
 
@@ -114,18 +120,17 @@ class Application
     /**
      * Prepare runtime path
      */
-    private static function prepareRuntimePath($subFolder = '')
+    private static function prepareRuntimePath($path)
     {
-        self::$runtimePath = self::getMainDirectory() . (!empty($subFolder) ? "/$subFolder" : "");
-    }
+        for ($i = 0; $i < self::app()->applicationPath[1]; $i++) {
+            $path = dirname($path);
+        }
 
-    /**
-     * Get main directory
-     * @return string
-     */
-    private static function getMainDirectory()
-    {
-        return realpath(dirname(DfBaseApp::getFramework()));
+        $path .= '/' . self::app()->applicationPath[0];
+
+        self::app()->runtimePath = realpath($path);
+
+        DfBaseApp::addClass(self::app()->applicationClass, self::app()->runtimePath);
     }
 
     /**
@@ -134,14 +139,11 @@ class Application
      */
     private static function configRead($config)
     {
-        if (isset($config['application_path'])) {
-            self::$applicationPath = trim($config['application_path'], '/');
-        }
+        self::app()->setConfigValues($config);
 
         if (isset($config['components'])) {
             if (isset($config['components']['db'])) {
-                self::app(
-                )->db = new DbConnection($config['components']['db']['link'], $config['components']['db']['user'], $config['components']['db']['password']);
+                self::app()->db = new DbConnection($config['components']['db']);
             }
         }
 
@@ -200,7 +202,7 @@ class Application
      */
     public static function getRuntimePath($slash = false)
     {
-        return ($slash == true ? self::$runtimePath . '/' : self::$runtimePath);
+        return ($slash == true ? self::app()->runtimePath . '/' : self::app()->runtimePath);
     }
 
     /**
@@ -208,9 +210,9 @@ class Application
      * @param bool $slash
      * @return string
      */
-    public static function getPath($slash = false)
+    public static function getUrl($slash = false)
     {
-        return ($slash == true ? self::$applicationPath . '/' : self::$applicationPath);
+        return ($slash == true ? self::app()->applicationUrl . '/' : self::app()->applicationUrl);
     }
 
     /**

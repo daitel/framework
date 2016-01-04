@@ -12,7 +12,7 @@ require __DIR__ . '/DfBase.php';
  * @since 0.2.2
  *
  */
-class DfBaseApp extends \df\DfBase
+class DfBaseApp extends \daitel\framework\DfBase
 {
     public static function autoload(){
         spl_autoload_register(['DfBaseApp', 'autoloader']);

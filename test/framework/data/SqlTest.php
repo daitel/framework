@@ -3,7 +3,7 @@
  * @link https://github.com/daitel/framework
  */
 
-use df\data\Sql;
+use daitel\framework\data\Sql;
 
 /**
  * Test Class for sql query preparing

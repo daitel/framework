@@ -2,9 +2,9 @@
 /**
  * @link https://github.com/daitel/framework
  */
-namespace df\logging;
+namespace daitel\framework\logging;
 
-use df\data\Sql;
+use daitel\framework\data\Sql;
 
 /**
  * Logger is logging class

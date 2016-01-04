@@ -2,7 +2,7 @@
 /**
  * @link https://github.com/daitel/framework
  */
-namespace df\data;
+namespace daitel\framework\data;
 
 /**
  * Record is data working class

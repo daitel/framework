@@ -2,11 +2,11 @@
 /**
  * @link https://github.com/daitel/framework
  */
-namespace df\data;
+namespace daitel\framework\data;
 
-use df\base\Component;
-use df\base\Exception;
-use df\base\SetupException;
+use daitel\framework\base\Component;
+use daitel\framework\base\Exception;
+use daitel\framework\base\SetupException;
 
 use PDO;
 use PDOStatement;
@@ -32,31 +32,35 @@ class DbConnection extends Component
      * @var PDO
      */
     protected $connection;
-
     /**
-     * __construct
-     * @param string $link
-     * @param string $user
-     * @param string $pass
-     * @param array $options
+     * Connection link
+     * @var string
      */
-    public function __construct($link, $user, $pass, $options = [])
-    {
-        $this->connect($link, $user, $pass, $options);
-    }
+    protected $link = '';
+    /**
+     * Connection user
+     * @var string
+     */
+    protected $user = '';
+    /**
+     * Connection pass
+     * @var string
+     */
+    protected $pass = '';
+    /**
+     * Connections options
+     * @var array
+     */
+    protected $options = [];
 
     /**
      * Create PDO connection
-     * @param string $link
-     * @param string $user
-     * @param string $pass
-     * @param array $options
      * @throws SetupException
      */
-    private function connect($link, $user, $pass, $options)
+    public function afterConstruct()
     {
         try {
-            $this->connection = new PDO($link, $user, $pass, $options);
+            $this->connection = new PDO($this->link, $this->user, $this->pass, $this->options);
             $this->connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         } catch (PDOException $ex) {
             throw new SetupException($ex->getMessage(), 0, $ex->getFile(), $ex->getLine(), $ex);

@@ -2,9 +2,9 @@
 /**
  * @link https://github.com/daitel/framework
  */
-namespace df\utils;
+namespace daitel\framework\utils;
 
-use df\base\Component;
+use daitel\framework\base\Component;
 
 /**
  * Daitel Framework

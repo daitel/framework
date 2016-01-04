@@ -3,7 +3,8 @@
  * @link https://github.com/daitel/framework
  */
 
-use df\base\SetupException;
+use daitel\framework\base\SetupException;
+use daitel\framework\utils\ClassHelper;
 
 /**
  * Test Class for Df work
@@ -23,9 +24,9 @@ class DfAppTest extends PHPUnit_Framework_TestCase
     public function testSetupEx()
     {
         try {
-            DfApp::start($this->config, 'test/data');
+            DfApp::start($this->config);
         } catch (SetupException $ex) {
-            $this->assertEquals("SetupException", get_class($ex));
+            $this->assertEquals("SetupException", ClassHelper::getNameFromClass($ex));
         } finally {
             $this->start();
         }
@@ -37,21 +38,18 @@ class DfAppTest extends PHPUnit_Framework_TestCase
             $this->configWrite();
         }
 
-        DfApp::start($this->config, 'test/data');
-        $this->assertEquals(DfApp::getPath(), $this->config['application_path']);
-        $this->assertEquals(DfApp::getPath(true), $this->config['application_path'] . "/");
+        DfApp::start($this->config);
+        $this->assertEquals(DfApp::getUrl(), $this->config['applicationUrl']);
+        $this->assertEquals(DfApp::getUrl(true), $this->config['applicationUrl'] . "/");
     }
 
     private function configWrite()
     {
         $this->config = [
-            'application_path' => 'localhost',
+            'applicationUrl' => 'localhost',
+            'applicationPath' => ['test/data', 1],
             'components' => [
-                'db' => [
-                    'link' => 'mysql:host=localhost;dbname=test;charset=utf8',
-                    'user' => 'root',
-                    'password' => ''
-                ]
+                'db' => DfTests::$config['db']
             ],
             'errors' => [
                 'debug' => true,

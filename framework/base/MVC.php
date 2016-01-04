@@ -2,7 +2,7 @@
 /**
  * @link https://github.com/daitel/framework
  */
-namespace df\base;
+namespace daitel\framework\base;
 
 use DfApp;
 
@@ -114,14 +114,15 @@ class MVC extends Router
             throw new SetupException("No defined RuntimePath");
         }
 
-        $controllerName = ucwords($this->controller) . 'Controller';
-        $actionName = 'action' . ucwords($this->action);
+        $controllerName = "\\".DfApp::app()->applicationClass."controllers\\".ucwords($this->controller)."Controller";
 
         if (!class_exists($controllerName)) {
             throw new NotFoundException("Unable to find controller: {$this->controller}");
         }
 
         $_controller = new $controllerName;
+
+        $actionName = 'action' . ucwords($this->action);
 
         if (!method_exists($_controller, $actionName)) {
             throw new NotFoundException("Unable to find action: {$this->controller}/{$this->action}");

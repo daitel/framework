@@ -2,9 +2,10 @@
 /**
  * @link https://github.com/daitel/framework
  */
-namespace df\data;
+namespace daitel\framework\data;
 
 use DfApp;
+use daitel\framework\utils\ClassHelper;
 
 /**
  * ActiveRecord is data working class
@@ -85,10 +86,7 @@ abstract class ActiveRecord extends Record
      */
     public static function getName()
     {
-        $classParts = explode("\\", strtolower(get_called_class()));
-        $className = $classParts[count($classParts) - 1];
-
-        return $className;
+        return strtolower(ClassHelper::getName(get_called_class()));
     }
 
     /**

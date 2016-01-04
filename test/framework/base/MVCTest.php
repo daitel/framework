@@ -3,7 +3,7 @@
  * @link https://github.com/daitel/framework
  */
 
-use df\base\MVC;
+use daitel\framework\base\MVC;
 
 /**
  * Daitel Framework
@@ -42,7 +42,7 @@ class MVCTest extends PHPUnit_Framework_TestCase
 
     /**
      * @depends testInit
-     * @expectedException df\base\ViewFileException
+     * @expectedException daitel\framework\base\ViewFileException
      */
     public function viewEx()
     {
@@ -52,7 +52,7 @@ class MVCTest extends PHPUnit_Framework_TestCase
 
     /**
      * @depends testInit
-     * @expectedException df\base\NotFoundException
+     * @expectedException daitel\framework\base\NotFoundException
      */
     public function testIncorrectPaths()
     {

@@ -3,7 +3,7 @@
  * @link https://github.com/daitel/framework
  */
 
-namespace df;
+namespace daitel\framework;
 
 /**
  * Daitel Framework | Base File
@@ -15,13 +15,13 @@ class DfBase
 {
     /**
      * Array with namespace => root directories
-     * TODO: add functions to work with that array
+     * [0] - path
+     * [1] - if false add framework path until classes path
+     *
      * @var array
      */
     private static $classes = [
-        'df\\' => 'framework',
-        'application\\' => 'app',
-        'test\\' => 'test/data/app'
+        'daitel\framework\\' => ['', false]
     ];
 
     /**
@@ -31,26 +31,42 @@ class DfBase
     private static $dir;
 
     /**
+     * Add class to autoload
+     * @param $namespace
+     * @param $path
+     */
+    public static function addClass($namespace, $path)
+    {
+        self::$classes[$namespace] = [$path, true];
+    }
+
+    /**
      * AutoLoader
      * @param string $class
      */
     public static function autoloader($class)
     {
         foreach (self::$classes as $prefix => $base_dir) {
-            $base_dir = self::getRoot().$base_dir.'/';
+            if (!$base_dir[1]) {
+                $base_dir[0] = self::getFramework() . $base_dir[0];
+            }
 
-            $len = strlen($prefix);
-            if (strncmp($prefix, $class, $len) !== 0) {
+            self::loadClass($prefix, $class, $base_dir[0]);
+        }
+    }
 
-            }else{
-                $relative_class = substr($class, $len);
+    private static function loadClass($prefix, $class, $base_dir)
+    {
+        $len = strlen($prefix);
+        if (strncmp($prefix, $class, $len) !== 0) {
 
+        } else {
+            $relative_class = substr($class, $len);
 
-                $file = $base_dir . str_replace('\\', '/', $relative_class) . '.php';
+            $file = realpath($base_dir . "/" . str_replace('\\', '/', $relative_class) . '.php');
 
-                if (file_exists($file)) {
-                    require $file;
-                }
+            if (file_exists($file)) {
+                require $file;
             }
         }
     }
@@ -66,13 +82,5 @@ class DfBase
         }
 
         return self::$dir;
-    }
-
-    /**
-     * Get root directory of application
-     * @return string
-     */
-    public static function getRoot(){
-        return dirname(self::getFramework()).'/';
     }
 }

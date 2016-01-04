@@ -3,8 +3,7 @@
  * @link https://github.com/daitel/framework
  */
 
-use DfApp;
-use df\base\ErrorHandler;
+use daitel\framework\base\ErrorHandler;
 
 /**
  * Errors View

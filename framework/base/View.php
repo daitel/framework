@@ -2,7 +2,7 @@
 /**
  * @link https://github.com/daitel/framework
  */
-namespace df\base;
+namespace daitel\framework\base;
 
 use DfApp;
 
@@ -47,7 +47,7 @@ class View
      */
     public function __construct()
     {
-        $this->viewsPath = DfApp::app()->getRuntimePath(true) . 'app/views/';
+        $this->viewsPath = DfApp::app()->getRuntimePath(true) . 'views/';
         $this->templatePath = $this->viewsPath . 'templates/';
     }
 

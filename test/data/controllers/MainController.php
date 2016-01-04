@@ -3,10 +3,10 @@
  * @link https://github.com/daitel/framework
  */
 
-namespace test\controllers;
+namespace application\controllers;
 
-use df\base\Controller;
-use test\data\models\Users;
+use daitel\framework\base\Controller;
+use application\models\Users;
 
 /**
  * Daitel Framework

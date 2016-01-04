@@ -6,7 +6,7 @@
  * @author Nikita Fedoseev <agent.daitel@gmail.com>
  * @link https://github.com/daitel/framework
  * @since 0.2.1
- * @var df\base\View $this
+ * @var daitel\framework\base\View $this
  * @var application\models\Users $this ->viewData['data']
  */
 ?>

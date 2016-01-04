@@ -2,9 +2,9 @@
 /**
  * @link https://github.com/daitel/framework
  */
-namespace df\data;
+namespace daitel\framework\data;
 
-use df\base\Component;
+use daitel\framework\base\Component;
 
 /**
  * Table is class for work with db table

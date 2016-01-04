@@ -3,10 +3,10 @@
  * @link https://github.com/daitel/framework
  */
 
-use df\data\DbConnection;
-use df\data\Table;
+use daitel\framework\data\DbConnection;
+use daitel\framework\data\Table;
 
-use test\models\Users;
+use application\models\Users;
 
 /**
  * Daitel Framework
@@ -19,7 +19,7 @@ class TableTest extends PHPUnit_Framework_TestCase
 {
     public function testNewTable()
     {
-        $db = new DbConnection('mysql:host=localhost;dbname=test;charset=utf8', 'root', '');
+        $db = new DbConnection(DfTests::$config['db']);
         $table = new Table($db, 'users');
         $this->assertTrue(is_object($table));
         $this->checkInsert($table);

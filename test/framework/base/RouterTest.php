@@ -3,7 +3,7 @@
  * @link https://github.com/daitel/framework
  */
 
-use df\base\Router;
+use daitel\framework\base\Router;
 
 /**
  * Test Class for router work

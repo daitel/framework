@@ -2,7 +2,7 @@
 /**
  * @link https://github.com/daitel/framework
  */
-use df\utils\Resource;
+use daitel\framework\utils\Resource;
 
 /**
  * Test Class for Resource work

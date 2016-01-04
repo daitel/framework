@@ -3,7 +3,7 @@
  * @link https://github.com/daitel/framework
  */
 
-use df\base\ErrorHandler;
+use daitel\framework\base\ErrorHandler;
 
 /**
  * Daitel Framework
@@ -20,12 +20,12 @@ class ErrorHandlerTest extends PHPUnit_Framework_TestCase
      */
     public function testShowSources()
     {
-        $path = DfApp::getRuntimePath(true) . 'app/controllers/MainController.php';
+        $path = DfApp::getRuntimePath(true) . 'controllers/MainController.php';
         $this->checkSources($this->sources($path, true));
         $this->checkSources($this->sources($path, false, 20));
         $this->checkSources($this->sources($path, false, 20, 5));
 
-        $pathNotExist = DfApp::getRuntimePath(true) . 'app/controllers/MainController.php1';
+        $pathNotExist = DfApp::getRuntimePath(true) . 'controllers/MainController.php1';
         $this->assertTrue($this->sources($pathNotExist) == "<tbody><td><tr>File not exist</tr></td></tbody>");
     }
 

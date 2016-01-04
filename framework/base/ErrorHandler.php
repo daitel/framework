@@ -2,11 +2,11 @@
 /**
  * @link https://github.com/daitel/framework
  */
-namespace df\base;
+namespace daitel\framework\base;
 
 use DfApp;
-use df\logging\Logger;
-use df\base\PHPException;
+use DfBaseApp;
+use daitel\framework\logging\Logger;
 
 /**
  * ErrorHandler is a handling class for errors and exceptions
@@ -150,14 +150,14 @@ class ErrorHandler
     public static function registerHandlers()
     {
         set_exception_handler(
-            function() {
-                ErrorHandler::exception();
+            function($ex) {
+                ErrorHandler::exception($ex);
             }
         );
 
         set_error_handler(
             function ($c, $m, $f, $l) {
-                throw new df\base\PHPException($m, $c, $f, $l);
+                throw new PHPException($m, $c, $f, $l);
             },
             E_ALL
         );
@@ -176,7 +176,7 @@ class ErrorHandler
     {
         if (($error = error_get_last()) !== null) {
             self::exception(
-                new df\base\PHPException($error['message'], $error['type'], $error['file'], $error['line'])
+                new PHPException($error['message'], $error['type'], $error['file'], $error['line'])
             );
         }
     }
@@ -218,7 +218,7 @@ class ErrorHandler
      */
     private static function includePage($ex, $page = 'error')
     {
-        $path = DfApp::getRuntimePath(true) . "framework/views/errors/$page.php";
+        $path = DfBaseApp::getFramework() . "views/errors/$page.php";
         if (file_exists($path)) {
             include $path;
         } else {
