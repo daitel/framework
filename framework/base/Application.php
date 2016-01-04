@@ -139,16 +139,11 @@ class Application extends Component
     {
         self::app()->setConfigValues($config);
 
-        if (isset($config['components'])) {
-            if (isset($config['components']['db'])) {
-                self::app()->db = new DbConnection($config['components']['db']);
+        if (!empty($config['components'])) {
+            foreach ($config['components'] as $name => $component) {
+                $class = $config['components'][$name]['class'];
+                self::app()->$name = new $class($component);
             }
-        }
-
-        if (isset($config['logger']['path'])) {
-            self::app()->logger = new Logger($config['logger']['path']);
-        } else {
-            self::app()->logger = new Logger();
         }
 
         if (isset($config['errors'])) {
@@ -176,7 +171,6 @@ class Application extends Component
                 ErrorHandler::$errorCall = $config['errors']['error_call'];
             }
         }
-
     }
 
     /**
