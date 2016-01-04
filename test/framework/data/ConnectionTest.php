@@ -4,6 +4,7 @@
  */
 
 use daitel\framework\data\DbConnection;
+use daitel\framework\utils\ClassHelper;
 
 /**
  * Test Class for test db connection functions
@@ -20,6 +21,7 @@ class ConnectionTest extends PHPUnit_Framework_TestCase
     {
         $db = new DbConnection(DfTests::$config['db']);
         $this->assertTrue(is_object($db));
+        $this->assertEquals("PDO", ClassHelper::getNameFromClass($db->connection));
 
         $db->query(
             "CREATE TABLE IF NOT EXISTS `users` (

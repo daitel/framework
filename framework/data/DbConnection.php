@@ -31,7 +31,7 @@ class DbConnection extends Component
      * PDO Connection
      * @var PDO
      */
-    protected $connection;
+    public $connection;
     /**
      * Connection link
      * @var string
